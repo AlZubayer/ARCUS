@@ -136,6 +136,9 @@ class CorruptionConfig(BaseModel):
     #: The modality that can carry the margin; reverse is degenerate (see the audit).
     pair_modality: Literal["direct", "indirect"] = "direct"
     pair_clean_split: Literal["validation", "discovery", "stress"] = "validation"
+    #: Prefer clean surfaces that carry an exactly augmentation-matched syntax twin.
+    #: Selects on control availability only, never on any model output.
+    prefer_exact_syntax_twin: bool = False
 
 
 class PatchingConfig(BaseModel):
@@ -156,6 +159,45 @@ class PatchingConfig(BaseModel):
     #: Capture-only hooks clone tensors, so any nonzero drift is a bug, not noise.
     parity_tolerance: float = Field(0.0, ge=0)
     self_patch_tolerance: float = Field(0.0, ge=0)
+
+
+class CircuitExtractionConfig(BaseModel):
+    """Extraction rules, registered before any held-out surface is touched."""
+
+    primary_rule: Literal["attribution_mass_prefix", "top_k", "stability"] = (
+        "attribution_mass_prefix"
+    )
+    mass_fraction: float = Field(0.85, gt=0, le=1)
+    top_k: int = Field(30, ge=1)
+    stability_fraction: float = Field(0.667, gt=0, le=1)
+
+
+class A1Config(BaseModel):
+    """A1 blind route discovery."""
+
+    pilot_facts: list[str]
+    graph_granularity: Literal["G0"] = "G0"
+    primary_family: str = "same_topic_fact_swap"
+    robustness_families: list[str] = ["semantic_neighbor", "same_syntax"]
+    attribution_method: Literal["eap_ig_node_v1"] = "eap_ig_node_v1"
+    integration_steps: int = Field(16, ge=2)
+    ig_step_sensitivity: list[int] = [8, 16, 32, 64]
+    alignment_policy: Literal["end_aligned_common_suffix", "exact_length_only"] = (
+        "end_aligned_common_suffix"
+    )
+    circuit_extraction: CircuitExtractionConfig = CircuitExtractionConfig()
+
+    @model_validator(mode="after")
+    def sink_firewall(self) -> "A1Config":
+        # Defence in depth: a sink-named family must never reach route discovery.
+        forbidden = {"sink", "bos", "anchor", "carrier"}
+        for family in [self.primary_family, *self.robustness_families]:
+            if any(token in family.casefold() for token in forbidden):
+                raise ValueError(
+                    f"Corruption family {family!r} names sink machinery. A1 route discovery "
+                    "must remain blind to the attention sink."
+                )
+        return self
 
 
 class RouteDiscoveryConfig(BaseModel):
@@ -213,6 +255,7 @@ class ModuleAConfig(BaseModel):
     representation: RepresentationConfig
     sink: SinkConfig
     statistics: StatisticsConfig
+    a1: A1Config | None = None
     config_version: str = CONFIG_VERSION
 
     @model_validator(mode="after")

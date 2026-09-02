@@ -57,12 +57,19 @@ def select_clean_surfaces(
     split: Split,
     limit: int,
     correct_surface_ids: set[str] | None = None,
+    preferred_augmentations: set[str] | None = None,
 ) -> list[FactExample]:
     """Pick clean surfaces deterministically, so a rerun builds identical pairs.
 
     Restricted to surfaces A0 scored as correct where that information is available: a
     clean run that never exhibited the fact cannot anchor a restoration experiment, and
     including it would put noise in the denominator of every normalized effect.
+
+    ``preferred_augmentations`` puts surfaces carrying an exactly matched same-syntax twin
+    first. That control is the sharpest available test that a route is about the fact
+    rather than the question form, and the criterion is control *availability* -- it never
+    inspects a margin, an attribution or any model output, so it cannot bias an outcome.
+    Ordering stays deterministic within each group.
     """
     candidates = [
         ex
@@ -72,7 +79,11 @@ def select_clean_surfaces(
     if correct_surface_ids is not None:
         preferred = [ex for ex in candidates if ex.surface_form_id in correct_surface_ids]
         candidates = preferred or []
-    return sorted(candidates, key=lambda ex: ex.surface_form_id)[:limit]
+    twins = preferred_augmentations or set()
+    return sorted(
+        candidates,
+        key=lambda ex: (0 if ex.augmentation_id in twins else 1, ex.surface_form_id),
+    )[:limit]
 
 
 def run_pairs(
@@ -90,6 +101,7 @@ def run_pairs(
     seed: int,
     answer_score: str = "mean_logprob",
     correct_surface_ids: set[str] | None = None,
+    prefer_exact_syntax_twin: bool = False,
 ) -> dict[str, Any]:
     """Build every configured family for every eligible fact, then score and validate."""
     forget_pool = [ex for ex in corpus.examples if ex.is_forget]
@@ -119,9 +131,19 @@ def run_pairs(
         if distractors is None:
             continue
 
+        twin_augmentations = (
+            {
+                aug
+                for (linked_fact, linked_mod, aug) in syntax_index
+                if linked_fact == fact_key and linked_mod is modality
+            }
+            if prefer_exact_syntax_twin
+            else set()
+        )
         for clean in select_clean_surfaces(
             corpus.examples, fact_key, modality=modality, split=split,
             limit=clean_surfaces_per_fact, correct_surface_ids=correct_surface_ids,
+            preferred_augmentations=twin_augmentations,
         ):
             clean_margin = _margin_for(
                 backend, clean.question, distractors, cache, answer_score=answer_score

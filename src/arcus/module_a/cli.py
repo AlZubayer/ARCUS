@@ -71,6 +71,25 @@ def build_parser() -> argparse.ArgumentParser:
     ao.add_argument("--run", default=None, help="A1 run id (defaults to a new one)")
     ao.add_argument("--pair-limit", type=int, default=60)
 
+    ap = sub.add_parser(
+        "a1-pairs", help="Build discovery-split clean/corrupt pairs with full accounting"
+    )
+    ap.add_argument("--config", required=True)
+    ap.add_argument("--run", required=True, help="A1 run id to write into")
+    ap.add_argument(
+        "--correctness-run", required=True,
+        help="A0 run whose discovery-surface scores supply the clean-anchor filter",
+    )
+    ap.add_argument(
+        "--distractors-run", required=True,
+        help="A0 run supplying the frozen distractor pools",
+    )
+    ap.add_argument(
+        "--freeze", default=None,
+        help="Freeze artifact supplying fact eligibility (default artifacts/freeze/p0_p5_freeze.json)",
+    )
+    ap.add_argument("--all-eligible", action="store_true", help="Use all frozen-eligible facts")
+
     run = sub.add_parser("run", help="Run a pipeline stage")
     run.add_argument("config")
     run.add_argument("--stage", choices=[s.value for s in Stage], required=True)
@@ -487,6 +506,104 @@ def cmd_a1_objective(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_a1_pairs(args: argparse.Namespace) -> int:
+    from .freeze import _pair_accounting
+    from .schema import Modality, Split
+    from .stages.pairs import run_pairs
+
+    config = load_config(args.config)
+    topic = config.dataset.topic
+    art = Path(config.experiment.artifact_dir)
+
+    # Eligibility comes from the freeze, never recomputed here. The discovery split has a
+    # single modality, so re-running the A0 gate on it would mechanically yield zero
+    # eligible facts -- a property of the split, not a finding about the model.
+    freeze_path = Path(args.freeze) if args.freeze else art / "freeze" / "p0_p5_freeze.json"
+    freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
+    eligible = [f.split(":")[-1] for f in freeze["known_fact_core"]["eligible_fact_ids"]]
+
+    pilot = eligible if args.all_eligible else (config.a1.pilot_facts if config.a1 else eligible)
+    missing = sorted(set(pilot) - set(eligible))
+    if missing:
+        print(f"ERROR: requested facts are not in the frozen Known-Fact Core: {missing}")
+        return 1
+    fact_ids = [f"{topic}:{f}" for f in pilot]
+
+    _, distractor_sets = _load_a0(config, args.distractors_run, topic)
+
+    correctness = read_jsonl(
+        art / args.correctness_run / "a0" / f"known_fact_scores_{topic}.jsonl"
+    )
+    correct_ids = {r["surface_form_id"] for r in correctness if r["is_correct"]}
+
+    corpus = build_corpus(
+        topics=None,
+        suite_dataset_id=config.dataset.dataset_id,
+        suite_revision=config.dataset.dataset_revision,
+        rephrasings_dataset_id=config.dataset.rephrasings_dataset_id,
+        rephrasings_revision=config.dataset.rephrasings_revision,
+    )
+    backend = backend_from_config_cached(config)
+
+    print(f"[a1-pairs] facts={pilot}")
+    print(f"  eligibility from {freeze_path} ({len(eligible)} frozen-eligible)")
+    print(f"  clean anchors restricted to {len(correct_ids)} correct discovery surfaces")
+
+    result = run_pairs(
+        backend,
+        corpus,
+        eligible_facts=fact_ids,
+        distractor_sets=distractor_sets,
+        families=config.corruption.families,
+        modality=Modality(config.corruption.pair_modality),
+        split=Split(config.corruption.pair_clean_split),
+        clean_surfaces_per_fact=config.corruption.clean_surfaces_per_fact,
+        max_pairs_per_family=config.corruption.max_pairs_per_fact_family,
+        min_abs_delta=config.scoring.min_abs_delta,
+        seed=config.experiment.seed,
+        answer_score=config.scoring.answer_score,
+        correct_surface_ids=correct_ids,
+        prefer_exact_syntax_twin=config.corruption.prefer_exact_syntax_twin,
+    )
+
+    out = run_dir(config.experiment.artifact_dir, args.run) / "a1"
+    attempted = result["pairs"]
+    accepted = [p for p in attempted if p["validation_status"] == "accepted"]
+
+    # Both are persisted: a family's acceptance rate is itself a finding, and it is only
+    # recoverable if the rejected pairs survive.
+    write_jsonl(out / "attempted_pairs.jsonl", attempted)
+    write_jsonl(out / "accepted_pairs.jsonl", accepted)
+
+    accounting = _pair_accounting(attempted)
+    controls = {
+        "policy_version": config.corruption.corruption_policy_version,
+        "families_never_pooled": True,
+        "clean_split": config.corruption.pair_clean_split,
+        "modality": config.corruption.pair_modality,
+        "facts": pilot,
+        "eligibility_source": str(freeze_path),
+        "correctness_source": args.correctness_run,
+        "by_family": accounting,
+        "summary": result["summary"],
+    }
+    write_json(out / "controls_by_family.json", controls)
+
+    print(f"  attempted {len(attempted)}, accepted {len(accepted)}")
+    print(f"  {'family':32s} {'att':>4} {'acc':>4} {'rate':>5} {'meanD_pre':>10} {'meanD_post':>11}")
+    for family, stats in accounting.items():
+        pre = stats["delta_before_filtering"]["mean"]
+        post = stats["delta_after_filtering"]["mean"]
+        print(f"  {family:32s} {stats['n_attempted']:4d} {stats['n_accepted']:4d} "
+              f"{stats['acceptance_rate']:5.2f} "
+              f"{(f'{pre:+.2f}' if pre is not None else '-'):>10} "
+              f"{(f'{post:+.2f}' if post is not None else '-'):>11}")
+    quality = result["summary"].get("syntax_match_quality", {})
+    if quality:
+        print(f"  same_syntax match quality: {quality}")
+    return 0
+
+
 _BACKEND_CACHE: dict = {}
 
 
@@ -726,6 +843,9 @@ def main() -> None:
 
     if args.command == "a1-objective":
         raise SystemExit(cmd_a1_objective(args))
+
+    if args.command == "a1-pairs":
+        raise SystemExit(cmd_a1_pairs(args))
 
     if args.command == "run-a0":
         raise SystemExit(cmd_run_a0(args))

@@ -1,0 +1,1033 @@
+{
+  "a0_version": "known_fact_core_v1",
+  "distractor_policy": "same_topic_same_modality_v1",
+  "thresholds": {
+    "minimum_base_accuracy": 0.8,
+    "minimum_modalities_known": 2,
+    "distractor_count": 4,
+    "note": "Preregistered. Not adjusted after inspecting results."
+  },
+  "splits_scored": [
+    "discovery"
+  ],
+  "n_surfaces_scored": 375,
+  "n_facts_screened": 25,
+  "n_eligible": 0,
+  "n_passing_accuracy_only": 17,
+  "eligible_fact_ids": [],
+  "accuracy_only_fact_ids": [
+    "challenger_disaster:K10",
+    "challenger_disaster:K11",
+    "challenger_disaster:K12",
+    "challenger_disaster:K14",
+    "challenger_disaster:K17",
+    "challenger_disaster:K19",
+    "challenger_disaster:K20",
+    "challenger_disaster:K3",
+    "challenger_disaster:K4",
+    "challenger_disaster:K5",
+    "challenger_disaster:K6",
+    "challenger_disaster:K8",
+    "challenger_disaster:K9",
+    "challenger_disaster:M1",
+    "challenger_disaster:M2",
+    "challenger_disaster:M3",
+    "challenger_disaster:M4"
+  ],
+  "refused_cells": [
+    {
+      "fact_key": "challenger_disaster:K1",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K1/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K10",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K10/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K11",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K11/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K12",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K12/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K13",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K13/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K14",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K14/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K15",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K15/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K16",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K16/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K17",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K17/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K18",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K18/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K19",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K19/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K2",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K2/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K20",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K20/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K3",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K3/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K4",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K4/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K5",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K5/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K6",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K6/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K7",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K7/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K8",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K8/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:K9",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:K9/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:M1",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:M1/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:M2",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:M2/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:M3",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:M3/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:M4",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:M4/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "challenger_disaster:M5",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "challenger_disaster:M5/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K1"
+      },
+      "fact_id": "challenger_disaster:K1",
+      "n_surfaces": 15,
+      "n_correct": 0,
+      "K_f": 0.0,
+      "mean_margin": -3.4308986,
+      "min_margin": -4.679787,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -3.4308986,
+          "min_margin": -4.679787,
+          "max_margin": -1.559304,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K10"
+      },
+      "fact_id": "challenger_disaster:K10",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 3.655870933333333,
+      "min_margin": 0.955103,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 3.655870933333333,
+          "min_margin": 0.955103,
+          "max_margin": 4.62534,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K11"
+      },
+      "fact_id": "challenger_disaster:K11",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 2.4386300000000003,
+      "min_margin": 2.012924,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 2.4386300000000003,
+          "min_margin": 2.012924,
+          "max_margin": 2.908943,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K12"
+      },
+      "fact_id": "challenger_disaster:K12",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 2.036441066666667,
+      "min_margin": 1.703563,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 2.036441066666667,
+          "min_margin": 1.703563,
+          "max_margin": 2.291759,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K13"
+      },
+      "fact_id": "challenger_disaster:K13",
+      "n_surfaces": 15,
+      "n_correct": 4,
+      "K_f": 0.26666666666666666,
+      "mean_margin": -0.5281229333333334,
+      "min_margin": -1.672368,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 4,
+          "accuracy": 0.26666666666666666,
+          "mean_margin": -0.5281229333333334,
+          "min_margin": -1.672368,
+          "max_margin": 1.391875,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K14"
+      },
+      "fact_id": "challenger_disaster:K14",
+      "n_surfaces": 15,
+      "n_correct": 14,
+      "K_f": 0.9333333333333333,
+      "mean_margin": 1.3397328666666666,
+      "min_margin": -0.085397,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 14,
+          "accuracy": 0.9333333333333333,
+          "mean_margin": 1.3397328666666666,
+          "min_margin": -0.085397,
+          "max_margin": 2.5894,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K15"
+      },
+      "fact_id": "challenger_disaster:K15",
+      "n_surfaces": 15,
+      "n_correct": 0,
+      "K_f": 0.0,
+      "mean_margin": -1.5507690666666667,
+      "min_margin": -2.60088,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -1.5507690666666667,
+          "min_margin": -2.60088,
+          "max_margin": -0.952582,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K16"
+      },
+      "fact_id": "challenger_disaster:K16",
+      "n_surfaces": 15,
+      "n_correct": 9,
+      "K_f": 0.6,
+      "mean_margin": 0.16318700000000003,
+      "min_margin": -0.287664,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 9,
+          "accuracy": 0.6,
+          "mean_margin": 0.16318700000000003,
+          "min_margin": -0.287664,
+          "max_margin": 0.694459,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K17"
+      },
+      "fact_id": "challenger_disaster:K17",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 4.403449733333333,
+      "min_margin": 2.89224,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 4.403449733333333,
+          "min_margin": 2.89224,
+          "max_margin": 5.488534,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K18"
+      },
+      "fact_id": "challenger_disaster:K18",
+      "n_surfaces": 15,
+      "n_correct": 11,
+      "K_f": 0.7333333333333333,
+      "mean_margin": 0.5188602,
+      "min_margin": -1.317978,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 11,
+          "accuracy": 0.7333333333333333,
+          "mean_margin": 0.5188602,
+          "min_margin": -1.317978,
+          "max_margin": 1.590382,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K19"
+      },
+      "fact_id": "challenger_disaster:K19",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 3.3552706666666667,
+      "min_margin": 0.144116,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 3.3552706666666667,
+          "min_margin": 0.144116,
+          "max_margin": 5.546822,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K2"
+      },
+      "fact_id": "challenger_disaster:K2",
+      "n_surfaces": 15,
+      "n_correct": 0,
+      "K_f": 0.0,
+      "mean_margin": -4.3544076,
+      "min_margin": -5.324967,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -4.3544076,
+          "min_margin": -5.324967,
+          "max_margin": -3.192614,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K20"
+      },
+      "fact_id": "challenger_disaster:K20",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 1.17931,
+      "min_margin": 0.265683,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 1.17931,
+          "min_margin": 0.265683,
+          "max_margin": 2.841143,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K3"
+      },
+      "fact_id": "challenger_disaster:K3",
+      "n_surfaces": 15,
+      "n_correct": 12,
+      "K_f": 0.8,
+      "mean_margin": 0.5560034,
+      "min_margin": -1.092981,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 12,
+          "accuracy": 0.8,
+          "mean_margin": 0.5560034,
+          "min_margin": -1.092981,
+          "max_margin": 1.579764,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K4"
+      },
+      "fact_id": "challenger_disaster:K4",
+      "n_surfaces": 15,
+      "n_correct": 14,
+      "K_f": 0.9333333333333333,
+      "mean_margin": 1.8053147333333333,
+      "min_margin": -0.623317,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 14,
+          "accuracy": 0.9333333333333333,
+          "mean_margin": 1.8053147333333333,
+          "min_margin": -0.623317,
+          "max_margin": 2.83973,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K5"
+      },
+      "fact_id": "challenger_disaster:K5",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 2.7360812,
+      "min_margin": 2.363388,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 2.7360812,
+          "min_margin": 2.363388,
+          "max_margin": 3.056153,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K6"
+      },
+      "fact_id": "challenger_disaster:K6",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 1.3896429333333333,
+      "min_margin": 0.851006,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 1.3896429333333333,
+          "min_margin": 0.851006,
+          "max_margin": 2.031732,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K7"
+      },
+      "fact_id": "challenger_disaster:K7",
+      "n_surfaces": 15,
+      "n_correct": 0,
+      "K_f": 0.0,
+      "mean_margin": -1.5407192,
+      "min_margin": -2.299192,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -1.5407192,
+          "min_margin": -2.299192,
+          "max_margin": -0.971559,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K8"
+      },
+      "fact_id": "challenger_disaster:K8",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 2.9460233333333337,
+      "min_margin": 2.120073,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 2.9460233333333337,
+          "min_margin": 2.120073,
+          "max_margin": 3.529968,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "K9"
+      },
+      "fact_id": "challenger_disaster:K9",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 1.1861547333333333,
+      "min_margin": 0.756378,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 1.1861547333333333,
+          "min_margin": 0.756378,
+          "max_margin": 1.873069,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "M1"
+      },
+      "fact_id": "challenger_disaster:M1",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 1.5222555333333332,
+      "min_margin": 0.992756,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 1.5222555333333332,
+          "min_margin": 0.992756,
+          "max_margin": 2.033151,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "M2"
+      },
+      "fact_id": "challenger_disaster:M2",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 3.021788866666667,
+      "min_margin": 1.617668,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 3.021788866666667,
+          "min_margin": 1.617668,
+          "max_margin": 3.809315,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "M3"
+      },
+      "fact_id": "challenger_disaster:M3",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 1.8357176666666668,
+      "min_margin": 0.273715,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 1.8357176666666668,
+          "min_margin": 0.273715,
+          "max_margin": 2.884122,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "M4"
+      },
+      "fact_id": "challenger_disaster:M4",
+      "n_surfaces": 15,
+      "n_correct": 15,
+      "K_f": 1.0,
+      "mean_margin": 1.5155865333333334,
+      "min_margin": 0.609482,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 1.5155865333333334,
+          "min_margin": 0.609482,
+          "max_margin": 2.341872,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "challenger_disaster",
+        "fact_id": "M5"
+      },
+      "fact_id": "challenger_disaster:M5",
+      "n_surfaces": 15,
+      "n_correct": 4,
+      "K_f": 0.26666666666666666,
+      "mean_margin": -0.7469280666666667,
+      "min_margin": -2.234226,
+      "modalities_scored": [
+        "direct"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 4,
+          "accuracy": 0.26666666666666666,
+          "mean_margin": -0.7469280666666667,
+          "min_margin": -2.234226,
+          "max_margin": 0.438641,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    }
+  ]
+}

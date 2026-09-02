@@ -1,0 +1,192 @@
+# Module A pilot: Challenger disaster topic, Llama-3.2-3B-Instruct.
+#
+# Every source identifier is pinned to an exact revision (P0 definition of done).
+# Thresholds below are PREREGISTERED: do not weaken them after inspecting results.
+# Changing a *_version string creates a new analysis lineage rather than overwriting one.
+
+experiment:
+  name: module_a_a1_challenger
+  seed: 42
+  output_dir: outputs/module_a/a1_challenger
+  artifact_dir: artifacts
+
+model:
+  name: meta-llama/Llama-3.2-3B-Instruct
+  revision: 0cb88a4f764b7a12671c53f0838cd831a0843b95
+  tokenizer_name: null
+  tokenizer_revision: null
+  # float32 for the causal backend: patch effects can be small and bfloat16 carries only
+  # ~3 decimal digits. bfloat16 is a registered sensitivity check, never the primary.
+  dtype: float32
+  device: cuda
+  # eager attention keeps hook semantics stable and is required for later Q/K/V/pattern access.
+  attn_implementation: eager
+  trust_remote_code: false
+
+prompt:
+  template: chat
+  template_version: llama3_chat_suite_v1
+  # Verbatim from the upstream SUITE model config, so ARCUS prompts this model the way the
+  # benchmark authors do.
+  system_prompt: >-
+    You are a helpful assistant. Respond with only the final answer to the question. Your
+    output must contain only the answer itself.
+  add_generation_prompt: true
+  # The chat template already emits <|begin_of_text|>; adding specials again would double the BOS.
+  add_special_tokens: false
+
+dataset:
+  project: forget-narrowly-retain-broadly
+  topic: challenger_disaster
+  dataset_id: apeleg/SUITE
+  dataset_revision: 3f5f6b0897dac10baacf1aa8b35319a02abccd23
+  rephrasings_dataset_id: apeleg/SUITE-rephrasings
+  rephrasings_revision: 81a52d60ec7d3231169b16a54ad1b2a58221ca6e
+  pilot_fact_limit: 10
+  minimum_base_accuracy: 0.80
+  minimum_modalities_known: 2
+  # Reverse is excluded automatically: its answers collapse to one entity per topic, so
+  # no same-topic distractor pool can separate facts. That is a property of the data,
+  # not a weakened threshold. Accuracy and coverage thresholds below are unchanged.
+  # A1 scores DISCOVERY surfaces only, to learn which of them the model answers
+  # correctly so they can anchor a clean run. Fact ELIGIBILITY is not recomputed here:
+  # it stays exactly as frozen in artifacts/freeze/p0_p5_freeze.json, which was
+  # determined on validation+stress. Held-out surfaces are untouched until A1 exact
+  # validation.
+  known_fact_splits:
+    - discovery
+  known_fact_modalities: null
+  topic_sweep_on_shortfall: true
+  minimum_pilot_facts: 5
+
+scoring:
+  answer_metric: sequence_logprob_margin
+  answer_score: mean_logprob
+  scoring_version: answer_score_mean_logprob_v1
+  margin_version: factual_margin_v1
+  correctness_version: correct_over_distractors_v1
+  distractor_count: 4
+  distractor_policy: same_topic_same_modality_v1
+  min_abs_delta: 0.5
+  batch_size: 8
+
+corruption:
+  strategy: matched_fact
+  corruption_policy_version: pair_families_v1
+  families:
+    - same_topic_fact_swap
+    - semantic_neighbor
+    - same_syntax
+    - same_lexical_different_meaning
+    - cross_topic_matched
+    - random_token_control
+  preserve_modality: true
+  preserve_topic_when_possible: true
+  preserve_surface_kind: true
+  forbid_same_fact_id: true
+  max_pairs_per_fact_family: 4
+  # Within-fact route similarity needs several formulations per fact.
+  clean_surfaces_per_fact: 6
+  pair_modality: direct
+  # Clean anchors come from the discovery split, so candidate circuits are never
+  # selected using a held-out surface. This also restores the exactly
+  # augmentation-matched same-syntax control, whose twins are keyed by Claude
+  # augmentation ids that only discovery surfaces carry.
+  pair_clean_split: discovery
+  # Every eligible fact has at least 6 discovery surfaces with an exactly matched
+  # syntax twin, so preferring them makes the sharpest nuisance control exact for all
+  # of them. The criterion is control availability; it inspects no model output.
+  prefer_exact_syntax_twin: true
+
+patching:
+  hook_map_version: llama_hook_map_v1
+  components:
+    - resid_pre
+    - attn_out
+    - mlp_out
+  token_policies:
+    - last_prompt_token
+  scan_components:
+    - resid_pre
+  scan_token_policy: final_k_prompt_tokens
+  scan_final_k: 8
+  layer_stride: 1
+  directions:
+    - clean_to_corrupt
+    - corrupt_to_clean
+  max_pairs_scanned: 4
+  parity_tolerance: 0.0
+  self_patch_tolerance: 0.0
+
+route_discovery:
+  method: eap_ig
+  graph_granularity: head_mlp_residual
+  top_k_edges: 200
+  integrated_gradient_steps: 20
+  discovery_split: discovery
+  evaluation_split: validation
+
+circuit_validation:
+  minimality_target_fraction: 0.80
+  necessity_target: 0.50
+  sufficiency_target: 0.50
+  selectivity_epsilon: 1.0e-6
+  exact_intervention_required: true
+
+representation:
+  locations:
+    - resid_pre
+    - resid_post
+    - attn_out
+    - mlp_out
+  token_policy: last_prompt_token
+  subspace_method: cross_formulation_svd
+  max_rank: 16
+  heldout_probe_required: true
+  causal_projection_test: true
+  causal_patch_test: true
+
+sink:
+  enabled_after_route_validation_only: true
+  anchor_candidates:
+    - bos
+    - first_position
+  min_received_attention: 0.20
+  require_value_contribution_measurement: true
+  map_all_heads: true
+
+statistics:
+  bootstrap_samples: 1000
+  permutation_samples: 1000
+  report_per_fact: true
+  aggregate_by_topic: true
+
+a1:
+  # Pilot facts: top 4 by A0 reliability (all K_f = 1.00). Preregistered, A0-only, and
+  # blind to both the P5 restoration map and any sink information.
+  pilot_facts:
+    - M2
+    - K10
+    - K8
+    - K5
+  graph_granularity: G0
+  # Primary family for attribution; the others are robustness checks (Gate G4E).
+  primary_family: same_topic_fact_swap
+  robustness_families:
+    - semantic_neighbor
+    - same_syntax
+  attribution_method: eap_ig_node_v1
+  integration_steps: 16
+  ig_step_sensitivity:
+    - 8
+    - 16
+    - 32
+    - 64
+  # Full end-aligned common suffix. The exact-length subset is a registered sensitivity
+  # check, not the primary.
+  alignment_policy: end_aligned_common_suffix
+  circuit_extraction:
+    primary_rule: attribution_mass_prefix
+    mass_fraction: 0.85
+    top_k: 30
+    stability_fraction: 0.667

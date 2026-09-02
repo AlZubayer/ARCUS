@@ -1,0 +1,10 @@
+{
+  "challenger_disaster": {
+    "n_surfaces_scored": 375,
+    "n_facts_screened": 25,
+    "n_eligible": 0,
+    "n_passing_accuracy_only": 17,
+    "eligible_fact_ids": [],
+    "n_refused_cells": 25
+  }
+}
