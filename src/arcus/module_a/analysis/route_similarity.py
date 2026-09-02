@@ -1,9 +1,22 @@
 """Within-fact vs matched-control route similarity, raw and backbone-residual.
 
-The question this answers is not "are two attribution vectors similar" -- almost any two
-factual questions will share a large generic retrieval component. It is whether vectors from
-the *same fact* are more similar to each other than to matched controls, and whether that
-survives removing the generic component.
+The question is not "are two attribution vectors similar" -- almost any two factual
+questions share a large generic retrieval component. It is whether vectors from the *same
+fact* are more similar to each other than to matched controls, and whether that survives
+removing the generic component.
+
+Symmetry rule
+-------------
+Every cosine compares two vectors that have had the **same** background subtracted.
+Residualising only one side would shrink the similarity mechanically, because the shared
+backbone is exactly the part being removed, and would inflate every distinctness figure.
+
+The background is always estimated from facts excluding *both* vectors in the comparison:
+
+* within fact f            -> background from pilot facts other than f
+* fact f vs control item c -> background from pilot facts other than f (c is never a
+                              pilot fact, so nothing of c is in it)
+* fact f vs fact g         -> background from pilot facts other than f and g
 
 Control classes are reported separately throughout. Pooling them would let a strong
 same-topic effect hide the absence of a same-syntax effect.
@@ -14,21 +27,18 @@ from __future__ import annotations
 import statistics
 from collections import defaultdict
 from dataclasses import dataclass
-from typing import Any, Sequence
+from typing import Any, Callable, Sequence
 
 import numpy as np
 
-SIMILARITY_VERSION = "route_similarity_cosine_v1"
-BACKBONE_VERSION = "leave_one_fact_out_mean_v1"
+SIMILARITY_VERSION = "route_similarity_cosine_v2"
+BACKBONE_VERSION = "leave_facts_out_mean_v1"
 
 
-def cosine_matrix(matrix: np.ndarray) -> np.ndarray:
-    """All-pairs cosine similarity of the signed attribution vectors."""
-    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
-    safe = np.where(norms < 1e-12, 1.0, norms)
-    unit = matrix / safe
-    sim = unit @ unit.T
-    return np.clip(sim, -1.0, 1.0)
+class Representation:
+    RAW = "raw_attribution"
+    SUBTRACT = "residual_backbone_subtracted"
+    PROJECT = "residual_backbone_projected_out"
 
 
 @dataclass
@@ -40,13 +50,6 @@ class VectorSet:
 
     def __len__(self) -> int:
         return len(self.rows)
-
-    def select(self, **criteria: Any) -> list[int]:
-        out = []
-        for i, row in enumerate(self.rows):
-            if all(row.get(k) == v for k, v in criteria.items()):
-                out.append(i)
-        return out
 
     def fact_indices(self, item_class: str) -> dict[str, list[int]]:
         groups: dict[str, list[int]] = defaultdict(list)
@@ -62,39 +65,16 @@ class VectorSet:
         return dict(groups)
 
 
-def leave_one_fact_out_backbone(
-    vectors: VectorSet, fact_groups: dict[str, list[int]]
-) -> dict[str, np.ndarray]:
-    """Generic factual-retrieval component estimated from OTHER facts only.
-
-    Estimating the backbone from the target fact itself would subtract part of the very
-    signal being measured, so each fact gets a background built from every other fact's
-    surfaces and never from its own.
-    """
-    backbones: dict[str, np.ndarray] = {}
-    for fact in fact_groups:
-        other = [i for f, idx in fact_groups.items() if f != fact for i in idx]
-        if not other:
-            backbones[fact] = np.zeros(vectors.matrix.shape[1])
-            continue
-        backbones[fact] = vectors.matrix[other].mean(axis=0)
-    return backbones
-
-
-def global_backbone(vectors: VectorSet, indices: Sequence[int]) -> np.ndarray:
-    return vectors.matrix[list(indices)].mean(axis=0)
-
-
 def subtract_backbone(matrix: np.ndarray, backbone: np.ndarray) -> np.ndarray:
-    """Residual attribution: a_tilde = a - a_bar. The form the brief specifies."""
+    """a_tilde = a - a_bar. The form the brief specifies; the primary representation."""
     return matrix - backbone[None, :]
 
 
 def project_out_backbone(matrix: np.ndarray, backbone: np.ndarray) -> np.ndarray:
     """Secondary variant: remove the backbone DIRECTION rather than its mean vector.
 
-    Cosine similarity is scale-invariant, so if every surface loads on the same backbone
-    with a different magnitude, plain subtraction leaves a residual still dominated by it.
+    Cosine is scale-invariant, so if every surface loads on the same backbone with a
+    different magnitude, plain subtraction leaves a residual still dominated by it.
     Projection removes the direction outright. Reported alongside the primary subtraction,
     never instead of it.
     """
@@ -105,14 +85,44 @@ def project_out_backbone(matrix: np.ndarray, backbone: np.ndarray) -> np.ndarray
     return matrix - np.outer(matrix @ unit, unit)
 
 
-def _pair_values(sim: np.ndarray, rows_a: Sequence[int], rows_b: Sequence[int], *, same: bool):
-    if same:
-        return [
-            float(sim[i, j])
-            for n, i in enumerate(rows_a)
-            for j in rows_a[n + 1 :]
-        ]
-    return [float(sim[i, j]) for i in rows_a for j in rows_b]
+TRANSFORMS: dict[str, Callable[[np.ndarray, np.ndarray], np.ndarray]] = {
+    Representation.RAW: lambda m, b: m,
+    Representation.SUBTRACT: subtract_backbone,
+    Representation.PROJECT: project_out_backbone,
+}
+
+
+class BackboneEstimator:
+    """Generic factual-retrieval component, estimated from facts only.
+
+    The pool is the target facts. A background is never estimated from a fact that appears
+    on either side of the comparison it is used for.
+    """
+
+    def __init__(self, matrix: np.ndarray, fact_groups: dict[str, list[int]]) -> None:
+        self.matrix = matrix
+        self.fact_groups = fact_groups
+        self.dim = matrix.shape[1]
+
+    def excluding(self, facts: Sequence[str]) -> np.ndarray:
+        exclude = set(facts)
+        rows = [i for f, idx in self.fact_groups.items() if f not in exclude for i in idx]
+        if not rows:
+            return np.zeros(self.dim)
+        return self.matrix[rows].mean(axis=0)
+
+    def pooled(self) -> np.ndarray:
+        rows = [i for idx in self.fact_groups.values() for i in idx]
+        return self.matrix[rows].mean(axis=0) if rows else np.zeros(self.dim)
+
+
+def _cos(a: np.ndarray, b: np.ndarray) -> np.ndarray:
+    """Cosine between every row of a and every row of b."""
+    na = np.linalg.norm(a, axis=1, keepdims=True)
+    nb = np.linalg.norm(b, axis=1, keepdims=True)
+    ua = a / np.where(na < 1e-12, 1.0, na)
+    ub = b / np.where(nb < 1e-12, 1.0, nb)
+    return np.clip(ua @ ub.T, -1.0, 1.0)
 
 
 def _stats(values: Sequence[float]) -> dict[str, Any]:
@@ -146,7 +156,11 @@ def bootstrap_ci(
 def permutation_p_value(
     within: Sequence[float], between: Sequence[float], *, seed: int, n_samples: int = 5000
 ) -> float | None:
-    """One-sided: how often does a label shuffle produce a gap this large?"""
+    """One-sided: how often does a label shuffle produce a gap this large?
+
+    Note the unit is the surface *pair*, not the fact, so this is a within-corpus shuffle
+    test and not a population claim about facts. The per-fact breakdown carries that.
+    """
     if not within or not between:
         return None
     rng = np.random.default_rng(seed)
@@ -168,51 +182,62 @@ def analyse(
     control_classes: Sequence[str],
     family: str | None,
     seed: int,
-    label: str,
-    matrix: np.ndarray | None = None,
+    representation: str,
 ) -> dict[str, Any]:
-    """Within-fact vs each control class, for one representation of the vectors."""
-    work = vectors.matrix if matrix is None else matrix
-    sim = cosine_matrix(work)
+    """Within-fact vs each control class, under one representation.
 
-    targets = {
+    Both sides of every cosine get the same background subtracted, estimated from facts
+    appearing on neither side.
+    """
+    transform = TRANSFORMS[representation]
+    matrix = vectors.matrix
+
+    fact_groups = {
         fact: [i for i in idx if family is None or vectors.rows[i].get("family") == family]
         for fact, idx in vectors.fact_indices(target_class).items()
     }
-    targets = {f: idx for f, idx in targets.items() if len(idx) >= 2}
-
+    fact_groups = {f: idx for f, idx in fact_groups.items() if len(idx) >= 2}
+    estimator = BackboneEstimator(matrix, fact_groups)
     classes = vectors.class_indices()
 
-    # Same-fact similarity, per fact and pooled over facts.
-    within_by_fact: dict[str, list[float]] = {
-        fact: _pair_values(sim, idx, idx, same=True) for fact, idx in targets.items()
-    }
+    within_by_fact: dict[str, list[float]] = {}
+    for fact, idx in fact_groups.items():
+        block = transform(matrix[idx], estimator.excluding([fact]))
+        sim = _cos(block, block)
+        within_by_fact[fact] = [
+            float(sim[a, b]) for a in range(len(idx)) for b in range(a + 1, len(idx))
+        ]
     within_all = [v for values in within_by_fact.values() for v in values]
 
-    # Between-fact similarity, computed SEPARATELY per control class.
     between: dict[str, dict[str, Any]] = {}
     for control in control_classes:
+        values: list[float] = []
+
         if control == "same_topic_different_fact":
-            # Other pilot facts count as same-topic controls for each other too, which is
-            # the tightest available version of this comparison.
-            values: list[float] = []
-            facts = sorted(targets)
+            # Pilot facts are same-topic controls for each other, the tightest form of this
+            # comparison. Their shared background excludes both of them.
+            facts = sorted(fact_groups)
             for n, fa in enumerate(facts):
                 for fb in facts[n + 1 :]:
-                    values += _pair_values(sim, targets[fa], targets[fb], same=False)
-            values += [
-                float(sim[i, j])
-                for fact_idx in targets.values()
-                for i in fact_idx
-                for j in classes.get(control, [])
-            ]
-        else:
-            values = [
-                float(sim[i, j])
-                for fact_idx in targets.values()
-                for i in fact_idx
-                for j in classes.get(control, [])
-            ]
+                    backbone = estimator.excluding([fa, fb])
+                    sim = _cos(
+                        transform(matrix[fact_groups[fa]], backbone),
+                        transform(matrix[fact_groups[fb]], backbone),
+                    )
+                    values += [float(x) for x in sim.ravel()]
+
+        control_rows = classes.get(control, [])
+        if control_rows:
+            for fact, idx in fact_groups.items():
+                # The control is never a pilot fact, so excluding the target alone already
+                # excludes both sides of the comparison.
+                backbone = estimator.excluding([fact])
+                sim = _cos(
+                    transform(matrix[idx], backbone),
+                    transform(matrix[control_rows], backbone),
+                )
+                values += [float(x) for x in sim.ravel()]
+
         gap = (
             round(statistics.fmean(within_all) - statistics.fmean(values), 6)
             if values and within_all
@@ -229,10 +254,15 @@ def analyse(
 
     return {
         "similarity_version": SIMILARITY_VERSION,
-        "representation": label,
+        "representation": representation,
+        "backbone_version": BACKBONE_VERSION if representation != Representation.RAW else None,
         "family": family,
-        "n_facts": len(targets),
-        "n_target_vectors": sum(len(v) for v in targets.values()),
+        "n_facts": len(fact_groups),
+        "n_target_vectors": sum(len(v) for v in fact_groups.values()),
+        "symmetry": (
+            "Both sides of every cosine had the same background subtracted, estimated from "
+            "facts appearing on neither side."
+        ),
         "within_fact": {
             "pooled": _stats(within_all),
             "bootstrap_ci": bootstrap_ci(within_all, seed=seed),
@@ -244,18 +274,75 @@ def analyse(
         "controls_never_pooled": True,
         "note": (
             "Cosine of signed 700-dimensional attribution vectors. Distinctness D is "
-            "within-fact mean minus that control class's mean; it is descriptive, and the "
-            "permutation p-value is one-sided for within > between."
+            "within-fact mean minus that control class's mean; it is descriptive. The "
+            "permutation p-value shuffles surface-pair labels, so it is a within-corpus "
+            "test, not a population claim about facts."
         ),
     }
 
 
+def backbone_report(
+    vectors: VectorSet,
+    *,
+    target_class: str,
+    family: str | None,
+    object_ids: Sequence[str],
+) -> dict[str, Any]:
+    """How large is the generic component, and what is in it?"""
+    fact_groups = {
+        fact: [i for i in idx if family is None or vectors.rows[i].get("family") == family]
+        for fact, idx in vectors.fact_indices(target_class).items()
+    }
+    fact_groups = {f: idx for f, idx in fact_groups.items() if len(idx) >= 2}
+    estimator = BackboneEstimator(vectors.matrix, fact_groups)
+    pooled = estimator.pooled()
+
+    cosines = []
+    for idx in fact_groups.values():
+        for i in idx:
+            v = vectors.matrix[i]
+            cosines.append(
+                float(v @ pooled / max(np.linalg.norm(v) * np.linalg.norm(pooled), 1e-12))
+            )
+
+    order = np.argsort(-np.abs(pooled))[:20]
+    return {
+        "backbone_version": BACKBONE_VERSION,
+        "estimator": "mean attribution vector over surfaces of the other target facts",
+        "why_leave_out": (
+            "Estimating the background from a fact on either side of a comparison would "
+            "subtract part of the signal being measured."
+        ),
+        "n_facts": len(fact_groups),
+        "family": family,
+        "pooled_backbone_l2": round(float(np.linalg.norm(pooled)), 6),
+        "cosine_target_vs_pooled_backbone": _stats(cosines),
+        "interpretation": (
+            "Cosine of each target vector with the pooled backbone. High values mean the raw "
+            "vectors are dominated by a component shared across facts, which is why the "
+            "residual comparison matters more than the raw one."
+        ),
+        "top_backbone_objects": [
+            {"object_id": object_ids[int(j)], "score": round(float(pooled[int(j)]), 6)}
+            for j in order
+        ],
+        "per_fact_backbone_l2": {
+            fact: round(float(np.linalg.norm(estimator.excluding([fact]))), 6)
+            for fact in sorted(fact_groups)
+        },
+    }
+
+
 def top_component_stability(
-    vectors: VectorSet, *, target_class: str, family: str | None, top_k: int = 20
+    vectors: VectorSet,
+    *,
+    target_class: str,
+    family: str | None,
+    object_ids: Sequence[str],
+    top_k: int = 20,
 ) -> dict[str, Any]:
     """How often does the same object land in a fact's top-k across its formulations?"""
     out: dict[str, Any] = {}
-    object_ids = vectors.rows[0]["_object_ids"] if vectors.rows else []
     for fact, idx in sorted(vectors.fact_indices(target_class).items()):
         idx = [i for i in idx if family is None or vectors.rows[i].get("family") == family]
         if len(idx) < 2:
@@ -273,9 +360,7 @@ def top_component_stability(
             "n_distinct_objects_in_any_topk": len(counts),
             "n_in_every_surface": len(shared_all),
             "n_in_two_thirds": len(shared_two_thirds),
-            "jaccard_expected_if_random": round(top_k / max(1, len(object_ids) or 700), 6),
-            "objects_in_every_surface": [
-                object_ids[j] if object_ids else str(j) for j in sorted(shared_all)
-            ][:30],
+            "expected_overlap_if_random": round(top_k / max(1, len(object_ids)), 6),
+            "objects_in_every_surface": [object_ids[j] for j in sorted(shared_all)][:30],
         }
     return out

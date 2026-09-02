@@ -121,6 +121,20 @@ def build_parser() -> argparse.ArgumentParser:
     at.add_argument("--cross-topic-distractors", default=None, help="Comma-separated topics")
     at.add_argument("--cross-topic-run", default=None, help="A0 run holding those pools")
 
+    sm = sub.add_parser("a1-similarity", help="Within-fact vs control route similarity")
+    sm.add_argument("--config", required=True)
+    sm.add_argument("--run", required=True)
+    sm.add_argument("--name", default="vectors")
+
+    g4 = sub.add_parser("a1-g4", help="Gate G4: validate attribution against exact effects")
+    g4.add_argument("--config", required=True)
+    g4.add_argument("--run", required=True)
+    g4.add_argument("--distractors-run", required=True)
+    g4.add_argument("--name", default="vectors")
+    g4.add_argument("--n-pairs", type=int, default=3)
+    g4.add_argument("--n-top", type=int, default=12)
+    g4.add_argument("--n-random", type=int, default=12)
+
     run = sub.add_parser("run", help="Run a pipeline stage")
     run.add_argument("config")
     run.add_argument("--stage", choices=[s.value for s in Stage], required=True)
@@ -849,6 +863,96 @@ def cmd_a1_attribute(args: argparse.Namespace) -> int:
     return 0
 
 
+def _load_vectors(config, run_id: str, name: str):
+    """Load the attribution matrix and its index, checking they line up."""
+    import numpy as np
+
+    from .analysis.route_similarity import VectorSet
+
+    base = Path(config.experiment.artifact_dir) / run_id / "a1" / "attribution_full"
+    payload = np.load(base / f"{name}.npz", allow_pickle=False)
+    matrix = payload["scores"].astype(np.float64)
+    object_ids = [str(x) for x in payload["object_ids"]]
+    rows = read_jsonl(base / f"{name}_index.jsonl")
+    if len(rows) != matrix.shape[0]:
+        raise SystemExit(
+            f"index has {len(rows)} rows but matrix has {matrix.shape[0]}; refusing to guess"
+        )
+    for row in rows:
+        row["_object_ids"] = object_ids
+    return VectorSet(matrix=matrix, rows=rows), object_ids
+
+
+def cmd_a1_similarity(args: argparse.Namespace) -> int:
+    from .analysis.route_similarity import (
+        Representation,
+        analyse,
+        backbone_report,
+        top_component_stability,
+    )
+    from .discovery.controls import ControlClass
+    from .stages.a1_discovery import TARGET_CLASS
+
+    config = load_config(args.config)
+    vectors, object_ids = _load_vectors(config, args.run, args.name)
+    seed = config.experiment.seed
+    family = config.a1.primary_family
+    controls = list(ControlClass.ALL)
+
+    blocks = {
+        rep: analyse(
+            vectors, target_class=TARGET_CLASS, control_classes=controls,
+            family=family, seed=seed, representation=rep,
+        )
+        for rep in (Representation.RAW, Representation.SUBTRACT, Representation.PROJECT)
+    }
+    backbone = backbone_report(
+        vectors, target_class=TARGET_CLASS, family=family, object_ids=object_ids
+    )
+
+    out = run_dir(config.experiment.artifact_dir, args.run) / "a1"
+    write_jsonl(out / "route_similarity_raw.jsonl", [blocks[Representation.RAW]])
+    write_jsonl(
+        out / "route_similarity_residual.jsonl",
+        [blocks[Representation.SUBTRACT], blocks[Representation.PROJECT]],
+    )
+    write_json(out / "generic_fact_backbone.json", backbone)
+    write_json(
+        out / "top_component_stability.json",
+        top_component_stability(
+            vectors, target_class=TARGET_CLASS, family=family,
+            object_ids=object_ids, top_k=20,
+        ),
+    )
+
+    def show(block, title):
+        w = block["within_fact"]["pooled"]
+        ci = block["within_fact"]["bootstrap_ci"]
+        print(f"  {title}")
+        print(f"    within-fact                mean {w['mean']:+.4f}  "
+              f"CI [{ci['lo']:+.4f}, {ci['hi']:+.4f}]  n={w['n']}")
+        for control, stats in block["between_by_control_class"].items():
+            st = stats["similarity"]
+            if st["n"] == 0:
+                print(f"    {control:26s} n=0")
+                continue
+            print(f"    {control:26s} mean {st['mean']:+.4f}  "
+                  f"D={stats['distinctness_D']:+.4f}  "
+                  f"p={stats['permutation_p_within_gt_between']}  n={st['n']}")
+
+    raw = blocks[Representation.RAW]
+    print(f"[a1-similarity] {raw['n_facts']} facts, {raw['n_target_vectors']} target vectors, "
+          f"family={family}")
+    print(f"  {raw['symmetry']}")
+    show(raw, "RAW attribution")
+    show(blocks[Representation.SUBTRACT], "RESIDUAL (backbone subtracted, primary)")
+    show(blocks[Representation.PROJECT], "RESIDUAL (backbone direction projected out, secondary)")
+    c = backbone["cosine_target_vs_pooled_backbone"]
+    print(f"  cosine(target, pooled backbone): mean {c['mean']:+.4f} "
+          f"[{c['min']:+.4f}, {c['max']:+.4f}]")
+    return 0
+
+
 _BACKEND_CACHE: dict = {}
 
 
@@ -1094,6 +1198,9 @@ def main() -> None:
 
     if args.command == "a1-attribute":
         raise SystemExit(cmd_a1_attribute(args))
+
+    if args.command == "a1-similarity":
+        raise SystemExit(cmd_a1_similarity(args))
 
     if args.command == "run-a0":
         raise SystemExit(cmd_run_a0(args))

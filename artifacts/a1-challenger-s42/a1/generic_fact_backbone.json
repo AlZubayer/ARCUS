@@ -1,0 +1,105 @@
+{
+  "backbone_version": "leave_facts_out_mean_v1",
+  "estimator": "mean attribution vector over surfaces of the other target facts",
+  "why_leave_out": "Estimating the background from a fact on either side of a comparison would subtract part of the signal being measured.",
+  "n_facts": 4,
+  "family": "same_topic_fact_swap",
+  "pooled_backbone_l2": 3.447859,
+  "cosine_target_vs_pooled_backbone": {
+    "n": 24,
+    "mean": 0.645244,
+    "median": 0.672792,
+    "sd": 0.190408,
+    "min": 0.147815,
+    "max": 0.867594
+  },
+  "interpretation": "Cosine of each target vector with the pooled backbone. High values mean the raw vectors are dominated by a component shared across facts, which is why the residual comparison matters more than the raw one.",
+  "top_backbone_objects": [
+    {
+      "object_id": "L27.mlp_out",
+      "score": 2.776176
+    },
+    {
+      "object_id": "L25.mlp_out",
+      "score": 0.841138
+    },
+    {
+      "object_id": "L26.mlp_out",
+      "score": 0.713148
+    },
+    {
+      "object_id": "L21.mlp_out",
+      "score": 0.670674
+    },
+    {
+      "object_id": "L26.H18.head_out",
+      "score": -0.611258
+    },
+    {
+      "object_id": "L27.H2.head_out",
+      "score": 0.564009
+    },
+    {
+      "object_id": "L24.mlp_out",
+      "score": 0.556228
+    },
+    {
+      "object_id": "L26.H20.head_out",
+      "score": 0.486765
+    },
+    {
+      "object_id": "L25.H8.head_out",
+      "score": 0.425228
+    },
+    {
+      "object_id": "L18.mlp_out",
+      "score": 0.409813
+    },
+    {
+      "object_id": "L17.mlp_out",
+      "score": 0.376362
+    },
+    {
+      "object_id": "L20.mlp_out",
+      "score": 0.371507
+    },
+    {
+      "object_id": "L14.H16.head_out",
+      "score": 0.325505
+    },
+    {
+      "object_id": "L26.H19.head_out",
+      "score": 0.266394
+    },
+    {
+      "object_id": "L14.mlp_out",
+      "score": -0.207002
+    },
+    {
+      "object_id": "L25.H6.head_out",
+      "score": 0.184368
+    },
+    {
+      "object_id": "L25.H7.head_out",
+      "score": -0.173899
+    },
+    {
+      "object_id": "L22.H15.head_out",
+      "score": -0.160939
+    },
+    {
+      "object_id": "L21.H12.head_out",
+      "score": 0.145169
+    },
+    {
+      "object_id": "L27.H1.head_out",
+      "score": 0.145045
+    }
+  ],
+  "per_fact_backbone_l2": {
+    "challenger_disaster:K10": 3.716912,
+    "challenger_disaster:K5": 4.033753,
+    "challenger_disaster:K8": 3.653374,
+    "challenger_disaster:M2": 2.913962
+  }
+}
