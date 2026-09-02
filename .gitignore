@@ -10,3 +10,13 @@ wandb/
 *.pth
 *.safetensors
 .DS_Store
+
+# Sink reference clones (A4/A5 only). Provenance SHAs live in
+# artifacts/reference/sink_sources_manifest.json; the code itself is never vendored.
+Sink-KD/
+Sink-Repro/
+
+# Large artifact tensors are regenerated from manifests, not version-controlled.
+artifacts/**/*.npz
+artifacts/**/*.npy
+artifacts/**/activations/

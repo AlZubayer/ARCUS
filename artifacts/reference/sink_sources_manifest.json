@@ -1,0 +1,51 @@
+{
+  "schema_version": "sink_sources_manifest_v1",
+  "recorded_at_utc": "2026-09-02T15:55:49Z",
+  "purpose": "Provenance for the two attention-sink reference codebases supplied by the research team. They are REFERENCE IMPLEMENTATIONS for A4/A5 only, never dependencies and never vendored. Any reused implementation must carry a comment naming repo, branch, commit SHA, and the original file/function.",
+  "scientific_firewall": {
+    "statement": "These repositories MUST NOT be used to select heads, layers, routes, or representations during A1-A3. Fact-route discovery stays blind to sink information.",
+    "sink_information_allowed_in_stages": [
+      "a4",
+      "a5"
+    ],
+    "sink_information_forbidden_in_stages": [
+      "a0",
+      "a1",
+      "a2",
+      "a3"
+    ],
+    "enforced_by": "freeze/fact_discovery_freeze.json must exist and hash-match before a4 may run",
+    "read_during_milestone_1": false
+  },
+  "sources": [
+    {
+      "name": "A Sink Without the Plumbing",
+      "local_clone": "Sink-KD",
+      "repository": "https://github.com/AlZubayer/MechanisticAccountofSinks.git",
+      "branch": "sink-inheritance-foundation",
+      "commit_sha": "db114c9c5eb6ffc5de13e444c783408ea7401c62",
+      "role": "sink inheritance; sink pattern vs parameter route vs causal function controls",
+      "arcus_stages": [
+        "a4",
+        "a5"
+      ]
+    },
+    {
+      "name": "Same Sink, Different Plumbing (reproduction)",
+      "local_clone": "Sink-Repro",
+      "repository": "https://github.com/AlZubayer/MechanisticAccountofSinks.git",
+      "branch": "main",
+      "commit_sha": "9ab67e914464b13863b67527d8ea14068ee9ff10",
+      "role": "GPT-2 anchor/route decomposition and reproduced intervention battery",
+      "arcus_stages": [
+        "a4"
+      ]
+    }
+  ],
+  "portability_warnings": [
+    "GPT-2 query-bias (R_A = b_Q . k_0) has no Llama/RoPE analogue; do not rename it.",
+    "GPT-2 learned absolute positional-embedding interventions do not transfer to RoPE models.",
+    "Massive-coordinate identities are checkpoint- and run-specific.",
+    "Position 0 must not be assumed to be a literal BOS token without checking the tokenizer."
+  ]
+}
