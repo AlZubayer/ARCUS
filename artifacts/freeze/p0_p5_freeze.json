@@ -1,0 +1,745 @@
+{
+  "freeze_version": "p0_p5_freeze_v1",
+  "created_at": "2026-09-02T17:15:00Z",
+  "scope": "P0-P5: dataset audit, deterministic backend, parity, Known-Fact Core, pairs, exact patching",
+  "purpose": "Pin every assumption A1 inherits so an A1 result can be attributed to A1's own choices rather than to a shifted backend, threshold or fact list.",
+  "amendment_policy": "This file is never edited in place. A change requires an entry in 'amendments' with a reason, the fields affected, and the commit that made it.",
+  "amendments": [],
+  "code": {
+    "commit_sha": "170af0028acae35a27047a28430677efb6f1e225",
+    "branch": "main",
+    "dirty": true,
+    "dirty_paths": [
+      "artifacts/freeze/"
+    ]
+  },
+  "software": {
+    "python": "3.12.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.13.0+cu130",
+    "transformers": "4.57.6",
+    "datasets": "5.0.0",
+    "numpy": "2.5.1",
+    "pydantic": "2.13.5",
+    "huggingface_hub": "0.36.2"
+  },
+  "config": {
+    "path": "configs/module_a/pilot_challenger.yaml",
+    "sha256": "bddaddb3a4e026aa8ea8bbb5f5feb27b83ab66d32d1f13dd6b9df17ce448d14f",
+    "config_version": "module_a_config_v2",
+    "seed": 42
+  },
+  "seeds": {
+    "experiment_seed": 42,
+    "distractor_draw": "seeded per cell by (seed, fact_key, modality)",
+    "random_token_control": "seeded per surface by (seed, surface_form_id)"
+  },
+  "dataset": {
+    "id": "apeleg/SUITE",
+    "revision": "3f5f6b0897dac10baacf1aa8b35319a02abccd23",
+    "rephrasings_id": "apeleg/SUITE-rephrasings",
+    "rephrasings_revision": "81a52d60ec7d3231169b16a54ad1b2a58221ca6e",
+    "topic": "challenger_disaster",
+    "adapter_version": "suite_adapter_v2",
+    "split_policy_version": "split_policy_provenance_v1",
+    "gate_g0_passed": true
+  },
+  "model": {
+    "id": "meta-llama/Llama-3.2-3B-Instruct",
+    "revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "tokenizer_id": "meta-llama/Llama-3.2-3B-Instruct",
+    "tokenizer_revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "dtype": "float32",
+    "device": "cuda",
+    "attn_implementation": "eager",
+    "n_layers": 28,
+    "n_heads": 24,
+    "d_model": 3072,
+    "hook_map_version": "llama_hook_map_v1"
+  },
+  "prompt_policy": {
+    "template": "chat",
+    "template_version": "llama3_chat_suite_v1",
+    "add_generation_prompt": true,
+    "add_special_tokens": false,
+    "system_prompt": "You are a helpful assistant. Respond with only the final answer to the question. Your output must contain only the answer itself.",
+    "chat_template_sha256": "5816fce10444e03c2e9ee1ef8a4a1ea61ae7e69e438613f3b17b69d0426223a4",
+    "bos_inserted_by_template": true
+  },
+  "scoring_policy": {
+    "answer_metric": "sequence_logprob_margin",
+    "answer_score": "mean_logprob",
+    "scoring_version": "answer_score_mean_logprob_v1",
+    "margin_version": "factual_margin_v1",
+    "correctness_version": "correct_over_distractors_v1",
+    "distractor_policy": "same_topic_same_modality_v1",
+    "distractor_count": 4,
+    "min_abs_delta": 0.5
+  },
+  "corruption_policy": {
+    "strategy": "matched_fact",
+    "corruption_policy_version": "pair_families_v1",
+    "families": [
+      "same_topic_fact_swap",
+      "semantic_neighbor",
+      "same_syntax",
+      "same_lexical_different_meaning",
+      "cross_topic_matched",
+      "random_token_control"
+    ],
+    "preserve_modality": true,
+    "preserve_topic_when_possible": true,
+    "preserve_surface_kind": true,
+    "forbid_same_fact_id": true,
+    "clean_surfaces_per_fact": 2,
+    "pair_modality": "direct",
+    "pair_clean_split": "validation"
+  },
+  "pair_thresholds": {
+    "min_abs_delta": 0.5,
+    "require_clean_correct": true,
+    "max_pairs_per_fact_family": 4
+  },
+  "pair_accounting": {
+    "cross_topic_matched": {
+      "n_attempted": 96,
+      "n_accepted": 93,
+      "acceptance_rate": 0.9688,
+      "rejection_reasons": {
+        "weak_effect_below_min_abs_delta": 3
+      },
+      "delta_before_filtering": {
+        "mean": 3.5632,
+        "median": 3.4392,
+        "n": 96
+      },
+      "delta_after_filtering": {
+        "mean": 3.6785,
+        "median": 3.5318,
+        "n": 93
+      }
+    },
+    "random_token_control": {
+      "n_attempted": 24,
+      "n_accepted": 22,
+      "acceptance_rate": 0.9167,
+      "rejection_reasons": {
+        "weak_effect_below_min_abs_delta": 2
+      },
+      "delta_before_filtering": {
+        "mean": 1.7323,
+        "median": 1.827,
+        "n": 24
+      },
+      "delta_after_filtering": {
+        "mean": 1.8762,
+        "median": 1.8811,
+        "n": 22
+      }
+    },
+    "same_lexical_different_meaning": {
+      "n_attempted": 96,
+      "n_accepted": 91,
+      "acceptance_rate": 0.9479,
+      "rejection_reasons": {
+        "weak_effect_below_min_abs_delta": 5
+      },
+      "delta_before_filtering": {
+        "mean": 3.7288,
+        "median": 3.6335,
+        "n": 96
+      },
+      "delta_after_filtering": {
+        "mean": 3.9284,
+        "median": 3.8069,
+        "n": 91
+      }
+    },
+    "same_syntax": {
+      "n_attempted": 24,
+      "n_accepted": 14,
+      "acceptance_rate": 0.5833,
+      "rejection_reasons": {
+        "weak_effect_below_min_abs_delta": 10
+      },
+      "delta_before_filtering": {
+        "mean": 1.3003,
+        "median": 0.622,
+        "n": 24
+      },
+      "delta_after_filtering": {
+        "mean": 2.145,
+        "median": 2.0228,
+        "n": 14
+      }
+    },
+    "same_topic_fact_swap": {
+      "n_attempted": 96,
+      "n_accepted": 94,
+      "acceptance_rate": 0.9792,
+      "rejection_reasons": {
+        "weak_effect_below_min_abs_delta": 2
+      },
+      "delta_before_filtering": {
+        "mean": 3.5253,
+        "median": 3.4714,
+        "n": 96
+      },
+      "delta_after_filtering": {
+        "mean": 3.6004,
+        "median": 3.4859,
+        "n": 94
+      }
+    },
+    "semantic_neighbor": {
+      "n_attempted": 96,
+      "n_accepted": 95,
+      "acceptance_rate": 0.9896,
+      "rejection_reasons": {
+        "weak_effect_below_min_abs_delta": 1
+      },
+      "delta_before_filtering": {
+        "mean": 3.2857,
+        "median": 3.1759,
+        "n": 96
+      },
+      "delta_after_filtering": {
+        "mean": 3.3198,
+        "median": 3.1814,
+        "n": 95
+      }
+    }
+  },
+  "known_fact_core": {
+    "a0_version": "known_fact_core_v1",
+    "thresholds": {
+      "minimum_base_accuracy": 0.8,
+      "minimum_modalities_known": 2,
+      "distractor_count": 4,
+      "note": "Preregistered. Not adjusted after inspecting results."
+    },
+    "splits_scored": [
+      "stress",
+      "validation"
+    ],
+    "n_surfaces_scored": 750,
+    "n_facts_screened": 25,
+    "n_eligible": 12,
+    "eligible_fact_ids": [
+      "challenger_disaster:K10",
+      "challenger_disaster:K11",
+      "challenger_disaster:K12",
+      "challenger_disaster:K18",
+      "challenger_disaster:K20",
+      "challenger_disaster:K3",
+      "challenger_disaster:K4",
+      "challenger_disaster:K5",
+      "challenger_disaster:K8",
+      "challenger_disaster:K9",
+      "challenger_disaster:M1",
+      "challenger_disaster:M2"
+    ],
+    "eligible_detail": [
+      {
+        "fact_id": "challenger_disaster:M2",
+        "K_f": 1.0,
+        "mean_margin": 4.0811,
+        "min_margin": 2.4306,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K10",
+        "K_f": 1.0,
+        "mean_margin": 3.6344,
+        "min_margin": 2.8578,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K8",
+        "K_f": 1.0,
+        "mean_margin": 3.3229,
+        "min_margin": 2.078,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K5",
+        "K_f": 1.0,
+        "mean_margin": 3.3075,
+        "min_margin": 2.247,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K12",
+        "K_f": 1.0,
+        "mean_margin": 2.7251,
+        "min_margin": 1.783,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K11",
+        "K_f": 1.0,
+        "mean_margin": 2.1191,
+        "min_margin": 1.4187,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:M1",
+        "K_f": 1.0,
+        "mean_margin": 2.0,
+        "min_margin": 0.8909,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K20",
+        "K_f": 1.0,
+        "mean_margin": 1.731,
+        "min_margin": 0.3812,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K9",
+        "K_f": 1.0,
+        "mean_margin": 1.6119,
+        "min_margin": 0.6678,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K4",
+        "K_f": 0.9333333333333333,
+        "mean_margin": 1.0368,
+        "min_margin": -0.8166,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K3",
+        "K_f": 0.8064516129032258,
+        "mean_margin": 0.6615,
+        "min_margin": -0.6708,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K18",
+        "K_f": 0.8064516129032258,
+        "mean_margin": 0.6015,
+        "min_margin": -0.7945,
+        "modalities_passing": [
+          "direct",
+          "indirect"
+        ]
+      }
+    ]
+  },
+  "exclusions": {
+    "excluded_facts": [
+      {
+        "fact_id": "challenger_disaster:M3",
+        "K_f": 0.8387096774193549,
+        "reasons": [
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K19",
+        "K_f": 0.7333333333333333,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:M4",
+        "K_f": 0.7,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K15",
+        "K_f": 0.5333333333333333,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K17",
+        "K_f": 0.4666666666666667,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K6",
+        "K_f": 0.4482758620689655,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K14",
+        "K_f": 0.4,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K13",
+        "K_f": 0.3,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K16",
+        "K_f": 0.27586206896551724,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K7",
+        "K_f": 0.10344827586206896,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:M5",
+        "K_f": 0.07142857142857142,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K1",
+        "K_f": 0.034482758620689655,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      },
+      {
+        "fact_id": "challenger_disaster:K2",
+        "K_f": 0.0,
+        "reasons": [
+          "below_minimum_base_accuracy",
+          "insufficient_modality_coverage"
+        ]
+      }
+    ],
+    "n_excluded_facts": 13,
+    "refused_cells": [
+      {
+        "fact_key": "challenger_disaster:K1",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K1/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K10",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K10/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K11",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K11/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K12",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K12/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K13",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K13/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K14",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K14/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K15",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K15/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K16",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K16/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K17",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K17/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K18",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K18/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K19",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K19/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K2",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K2/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K20",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K20/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K3",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K3/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K4",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K4/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K5",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K5/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K6",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K6/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K7",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K7/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K8",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K8/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:K9",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:K9/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:M1",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:M1/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:M2",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:M2/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:M3",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:M3/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 15 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:M4",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:M4/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      },
+      {
+        "fact_key": "challenger_disaster:M5",
+        "modality": "reverse",
+        "reason": "degenerate_answer_pool",
+        "detail": "challenger_disaster:M5/reverse: only 1 distinct distractors available for the required 4 (from 24 candidates, 8 identical to the correct answer). This cell cannot support a same-topic factual margin."
+      }
+    ],
+    "n_refused_cells": 25,
+    "reverse_modality_rule": {
+      "rule_id": "reverse_degenerate_v1",
+      "statement": "Reverse-modality cells are excluded from every fact-selective claim. A reverse question asks for the fact from the answer side, and within a topic the answers collapse to a single entity, so a same-topic distractor pool contains the correct answer and the factual margin is undefined.",
+      "evidence": {
+        "challenger_disaster|direct": {
+          "n_facts": 25,
+          "distinct_answers": 25,
+          "distinct_ratio": 1.0
+        },
+        "challenger_disaster|indirect": {
+          "n_facts": 25,
+          "distinct_answers": 25,
+          "distinct_ratio": 1.0
+        },
+        "challenger_disaster|reverse": {
+          "n_facts": 25,
+          "distinct_answers": 2,
+          "distinct_ratio": 0.08
+        }
+      },
+      "degenerate_cells": [
+        "challenger_disaster|reverse"
+      ],
+      "enforced_by": "scoring.build_distractor_set raises DegenerateDistractorPool",
+      "not_rescued": "No alternate distractor pool is constructed to keep reverse in the primary analysis. It is retained only as a labelled topic-level diagnostic."
+    }
+  },
+  "tolerances": {
+    "hook_parity": {
+      "capture_only_tolerance": 0.0,
+      "capture_only_observed": 0.0,
+      "capture_only_passed": true,
+      "scoring_parity_tolerance": 1e-05,
+      "scoring_parity_observed": 3.823910708078415e-07,
+      "resid_post_equals_next_resid_pre_observed": 0.0,
+      "rationale": "Capture clones and returns None, so hook-only execution is gated at exactly zero. The scoring comparison contrasts two float32 reduction orders and carries a documented tolerance."
+    },
+    "patching": {
+      "self_patch_in_situ_tolerance": 0.0,
+      "self_patch_in_situ_observed": 0.0,
+      "self_patch_cross_shape_observed": 9.77217749209558e-06,
+      "gate_g2_passed": true,
+      "rationale": "In-situ capture makes written values bitwise identical, so the patch write is gated at zero. Cross-shape capture reflects float32 kernel tiling and carries a documented tolerance."
+    }
+  },
+  "artifact_hashes": {
+    "dataset_audit": {
+      "path": "artifacts\\dataset_audit\\dataset_audit_challenger_disaster.json",
+      "present": true,
+      "sha256": "20504571bb056c4ab67b6deab5cc5f291222bd7bfa8ba73efb70153f411dca97",
+      "bytes": 66501
+    },
+    "instrumentation_parity": {
+      "path": "artifacts\\parity-20260902T162133Z-s42\\parity\\instrumentation_parity.json",
+      "present": true,
+      "sha256": "6ebdf7f07815d07d53ad0bce01729cd11be2ef49a633b5531abb1f867e3946aa",
+      "bytes": 11514
+    },
+    "known_fact_core": {
+      "path": "artifacts\\a0-challenger-s42\\a0\\known_fact_core_challenger_disaster.json",
+      "present": true,
+      "sha256": "f63c56ca1282286d77c2db94f87167a44c74c72bfbb7302bd87bcb740373fde7",
+      "bytes": 39287
+    },
+    "known_fact_scores": {
+      "path": "artifacts\\a0-challenger-s42\\a0\\known_fact_scores_challenger_disaster.jsonl",
+      "present": true,
+      "sha256": "dd8bfe3df4092bd8d08fcae5396918944823ff30214cf2a74f38631c3dc7bb87",
+      "bytes": 598865
+    },
+    "distractor_sets": {
+      "path": "artifacts\\a0-challenger-s42\\a0\\distractor_sets_challenger_disaster.jsonl",
+      "present": true,
+      "sha256": "1a86f17ca8ac0130d7f6498dd9645f1d0340fa3ca3dbad4b92ed5f90ba0acc7f",
+      "bytes": 14995
+    },
+    "clean_corrupt_pairs": {
+      "path": "artifacts\\a0-challenger-s42\\a0\\clean_corrupt_pairs_challenger_disaster.jsonl",
+      "present": true,
+      "sha256": "804916d293ae830cb10e08ad6171d3df53736b464043e42a83639b1aca1775e7",
+      "bytes": 495183
+    },
+    "patch_sanity": {
+      "path": "artifacts\\a0-challenger-s42\\a2\\patch_sanity.json",
+      "present": true,
+      "sha256": "ae3054a602ac20346de17293311ec008b2ca670eedb0a64a69d43bbe385cb7ba",
+      "bytes": 13391
+    },
+    "residual_patch_scan": {
+      "path": "artifacts\\a0-challenger-s42\\a2\\residual_patch_scan.jsonl",
+      "present": true,
+      "sha256": "354b11ee6d78918efc12ccc13f8c776a5f6fab6db5bdae02d690f4e597b9e228",
+      "bytes": 1316139
+    },
+    "sink_sources_manifest": {
+      "path": "artifacts\\reference\\sink_sources_manifest.json",
+      "present": true,
+      "sha256": "d850ba4dca52eb98face71ca01d34f0f34b6bfd706fd3e533e50f3a48d812256",
+      "bytes": 2224
+    }
+  },
+  "a1_inheritance": {
+    "statement": "A1 inherits everything above unchanged. A1 introduces its own discovery objective and its own discovery-split pairs; those are A1 artifacts and are not covered by this freeze.",
+    "a1_may_not_change": [
+      "model/tokenizer revision",
+      "dataset revisions",
+      "prompt policy",
+      "full-sequence factual margin definition",
+      "Known-Fact Core membership",
+      "reverse-modality exclusion rule",
+      "seed"
+    ],
+    "a1_introduces": [
+      "pre-answer discriminative-token objective (discovery only)",
+      "discovery-split clean/corrupt pairs",
+      "G0 graph with per-head outputs",
+      "attribution vectors"
+    ],
+    "sink_firewall": "No sink repository is read during A1. Only the recorded SHAs are carried in run manifests."
+  }
+}
