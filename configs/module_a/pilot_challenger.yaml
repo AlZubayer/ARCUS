@@ -1,0 +1,74 @@
+experiment:
+  name: module_a_pilot_challenger
+  seed: 42
+  output_dir: outputs/module_a/pilot_challenger
+
+model:
+  name: meta-llama/Llama-3.2-3B-Instruct
+  revision: null
+  dtype: bfloat16
+  device: cuda
+  trust_remote_code: false
+
+dataset:
+  project: forget-narrowly-retain-broadly
+  topic: challenger_disaster
+  pilot_fact_limit: 10
+  minimum_base_accuracy: 0.80
+  minimum_modalities_known: 2
+  heldout_surface_fraction: 0.50
+  dataset_name: null
+  rephrasings_dataset_name: null
+
+scoring:
+  answer_metric: sequence_logprob_margin
+  distractor_count: 4
+  normalize_by_answer_tokens: true
+
+corruption:
+  strategy: matched_fact
+  preserve_modality: true
+  preserve_topic_when_possible: true
+  forbid_same_fact_id: true
+
+route_discovery:
+  method: eap_ig
+  graph_granularity: head_mlp_residual
+  top_k_edges: 200
+  integrated_gradient_steps: 20
+  discovery_split: train_surface
+  evaluation_split: heldout_surface
+
+circuit_validation:
+  minimality_target_fraction: 0.80
+  necessity_target: 0.50
+  sufficiency_target: 0.50
+  selectivity_epsilon: 1.0e-6
+  exact_intervention_required: true
+
+representation:
+  locations:
+    - residual_pre
+    - residual_mid
+    - residual_post
+  token_policy: answer_query_last_token
+  subspace_method: cross_formulation_svd
+  max_rank: 16
+  heldout_probe_required: true
+  causal_projection_test: true
+  causal_patch_test: true
+
+sink:
+  enabled_after_route_validation_only: true
+  anchor_candidates:
+    - bos
+    - first_position
+  min_received_attention: 0.20
+  require_value_contribution_measurement: true
+  map_all_heads: true
+
+statistics:
+  bootstrap_samples: 1000
+  permutation_samples: 1000
+  report_per_fact: true
+  aggregate_by_topic: true
