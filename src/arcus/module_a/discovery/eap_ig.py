@@ -35,7 +35,7 @@ exact single-node interventions before any ranking is used.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
-from typing import Any, Sequence
+from typing import Any
 
 import numpy as np
 import torch
@@ -190,7 +190,6 @@ def _capture_nodes(
 
 def _override_hook(override: _NodeOverride, backend: HFBackend):
     """Write the (differentiable) override value into this node's aligned positions."""
-    hook_map = backend.hook_map
     hp = override.hook_point
 
     if hp.component is Component.HEAD_OUT:

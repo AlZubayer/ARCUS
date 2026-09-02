@@ -131,9 +131,9 @@ def test_attribution_covers_every_g0_object(backend, graph, spec):
     )
     assert len(result.scores) == len(graph) == N_LAYERS * (N_HEADS + 1)
     assert result.object_ids == graph.object_ids
-    # A full signed vector: both signs present, nothing truncated to a top-k.
-    assert result.n_nonzero if hasattr(result, "n_nonzero") else True
+    # A full signed vector: nothing truncated to a top-k, both signs representable.
     summary = result.summary()
+    assert summary["n_positive"] + summary["n_negative"] > 0
     assert summary["n_objects"] == len(graph)
     assert summary["attribution_version"] == ATTRIBUTION_VERSION
     assert summary["n_positive"] + summary["n_negative"] <= len(graph)
