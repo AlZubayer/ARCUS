@@ -58,6 +58,11 @@ def build_parser() -> argparse.ArgumentParser:
     sc.add_argument("--run", required=True)
     sc.add_argument("--family", default="same_topic_fact_swap")
 
+    fz = sub.add_parser("freeze-p5", help="Freeze the validated P0-P5 setup before A1")
+    fz.add_argument("--config", required=True)
+    fz.add_argument("--a0-run", required=True, help="Run id holding the a0/a2 artifacts")
+    fz.add_argument("--parity-run", default=None)
+
     run = sub.add_parser("run", help="Run a pipeline stage")
     run.add_argument("config")
     run.add_argument("--stage", choices=[s.value for s in Stage], required=True)
@@ -377,6 +382,38 @@ def cmd_build_pairs(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_freeze_p5(args: argparse.Namespace) -> int:
+    from .freeze import build_freeze, render_markdown
+
+    config = load_config(args.config)
+    freeze = build_freeze(
+        config,
+        args.config,
+        artifact_root=config.experiment.artifact_dir,
+        a0_run_id=args.a0_run,
+        parity_run_id=args.parity_run,
+    )
+    out = Path(config.experiment.artifact_dir) / "freeze"
+    json_path = write_json(out / "p0_p5_freeze.json", freeze)
+    (out / "p0_p5_freeze.md").write_text(render_markdown(freeze), encoding="utf-8")
+
+    missing = [
+        name for name, info in freeze["artifact_hashes"].items() if not info["present"]
+    ]
+    print(f"wrote {json_path}")
+    print(f"  commit         : {freeze['code']['commit_sha']} dirty={freeze['code']['dirty']}")
+    print(f"  eligible facts : {freeze['known_fact_core']['n_eligible']} "
+          f"{[f.split(':')[-1] for f in freeze['known_fact_core']['eligible_fact_ids']]}")
+    print(f"  refused cells  : {freeze['exclusions']['n_refused_cells']} "
+          f"(reverse_degenerate_v1)")
+    total_att = sum(v["n_attempted"] for v in freeze["pair_accounting"].values())
+    total_acc = sum(v["n_accepted"] for v in freeze["pair_accounting"].values())
+    print(f"  pairs          : {total_acc} accepted of {total_att} attempted")
+    print(f"  artifacts      : {len(freeze['artifact_hashes']) - len(missing)} hashed"
+          + (f", MISSING {missing}" if missing else ", all present"))
+    return 1 if missing else 0
+
+
 _BACKEND_CACHE: dict = {}
 
 
@@ -610,6 +647,9 @@ def main() -> None:
 
     if args.command == "check-parity":
         raise SystemExit(cmd_check_parity(args))
+
+    if args.command == "freeze-p5":
+        raise SystemExit(cmd_freeze_p5(args))
 
     if args.command == "run-a0":
         raise SystemExit(cmd_run_a0(args))
