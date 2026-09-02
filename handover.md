@@ -8,7 +8,11 @@ Not a report: for results see `docs/module_a/FINDINGS_MILESTONE_1.md` and (when 
 
 ## Where we are
 
-**Milestone 2 — A1 blind fact-route discovery. Step 6 of 12 (attribution running).**
+**Milestone 2 — A1 blind fact-route discovery. COMPLETE (all 12 steps).**
+
+Result: **generic factual backbone + a fact-distinctive but causally NON-selective
+signature.** RQ-A1's fact-selective causal route is not established. Full write-up:
+`artifacts/a1-challenger-s42/a1/summary.md`.
 
 Milestone 1 (P0–P5) is complete and pushed: commits `b94fa99..92275bb` on `main`, both
 remotes in sync.
@@ -49,17 +53,17 @@ A null answer is a valid result. It must not be reinterpreted or rescued.
 |---|---|---|
 | 0 | `handover.md` | done |
 | 1 | Freeze P0–P5 | done — `artifacts/freeze/p0_p5_freeze.json` |
-| 2 | Formal reverse-modality exclusion | done — `reverse_degenerate_v1` inside the freeze |
-| 3 | Pre-answer discovery objective `J_f` | done — `discovery_objective.json` |
-| 4 | Discovery-split pairs + accounting | done — 414/432 accepted, 24/24 exact syntax twins |
-| 5 | G0 graph and `head_out` hook | done — 700 nodes, decomposition exact to 9.8e-07 |
-| 6 | Attribution `eap_ig_node_v1` | **running** — engine committed, corpus run in flight |
-| 7 | **Gate G4** (blocks everything downstream) | not started |
-| 8 | Route similarity, raw + residual | not started |
-| 9 | Candidate circuits | not started |
-| 10 | Exact validation on held-out surfaces | not started |
-| 11 | Artifacts, tables, summary | not started |
-| 12 | Scale to 12 facts, report | not started |
+| 2 | Reverse-modality exclusion | done — `reverse_degenerate_v1` |
+| 3 | Pre-answer objective `J_f` | done — prefix empty on 750/750 |
+| 4 | Discovery-split pairs | done — 1222/1296, 70/72 exact syntax twins |
+| 5 | G0 graph + `head_out` | done — 700 nodes, decomposition exact |
+| 6 | Attribution `eap_ig_node_v1` | done — 95 vectors, completeness 1.0004 |
+| 7 | **Gate G4** | **PASSED** — all six criteria |
+| 8 | Route similarity raw + residual | done — within +0.672 vs controls +0.17…+0.24 |
+| 9 | Candidate circuits | done — 3 rules × 4 facts |
+| 10 | Exact validation | done — N 0.74, S 0.89, **selectivity fails** |
+| 11 | Artifacts, tables, summary | done — `summary.md`, `tables/` |
+| 12 | Scale to 12 facts | done — similarity strengthens (D +0.53…+0.56) |
 
 ## Commits so far this milestone
 
@@ -72,21 +76,36 @@ A null answer is a valid result. It must not be reinterpreted or rescued.
 | `967efa2` | G0 graph and per-head outputs |
 | `05efda3` | EAP-IG node attribution engine |
 | `7e5c551` | lint cleanup |
+| `dd806f9` | attribution over targets + all five control classes |
+| `75c64fd` | fix: symmetric backbone removal on both sides of every cosine |
+| `535f1c5` | Gate G4 passes, with the per-fact caveat |
+| `e873db2` | exact validation, circuit extraction, A1 result |
 
-## Results established so far
+## A1 result (final)
 
-- **`J_f` is fully answer-prefix-free**: common answer prefix is empty on 750/750
-  challenger surfaces, so it conditions on the prompt alone. 0 surfaces rejected.
-- **`J_f` vs `M_f`**: Spearman 0.49 / 74.3% sign agreement across all 750 surfaces;
-  **100% sign agreement (60/60)** on the clean/corrupt deltas, which is the property
-  attribution depends on.
-- **Pairs**: 414 accepted of 432. `same_syntax` remains the outlier — acceptance 0.79,
-  mean Δ +1.72 pre-filter vs +2.88…+3.55 for other families — now with an *exactly*
-  augmentation-matched template in all 24 cases.
-- **G0**: 700 nodes. `attn_out == Σ_h W_O^h head_out_h` verified on the real model to
-  9.8e-07 relative (float32 roundoff); `o_proj.bias` is None at every layer checked.
-- **Attribution completeness** on the real model: **1.0004 at m=16**, 1.0018 at m=8.
-  ~6.7 s per 700-object vector.
+**Two findings that point in different directions. Both are reported.**
+
+1. Attribution vectors **are** fact-distinctive. Within-fact route similarity +0.672 vs
+   every control class +0.17…+0.24 after backbone removal; all p ≈ 0.0002. Extending to
+   12 facts strengthens it (D +0.53…+0.56, controls near zero).
+2. The circuits those vectors yield are **not** fact-selective. Necessity 0.74,
+   sufficiency 0.89 on held-out surfaces, but every selectivity ratio sits between 0.33
+   and 1.89, and *below 1* for semantic neighbours and lexical controls.
+
+Gate G4 passed on all six criteria (completeness 1.00, sign 0.75, top-over-random 31×,
+step stability 1.00, 3/3 families, 0 firewall leaks). Per fact, attribution reliably finds
+a *set* of causally important objects (6–75× random) but its *ordering* within that set is
+unreliable (K5 at chance) — so it is used only as a screening device.
+
+## Earlier milestone facts (still valid)
+
+- `J_f` conditions on the prompt alone: shared answer prefix empty on 750/750 surfaces.
+  vs `M_f`: Spearman 0.49 / 74% sign agreement on surfaces, **100% (60/60)** on
+  clean/corrupt deltas — the property attribution actually depends on.
+- G0 = 700 nodes; `attn_out == Σ_h W_O^h head_out_h` exact to 9.8e-07 on the real model.
+- Attribution completeness 1.0004 at m=16; ~7 s per 700-object vector.
+- `same_syntax` is the outlier family throughout: acceptance 0.71, mean Δ +1.37 vs
+  +2.9…+4.2 elsewhere, now with exactly matched templates.
 
 ## Gotchas discovered (do not rediscover)
 
@@ -99,6 +118,15 @@ A null answer is a valid result. It must not be reinterpreted or rescued.
    primary A1 record, not a regenerable cache.
 4. Bash heredocs longer than roughly 200 lines get truncated by the tool. Write a patch
    script to the scratchpad and run it instead.
+5. Residualising only one side of a similarity comparison inflates distinctness badly
+   (D went 0.78 -> 0.48 when fixed). Both sides must have the same background subtracted,
+   estimated from facts on neither side.
+6. Selectivity rings must sample one pair per *distinct* control fact and score each
+   control on its OWN prompt and pool. Sampling by pair id gave four pairs of one fact.
+7. The R4 lexical ring is character-manipulation questions, not factual retrieval. Large
+   fragile margins; do not let it carry a conclusion.
+8. `arcus-module-a a1-similarity` overwrites `route_similarity_*.jsonl`. The 12-fact
+   outputs are kept as `*_12facts.*`; re-run with `--name vectors` to restore the primary.
 
 ---
 
@@ -195,4 +223,18 @@ arcus-module-a a1-pairs      --config configs/module_a/a1_challenger.yaml --run 
 arcus-module-a a1-attribute  --config configs/module_a/a1_challenger.yaml --run a1-challenger-s42                              --distractors-run a0-challenger-s42
 ```
 
-Then continue at the first step marked `not started` in the table above.
+### Next milestone: A3 representation localization
+
+A3 must not assume a validated circuit exists — A1 did not produce one. The question it
+inherits is the dissociation above: **is the fact-distinctive signal that route similarity
+detects present in representation space, and causally localisable there when the
+component-level circuit was not?**
+
+Concretely: collect hidden states at `last_prompt_token` across formulations of each
+Known-Fact-Core fact; estimate a candidate subspace by centred SVD leaving out validation
+surfaces; run both causal tests — projection-out `h − BBᵀh` and subspace-only restoration
+`h_corrupt + BBᵀ(h_clean − h_corrupt)` — against equal-rank random-subspace controls and
+the same five retain rings. Selectivity, not decodability, is the criterion, and it is
+exactly what A1 failed at component granularity.
+
+A4 and any sink analysis stay out of scope until A1–A3 are frozen.
