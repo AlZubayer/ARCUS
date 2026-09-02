@@ -1,43 +1,108 @@
+# Module A pilot: Challenger disaster topic, Llama-3.2-3B-Instruct.
+#
+# Every source identifier is pinned to an exact revision (P0 definition of done).
+# Thresholds below are PREREGISTERED: do not weaken them after inspecting results.
+# Changing a *_version string creates a new analysis lineage rather than overwriting one.
+
 experiment:
   name: module_a_pilot_challenger
   seed: 42
   output_dir: outputs/module_a/pilot_challenger
+  artifact_dir: artifacts
 
 model:
   name: meta-llama/Llama-3.2-3B-Instruct
-  revision: null
-  dtype: bfloat16
+  revision: 0cb88a4f764b7a12671c53f0838cd831a0843b95
+  tokenizer_name: null
+  tokenizer_revision: null
+  # float32 for the causal backend: patch effects can be small and bfloat16 carries only
+  # ~3 decimal digits. bfloat16 is a registered sensitivity check, never the primary.
+  dtype: float32
   device: cuda
+  # eager attention keeps hook semantics stable and is required for later Q/K/V/pattern access.
+  attn_implementation: eager
   trust_remote_code: false
+
+prompt:
+  template: chat
+  template_version: llama3_chat_suite_v1
+  # Verbatim from the upstream SUITE model config, so ARCUS prompts this model the way the
+  # benchmark authors do.
+  system_prompt: >-
+    You are a helpful assistant. Respond with only the final answer to the question. Your
+    output must contain only the answer itself.
+  add_generation_prompt: true
+  # The chat template already emits <|begin_of_text|>; adding specials again would double the BOS.
+  add_special_tokens: false
 
 dataset:
   project: forget-narrowly-retain-broadly
   topic: challenger_disaster
+  dataset_id: apeleg/SUITE
+  dataset_revision: 3f5f6b0897dac10baacf1aa8b35319a02abccd23
+  rephrasings_dataset_id: apeleg/SUITE-rephrasings
+  rephrasings_revision: 81a52d60ec7d3231169b16a54ad1b2a58221ca6e
   pilot_fact_limit: 10
   minimum_base_accuracy: 0.80
   minimum_modalities_known: 2
-  heldout_surface_fraction: 0.50
-  dataset_name: null
-  rephrasings_dataset_name: null
+  known_fact_split: validation
+  topic_sweep_on_shortfall: true
+  minimum_pilot_facts: 5
 
 scoring:
   answer_metric: sequence_logprob_margin
+  answer_score: mean_logprob
+  scoring_version: answer_score_mean_logprob_v1
+  margin_version: factual_margin_v1
+  correctness_version: correct_over_distractors_v1
   distractor_count: 4
-  normalize_by_answer_tokens: true
+  distractor_policy: same_topic_same_modality_v1
+  min_abs_delta: 0.5
+  batch_size: 8
 
 corruption:
   strategy: matched_fact
+  corruption_policy_version: pair_families_v1
+  families:
+    - same_topic_fact_swap
+    - semantic_neighbor
+    - same_syntax
+    - same_lexical_different_meaning
+    - cross_topic_matched
+    - random_token_control
   preserve_modality: true
   preserve_topic_when_possible: true
+  preserve_surface_kind: true
   forbid_same_fact_id: true
+  max_pairs_per_fact_family: 4
+
+patching:
+  hook_map_version: llama_hook_map_v1
+  components:
+    - resid_pre
+    - attn_out
+    - mlp_out
+  token_policies:
+    - last_prompt_token
+  scan_components:
+    - resid_pre
+  scan_token_policy: final_k_prompt_tokens
+  scan_final_k: 8
+  layer_stride: 1
+  directions:
+    - clean_to_corrupt
+    - corrupt_to_clean
+  max_pairs_scanned: 4
+  parity_tolerance: 0.0
+  self_patch_tolerance: 0.0
 
 route_discovery:
   method: eap_ig
   graph_granularity: head_mlp_residual
   top_k_edges: 200
   integrated_gradient_steps: 20
-  discovery_split: train_surface
-  evaluation_split: heldout_surface
+  discovery_split: discovery
+  evaluation_split: validation
 
 circuit_validation:
   minimality_target_fraction: 0.80
@@ -48,10 +113,11 @@ circuit_validation:
 
 representation:
   locations:
-    - residual_pre
-    - residual_mid
-    - residual_post
-  token_policy: answer_query_last_token
+    - resid_pre
+    - resid_post
+    - attn_out
+    - mlp_out
+  token_policy: last_prompt_token
   subspace_method: cross_formulation_svd
   max_rank: 16
   heldout_probe_required: true
