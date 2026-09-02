@@ -1,0 +1,80 @@
+{
+  "stage_version": "a1_discovery_objective_v1",
+  "definition": {
+    "objective_version": "discriminative_token_margin_v1",
+    "role": "A1 route discovery only",
+    "formula": "J_f(q) = z[correct_token @ t*] - logsumexp(z[distractor_tokens @ t*])",
+    "logits_from": "position t* - 1 of a single forward pass over prompt + common prefix",
+    "t_star": "prompt_len + length of the longest token prefix shared by the correct answer and every matched distractor",
+    "why_not_full_sequence": "The full-sequence margin teacher-forces every answer token, so later tokens are conditioned on earlier correct answer tokens. Attribution against it would credit components that continue a partially written answer alongside components that retrieve the fact. 81% of SUITE answers are multi-token.",
+    "conditioning": "Only the prompt plus the token prefix shared by all candidates. No correct-answer-specific prefix is conditioned on.",
+    "rejection_reasons": {
+      "candidate_is_prefix_of_another": "A candidate answer ends at or before t*, so it has no token to compare.",
+      "distractor_shares_correct_token_at_t_star": "A distractor has the same token as the correct answer at t*, so the margin would compare the correct token against itself.",
+      "no_distractors": "Empty distractor set.",
+      "empty_answer_tokens": "A candidate contributed no answer tokens."
+    },
+    "companion_metric": {
+      "name": "factual_margin_v1",
+      "role": "behavioral evaluation and exact causal validation",
+      "note": "Retained unchanged. J_f never replaces it for causal claims."
+    },
+    "consistency_check": "Spearman correlation between J_f and M_f across all pilot surfaces is reported in discovery_objective.json. They measure related but distinct quantities, so the check is for sane agreement, not equality."
+  },
+  "surface_consistency": {
+    "scope": "all scored surfaces, correct and incorrect, so the range is not restricted",
+    "n_scored": 750,
+    "n_rejected": 0,
+    "rejected": [],
+    "J_f": {
+      "n": 750,
+      "mean": 3.8084,
+      "median": 3.402,
+      "min": -8.2446,
+      "max": 18.3394
+    },
+    "M_f": {
+      "n": 750,
+      "mean": 0.7493,
+      "median": 1.0942,
+      "min": -7.7793,
+      "max": 6.5288
+    },
+    "spearman_J_vs_M": 0.4898,
+    "sign_agreement": 0.7427,
+    "fraction_J_positive": 0.8347,
+    "fraction_M_positive": 0.6627,
+    "common_prefix_tokens": {
+      "mean": 0.0,
+      "max": 0,
+      "n_zero": 750,
+      "note": "Zero means J_f conditions on the prompt alone, with no answer token conditioned on at all."
+    }
+  },
+  "pair_direction_consistency": {
+    "criterion": "Attribution is computed against the clean-corrupt difference, so agreement on its sign is what the objective must satisfy.",
+    "n_pairs": 60,
+    "delta_J": {
+      "n": 60,
+      "mean": 7.8754,
+      "median": 7.5714,
+      "min": 0.0519,
+      "max": 17.4871
+    },
+    "delta_M": {
+      "n": 60,
+      "mean": 3.6687,
+      "median": 3.6091,
+      "min": 0.8464,
+      "max": 8.7176
+    },
+    "spearman_deltaJ_vs_deltaM": 0.55,
+    "sign_agreement": 1.0,
+    "n_sign_disagreements": 0
+  },
+  "interpretation": [
+    "J_f and M_f agree in sign on 74.3% of individual surfaces (83.5% of surfaces have J_f>0 versus 66.3% for M_f). J_f is the more permissive of the two because it only requires the discriminative token to be right, whereas M_f requires the whole answer sequence to beat the distractors on average. That gap is the answer-prefix effect J_f exists to avoid, seen from the other side.",
+    "On clean/corrupt pairs the two agree in sign 100.0% of the time (0 disagreements of 60). That is the property attribution depends on."
+  ],
+  "verdict_note": "J_f is registered for A1 discovery only. Every causal claim in A1 is validated with the full-sequence factual margin M_f, which is unchanged from P0-P5."
+}

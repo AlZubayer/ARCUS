@@ -63,6 +63,14 @@ def build_parser() -> argparse.ArgumentParser:
     fz.add_argument("--a0-run", required=True, help="Run id holding the a0/a2 artifacts")
     fz.add_argument("--parity-run", default=None)
 
+    ao = sub.add_parser(
+        "a1-objective", help="Register the A1 discovery objective and check it against M_f"
+    )
+    ao.add_argument("--config", required=True)
+    ao.add_argument("--a0-run", required=True)
+    ao.add_argument("--run", default=None, help="A1 run id (defaults to a new one)")
+    ao.add_argument("--pair-limit", type=int, default=60)
+
     run = sub.add_parser("run", help="Run a pipeline stage")
     run.add_argument("config")
     run.add_argument("--stage", choices=[s.value for s in Stage], required=True)
@@ -414,6 +422,71 @@ def cmd_freeze_p5(args: argparse.Namespace) -> int:
     return 1 if missing else 0
 
 
+def cmd_a1_objective(args: argparse.Namespace) -> int:
+    from .stages.a1_objective import build_objective_artifact
+
+    config = load_config(args.config)
+    topic = config.dataset.topic
+    _, distractor_sets = _load_a0(config, args.a0_run, topic)
+
+    base = Path(config.experiment.artifact_dir) / args.a0_run / "a0"
+    score_rows = read_jsonl(base / f"known_fact_scores_{topic}.jsonl")
+    pairs = [
+        r
+        for r in read_jsonl(base / f"clean_corrupt_pairs_{topic}.jsonl")
+        if r["validation_status"] == "accepted" and r["family"] == "same_topic_fact_swap"
+    ]
+
+    backend = backend_from_config_cached(config)
+    print(f"[a1-objective] {len(score_rows)} surfaces, {len(pairs)} same-topic pairs")
+    artifact = build_objective_artifact(
+        backend,
+        score_rows=score_rows,
+        pairs=pairs,
+        distractor_sets=distractor_sets,
+        pair_limit=args.pair_limit,
+    )
+
+    run_id = args.run or new_run_id("a1", config.experiment.seed)
+    out = run_dir(config.experiment.artifact_dir, run_id) / "a1"
+    path = write_json(out / "discovery_objective.json", artifact)
+
+    meta = backend.metadata()
+    write_json(
+        out / "manifest.json",
+        RunManifest(
+            run_id=run_id,
+            stage="a1.discovery_objective",
+            config_path=str(args.config),
+            config_sha256=config_sha256(args.config),
+            seed=config.experiment.seed,
+            parent_run_ids=[args.a0_run],
+            model=_model_manifest_block(config, meta),
+            dataset=_dataset_manifest_block(config),
+            policies={
+                "objective_version": artifact["definition"]["objective_version"],
+                "companion_metric": artifact["definition"]["companion_metric"]["name"],
+                "scoring_version": config.scoring.scoring_version,
+            },
+        ).to_dict(),
+    )
+
+    sc = artifact["surface_consistency"]
+    pc = artifact["pair_direction_consistency"]
+    print(f"wrote {path}")
+    print(f"  run id           : {run_id}")
+    print(f"  surfaces scored  : {sc['n_scored']} ({sc['n_rejected']} rejected)")
+    print(f"  common prefix    : mean {sc['common_prefix_tokens']['mean']} tokens, "
+          f"zero for {sc['common_prefix_tokens']['n_zero']}/{sc['n_scored']}")
+    print(f"  Spearman J vs M  : {sc['spearman_J_vs_M']}  (sign agreement {sc['sign_agreement']})")
+    print(f"  clean/corrupt    : Spearman {pc['spearman_deltaJ_vs_deltaM']}, "
+          f"sign agreement {pc['sign_agreement']} over {pc['n_pairs']} pairs "
+          f"({pc['n_sign_disagreements']} disagreements)")
+    for note in artifact["interpretation"]:
+        print(f"  note: {note[:150]}")
+    return 0
+
+
 _BACKEND_CACHE: dict = {}
 
 
@@ -650,6 +723,9 @@ def main() -> None:
 
     if args.command == "freeze-p5":
         raise SystemExit(cmd_freeze_p5(args))
+
+    if args.command == "a1-objective":
+        raise SystemExit(cmd_a1_objective(args))
 
     if args.command == "run-a0":
         raise SystemExit(cmd_run_a0(args))

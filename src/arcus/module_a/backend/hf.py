@@ -314,6 +314,55 @@ class HFBackend:
         )
         return self.tokenizer.decode(out[0, ids.shape[1] :], skip_special_tokens=True)
 
+    @torch.no_grad()
+    def score_discriminative_margin(
+        self,
+        prompt: str,
+        spec: Any,
+        *,
+        hook_specs: Sequence[tuple[HookPoint, Any]] = (),
+    ) -> float:
+        """Evaluate the pre-answer objective J_f in one forward pass.
+
+        Runs prompt + the token prefix shared by every candidate, reads the logits that
+        predict position t*, and takes the correct-token logit minus the logsumexp over the
+        matched distractor tokens. Raw logits, not log-probabilities: the softmax
+        normaliser is common to all candidates and cancels in the margin.
+        """
+        prompt_ids = list(
+            self.tokenizer(prompt, add_special_tokens=self.add_special_tokens).input_ids
+        )
+        token_ids = prompt_ids + list(spec.common_prefix_token_ids)
+        ids, mask = self._batch([token_ids])
+
+        handles = [self.hook_map.register(hp, fn) for hp, fn in hook_specs]
+        with self._hooks(handles):
+            logits = self.model(input_ids=ids, attention_mask=mask).logits
+
+        row = logits[0, -1, :].float()
+        correct = row[spec.correct_token_id]
+        distractors = row[torch.tensor(spec.distractor_token_ids, device=row.device)]
+        return float((correct - torch.logsumexp(distractors, dim=-1)).item())
+
+    def discriminative_margin_tensor(
+        self, prompt: str, spec: Any, *, hook_specs: Sequence[tuple[HookPoint, Any]] = ()
+    ) -> torch.Tensor:
+        """Differentiable J_f, for attribution. Gradients flow; no no_grad wrapper."""
+        prompt_ids = list(
+            self.tokenizer(prompt, add_special_tokens=self.add_special_tokens).input_ids
+        )
+        token_ids = prompt_ids + list(spec.common_prefix_token_ids)
+        ids, mask = self._batch([token_ids])
+
+        handles = [self.hook_map.register(hp, fn) for hp, fn in hook_specs]
+        with self._hooks(handles):
+            logits = self.model(input_ids=ids, attention_mask=mask).logits
+
+        row = logits[0, -1, :].float()
+        correct = row[spec.correct_token_id]
+        distractors = row[torch.tensor(spec.distractor_token_ids, device=row.device)]
+        return correct - torch.logsumexp(distractors, dim=-1)
+
     # -- activation capture -----------------------------------------------------------
 
     def available_hook_points(self, components: Sequence[Component] | None = None) -> list[HookPoint]:
