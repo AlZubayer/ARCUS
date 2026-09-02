@@ -19,7 +19,6 @@ from .schema import (
     SCHEMA_VERSION,
     ControlType,
     FactExample,
-    Modality,
     Split,
     normalize_answer,
     normalize_question,

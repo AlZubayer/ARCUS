@@ -16,7 +16,7 @@ from arcus.module_a.pairing import (
     build_semantic_neighbor,
     validate_pair,
 )
-from arcus.module_a.schema import Modality, Split
+from arcus.module_a.schema import Split
 from arcus.module_a.suite import row_to_example, syntax_controls_by_link
 
 TOPIC = "challenger_disaster"

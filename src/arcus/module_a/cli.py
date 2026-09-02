@@ -320,7 +320,6 @@ def _load_a0(config: ModuleAConfig, run_id: str, topic: str):
 
 
 def cmd_build_pairs(args: argparse.Namespace) -> int:
-    from .backend.hf import backend_from_config
     from .schema import Modality, Split
     from .stages.pairs import run_pairs
 
