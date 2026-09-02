@@ -953,6 +953,172 @@ def cmd_a1_similarity(args: argparse.Namespace) -> int:
     return 0
 
 
+def cmd_a1_g4(args: argparse.Namespace) -> int:
+    from .analysis.route_similarity import Representation, analyse
+    from .discovery.controls import ControlClass
+    from .discovery.graph import G0Graph
+    from .stages.a1_discovery import TARGET_CLASS
+    from .stages.a1_g4 import (
+        check_ig_step_sensitivity,
+        check_sign_and_rank_agreement,
+        summarise_g4,
+    )
+
+    config = load_config(args.config)
+    topic = config.dataset.topic
+    art = Path(config.experiment.artifact_dir)
+    vectors, object_ids = _load_vectors(config, args.run, args.name)
+    backend = backend_from_config_cached(config)
+    graph = G0Graph.from_backend(backend)
+    seed = config.experiment.seed
+
+    summary = json.loads(
+        (art / args.run / "a1" / f"attribution_summary_{args.name}.json").read_text("utf-8")
+    )
+
+    # G4-F: the held-out firewall, enforced in code rather than by convention.
+    discovery_ids = {
+        r["surface_form_id"] for r in vectors.rows if r.get("surface_form_id")
+    }
+    heldout = set()
+    for path in (art / "dataset_audit").glob("normalized_examples_*.jsonl"):
+        for row in read_jsonl(path):
+            if row.get("split") in {"validation", "stress"} and row.get("surface_form_id"):
+                heldout.add(row["surface_form_id"])
+    leaked = sorted(discovery_ids & heldout)
+    firewall = {
+        "n_discovery_surfaces_used": len(discovery_ids),
+        "n_heldout_surfaces_known": len(heldout),
+        "n_heldout_surfaces_in_discovery": len(leaked),
+        "leaked_surface_ids": leaked[:20],
+        "passed": not leaked,
+        "what_it_shows": "no validation or stress surface entered attribution or extraction",
+    }
+
+    # G4-A / G4-B / G4-D on the strongest target pairs.
+    targets = [
+        (i, r)
+        for i, r in enumerate(vectors.rows)
+        if r["item_class"] == TARGET_CLASS and r.get("family") == config.a1.primary_family
+    ]
+    targets.sort(key=lambda t: -abs(t[1]["path_effect"]))
+    # One pair per fact, strongest first. Taking the globally strongest pairs would have
+    # checked attribution quality on a single fact and said nothing about the others.
+    per_fact: dict = {}
+    for i, row in targets:
+        per_fact.setdefault(row["fact_id"], (i, row))
+    chosen = list(per_fact.values())[: args.n_pairs]
+
+    pairs_index = {
+        r["pair_id"]: r
+        for r in read_jsonl(art / args.run / "a1" / "accepted_pairs.jsonl")
+    }
+    _, distractor_sets = _load_a0(config, args.distractors_run, topic)
+    from .schema import FactKey, Modality
+
+    agreement = []
+    for i, row in chosen:
+        pair = pairs_index.get(row.get("pair_id"))
+        if pair is None:
+            continue
+        pool = distractor_sets[(FactKey(**pair["target_fact_key"]), Modality(pair["modality"]))]
+        print(f"  [G4-A/B] {row['fact_id']} {row['surface_form_id'][:10]} "
+              f"path_effect={row['path_effect']:+.2f}", flush=True)
+        result = check_sign_and_rank_agreement(
+            backend, graph,
+            clean_question=pair["clean_question"], corrupt_question=pair["corrupt_question"],
+            correct_answer=pool.correct_answer, distractors=list(pool.distractors),
+            vector=vectors.matrix[i], object_ids=object_ids,
+            alignment_policy=config.a1.alignment_policy,
+            n_top=args.n_top, n_random=args.n_random, seed=seed,
+        )
+        result["fact_id"] = row["fact_id"]
+        result["pair_id"] = row.get("pair_id")
+        agreement.append(result)
+
+    # G4-C: integration step sensitivity on the strongest pair.
+    step_sensitivity = {}
+    if chosen:
+        i, row = chosen[0]
+        pair = pairs_index[row["pair_id"]]
+        pool = distractor_sets[(FactKey(**pair["target_fact_key"]), Modality(pair["modality"]))]
+        print(f"  [G4-C] step sensitivity on {row['fact_id']} "
+              f"({config.a1.ig_step_sensitivity})", flush=True)
+        step_sensitivity = check_ig_step_sensitivity(
+            backend, graph,
+            clean_question=pair["clean_question"], corrupt_question=pair["corrupt_question"],
+            correct_answer=pool.correct_answer, distractors=list(pool.distractors),
+            step_counts=config.a1.ig_step_sensitivity,
+            alignment_policy=config.a1.alignment_policy,
+            reference_steps=config.a1.integration_steps,
+        )
+
+    # G4-E: does the headline conclusion survive a change of corruption family?
+    controls = list(ControlClass.ALL)
+    by_family = {}
+    for fam in [config.a1.primary_family, *config.a1.robustness_families]:
+        block = analyse(
+            vectors, target_class=TARGET_CLASS, control_classes=controls,
+            family=fam, seed=seed, representation=Representation.SUBTRACT,
+        )
+        if block["n_facts"] == 0:
+            continue
+        gaps = {
+            c: v["distinctness_D"]
+            for c, v in block["between_by_control_class"].items()
+            if v["distinctness_D"] is not None
+        }
+        by_family[fam] = {
+            "n_facts": block["n_facts"],
+            "n_vectors": block["n_target_vectors"],
+            "within_fact_mean": block["within_fact"]["pooled"]["mean"],
+            "distinctness_by_control": gaps,
+            "all_controls_positive": bool(gaps) and all(v > 0 for v in gaps.values()),
+        }
+    family_robustness = {
+        "families": by_family,
+        "n_families_agreeing": sum(
+            1 for v in by_family.values() if v["all_controls_positive"]
+        ),
+        "n_families_tested": len(by_family),
+        "criterion": "within-fact similarity exceeds every control class, in each family",
+    }
+
+    report = {
+        "completeness": summary["completeness"],
+        "A_B_D_agreement": agreement,
+        "C_step_sensitivity": step_sensitivity,
+        "E_family_robustness": family_robustness,
+        "F_heldout_firewall": firewall,
+        **summarise_g4(
+            completeness=summary["completeness"],
+            agreement=agreement,
+            step_sensitivity=step_sensitivity,
+            family_robustness=family_robustness,
+            firewall=firewall,
+            thresholds={
+                "completeness_fraction": 0.95,
+                "sign_agreement": 0.75,
+                "top_over_random": 2.0,
+                "topk_jaccard": 0.5,
+                "families_agreeing": 2,
+            },
+        ),
+    }
+    out = run_dir(config.experiment.artifact_dir, args.run) / "a1"
+    write_json(out / "g4_validation.json", report)
+
+    print("\n  Gate G4")
+    for name, c in report["criteria"].items():
+        mark = "PASS" if c["passed"] else "FAIL"
+        print(f"    [{mark}] {name:22s} value={c['value']} threshold={c['threshold']}")
+        print(f"           {c['what_it_shows']}")
+    print(f"  g4_passed: {report['g4_passed']}")
+    if not report["g4_passed"]:
+        print("  " + report["blocking"])
+    return 0 if report["g4_passed"] else 2
+
+
 _BACKEND_CACHE: dict = {}
 
 
@@ -1201,6 +1367,9 @@ def main() -> None:
 
     if args.command == "a1-similarity":
         raise SystemExit(cmd_a1_similarity(args))
+
+    if args.command == "a1-g4":
+        raise SystemExit(cmd_a1_g4(args))
 
     if args.command == "run-a0":
         raise SystemExit(cmd_run_a0(args))
