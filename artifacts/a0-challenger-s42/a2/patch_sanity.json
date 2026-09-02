@@ -1,0 +1,449 @@
+{
+  "patching_version": "exact_residual_patch_v1",
+  "clean_question": "____ was the Nobel Prize-winning physicist who served as a member of the Rogers Commission investigating the Challenger accident.",
+  "corrupt_question": "The ____ was the annual presidential speech postponed for the first time in history due to the Challenger disaster.",
+  "clean_margin": 2.7505204628312865,
+  "corrupt_margin": -6.137334933811152,
+  "delta": 8.887855396642438,
+  "checks": [
+    {
+      "check": "A_clean_to_clean_patch_is_a_no_op",
+      "capture": "in_situ_same_shape",
+      "baseline_margin": 2.7505204628312865,
+      "n_hook_points": 15,
+      "max_abs_margin_diff": 0.0,
+      "tolerance": 0.0,
+      "rationale": "Bitwise-identical values written back; any drift is a patch bug.",
+      "passed": true,
+      "rows": [
+        {
+          "hook_point": "L0.resid_pre",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L0.attn_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L0.mlp_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L1.resid_pre",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L1.attn_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L1.mlp_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L14.resid_pre",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L14.attn_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L14.mlp_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L26.resid_pre",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L26.attn_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L26.mlp_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L27.resid_pre",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L27.attn_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L27.mlp_out",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        }
+      ]
+    },
+    {
+      "check": "B_corrupt_to_corrupt_patch_is_a_no_op",
+      "capture": "in_situ_same_shape",
+      "baseline_margin": -6.137334933811152,
+      "n_hook_points": 15,
+      "max_abs_margin_diff": 0.0,
+      "tolerance": 0.0,
+      "rationale": "Bitwise-identical values written back; any drift is a patch bug.",
+      "passed": true,
+      "rows": [
+        {
+          "hook_point": "L0.resid_pre",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L0.attn_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L0.mlp_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L1.resid_pre",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L1.attn_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L1.mlp_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L14.resid_pre",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L14.attn_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L14.mlp_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L26.resid_pre",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L26.attn_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L26.mlp_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L27.resid_pre",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L27.attn_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L27.mlp_out",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        }
+      ]
+    },
+    {
+      "check": "A_clean_to_clean_patch_is_a_no_op_cross_shape_capture",
+      "capture": "prompt_only_forward",
+      "baseline_margin": 2.7505204628312865,
+      "n_hook_points": 15,
+      "max_abs_margin_diff": 3.052736618602836e-06,
+      "tolerance": 0.001,
+      "rationale": "Float32 kernel tiling depends on tensor shape; drift here is numerical, and is ~5 orders of magnitude below min_abs_delta.",
+      "passed": true,
+      "rows": [
+        {
+          "hook_point": "L0.resid_pre",
+          "margin": 2.7505204628312865,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L0.attn_out",
+          "margin": 2.750521436147688,
+          "abs_diff": 9.733164016978435e-07
+        },
+        {
+          "hook_point": "L0.mlp_out",
+          "margin": 2.7505212963980803,
+          "abs_diff": 8.335667938119684e-07
+        },
+        {
+          "hook_point": "L1.resid_pre",
+          "margin": 2.7505204184550065,
+          "abs_diff": 4.437627998399307e-08
+        },
+        {
+          "hook_point": "L1.attn_out",
+          "margin": 2.7505233158049847,
+          "abs_diff": 2.8529736981752762e-06
+        },
+        {
+          "hook_point": "L1.mlp_out",
+          "margin": 2.750522632673823,
+          "abs_diff": 2.1698425363148033e-06
+        },
+        {
+          "hook_point": "L14.resid_pre",
+          "margin": 2.750517989953193,
+          "abs_diff": 2.472878093406905e-06
+        },
+        {
+          "hook_point": "L14.attn_out",
+          "margin": 2.7505211853211815,
+          "abs_diff": 7.224898950219938e-07
+        },
+        {
+          "hook_point": "L14.mlp_out",
+          "margin": 2.7505206368264403,
+          "abs_diff": 1.7399515384042274e-07
+        },
+        {
+          "hook_point": "L26.resid_pre",
+          "margin": 2.750522276729498,
+          "abs_diff": 1.813898211633358e-06
+        },
+        {
+          "hook_point": "L26.attn_out",
+          "margin": 2.7505207464358405,
+          "abs_diff": 2.836045540632881e-07
+        },
+        {
+          "hook_point": "L26.mlp_out",
+          "margin": 2.7505215191405834,
+          "abs_diff": 1.0563092969206878e-06
+        },
+        {
+          "hook_point": "L27.resid_pre",
+          "margin": 2.750523515567905,
+          "abs_diff": 3.052736618602836e-06
+        },
+        {
+          "hook_point": "L27.attn_out",
+          "margin": 2.7505214132250235,
+          "abs_diff": 9.503937370425319e-07
+        },
+        {
+          "hook_point": "L27.mlp_out",
+          "margin": 2.7505228223448075,
+          "abs_diff": 2.3595135210108253e-06
+        }
+      ]
+    },
+    {
+      "check": "B_corrupt_to_corrupt_patch_is_a_no_op_cross_shape_capture",
+      "capture": "prompt_only_forward",
+      "baseline_margin": -6.137334933811152,
+      "n_hook_points": 15,
+      "max_abs_margin_diff": 9.77217749209558e-06,
+      "tolerance": 0.001,
+      "rationale": "Float32 kernel tiling depends on tensor shape; drift here is numerical, and is ~5 orders of magnitude below min_abs_delta.",
+      "passed": true,
+      "rows": [
+        {
+          "hook_point": "L0.resid_pre",
+          "margin": -6.137334933811152,
+          "abs_diff": 0.0
+        },
+        {
+          "hook_point": "L0.attn_out",
+          "margin": -6.137331751186071,
+          "abs_diff": 3.182625080810908e-06
+        },
+        {
+          "hook_point": "L0.mlp_out",
+          "margin": -6.137330239562424,
+          "abs_diff": 4.69424872839852e-06
+        },
+        {
+          "hook_point": "L1.resid_pre",
+          "margin": -6.137333630647939,
+          "abs_diff": 1.3031632128956971e-06
+        },
+        {
+          "hook_point": "L1.attn_out",
+          "margin": -6.137338674896655,
+          "abs_diff": 3.741085502717567e-06
+        },
+        {
+          "hook_point": "L1.mlp_out",
+          "margin": -6.137334877682406,
+          "abs_diff": 5.612874609539631e-08
+        },
+        {
+          "hook_point": "L14.resid_pre",
+          "margin": -6.137327394778167,
+          "abs_diff": 7.539032985448557e-06
+        },
+        {
+          "hook_point": "L14.attn_out",
+          "margin": -6.13733347593798,
+          "abs_diff": 1.4578731724057548e-06
+        },
+        {
+          "hook_point": "L14.mlp_out",
+          "margin": -6.13733374478935,
+          "abs_diff": 1.189021801906165e-06
+        },
+        {
+          "hook_point": "L26.resid_pre",
+          "margin": -6.137326735814759,
+          "abs_diff": 8.197996392844686e-06
+        },
+        {
+          "hook_point": "L26.attn_out",
+          "margin": -6.137342037208114,
+          "abs_diff": 7.103396962193642e-06
+        },
+        {
+          "hook_point": "L26.mlp_out",
+          "margin": -6.1373378768227385,
+          "abs_diff": 2.94301158643151e-06
+        },
+        {
+          "hook_point": "L27.resid_pre",
+          "margin": -6.13732516163366,
+          "abs_diff": 9.77217749209558e-06
+        },
+        {
+          "hook_point": "L27.attn_out",
+          "margin": -6.137334065860901,
+          "abs_diff": 8.679502512265458e-07
+        },
+        {
+          "hook_point": "L27.mlp_out",
+          "margin": -6.137334357826576,
+          "abs_diff": 5.759845755903825e-07
+        }
+      ]
+    },
+    {
+      "check": "C_capture_only_is_a_no_op",
+      "max_abs_score_diff": 0.0,
+      "tolerance": 0.0,
+      "passed": true
+    },
+    {
+      "check": "D_invalid_coordinates_fail_loudly",
+      "cases": [
+        {
+          "case": "negative_layer",
+          "raised": "InvalidHookPointError",
+          "passed": true,
+          "message": "layer -1 outside [0, 28) for this model"
+        },
+        {
+          "case": "layer_past_end",
+          "raised": "InvalidHookPointError",
+          "passed": true,
+          "message": "layer 28 outside [0, 28) for this model"
+        },
+        {
+          "case": "unimplemented_component",
+          "raised": "InvalidHookPointError",
+          "passed": true,
+          "message": "Component <Component.ATTN_PATTERN: 'attn_pattern'> is declared but not implemented. Implemented: ['attn_out', 'mlp_out', 'resid_post', 'resid_pre']"
+        },
+        {
+          "case": "head_on_headless_component",
+          "raised": "InvalidHookPointError",
+          "passed": true,
+          "message": "Component resid_pre has no head axis; head=2 is not meaningful here."
+        },
+        {
+          "case": "out_of_range_token",
+          "raised": "TokenAlignmentError",
+          "passed": true,
+          "message": "target index 135 outside sequence of length 85"
+        },
+        {
+          "case": "empty_alignment",
+          "raised": "TokenAlignmentError",
+          "passed": true,
+          "message": "Token policy explicit_indices resolved to an empty alignment; an intervention with no positions is not a valid experiment."
+        },
+        {
+          "case": "unequal_all_prompt_tokens",
+          "raised": "TokenAlignmentError",
+          "passed": true,
+          "message": "all_prompt_tokens requires equal prompt lengths (target 81 vs source 80). Use last_prompt_token or final_k_prompt_tokens for unequal prompts."
+        }
+      ],
+      "passed": true
+    },
+    {
+      "check": "F_token_alignment_is_explicit",
+      "clean_prompt_len": 81,
+      "corrupt_prompt_len": 80,
+      "prompt_len_delta": 1,
+      "alignment": {
+        "policy": "last_prompt_token",
+        "pairs": [
+          [
+            80,
+            79
+          ]
+        ],
+        "n_positions": 1,
+        "detail": {
+          "target_prompt_len": 81,
+          "source_prompt_len": 80,
+          "prompt_len_delta": 1
+        }
+      },
+      "passed": true
+    }
+  ],
+  "gate_g2_passed": true,
+  "pair_id": "same_topic_fact_swap|108d18116d5a32ab|8e977981e8e0731c",
+  "fact_id": "challenger_disaster:K8",
+  "layers_probed": [
+    0,
+    1,
+    14,
+    26,
+    27
+  ],
+  "components_probed": [
+    "resid_pre",
+    "attn_out",
+    "mlp_out"
+  ]
+}
