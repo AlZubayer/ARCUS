@@ -1,0 +1,1971 @@
+{
+  "audit_version": "dataset_audit_v1",
+  "schema_version": "suite_schema_v2",
+  "adapter_version": "suite_adapter_v2",
+  "split_policy_version": "split_policy_provenance_v1",
+  "answer_normalization_version": "answer_normalization_v1",
+  "source": {
+    "suite_dataset_id": "apeleg/SUITE",
+    "rephrasings_dataset_id": "apeleg/SUITE-rephrasings",
+    "revisions": {
+      "apeleg/SUITE": "3f5f6b0897dac10baacf1aa8b35319a02abccd23",
+      "apeleg/SUITE-rephrasings": "81a52d60ec7d3231169b16a54ad1b2a58221ca6e"
+    },
+    "suite_splits": [
+      "forget_train",
+      "forget_eval",
+      "retain_train",
+      "retain_eval"
+    ],
+    "rephrasings_split": "forget_eval_rephrasings",
+    "raw_field_names": [
+      "topic",
+      "question",
+      "answer",
+      "label"
+    ],
+    "rephrasings_wide_columns": [
+      "q_gemini1",
+      "q_gemini2",
+      "q_gemini3",
+      "q_gemini4",
+      "q_gemini5",
+      "q_gemini6",
+      "q_gemini7",
+      "q_gemini8",
+      "q_gemini9",
+      "q_gemini10",
+      "blank_gemini1",
+      "blank_gemini2",
+      "blank_gemini3",
+      "blank_gemini4",
+      "blank_gemini5"
+    ],
+    "topics_requested": [
+      "challenger_disaster"
+    ]
+  },
+  "parsing_assumptions": {
+    "fact_identity": "Read from the label only. fact_key = (topic, {K|M}<n>). Never inferred from question text, never from answer text.",
+    "modality": "Label suffix -direct/-reverse/-indirect.",
+    "surface_kind": "Augmentation prefix: 'original' -> original, 'q_*' -> paraphrase, 'blank_*' -> fill_in.",
+    "generator": "Augmentation infix: claude (forget_train) or gemini (rephrasings).",
+    "split_policy": "Provenance-based. discovery = forget_train; validation = rephrasings Gemini augmentations (direct/reverse); stress = rephrasings indirect. The rephrasings 'original' surface duplicates the forget_train '@original' row and is dropped for direct/reverse.",
+    "unparseable_label_policy": "Raise LabelParseError. Never guess, never drop silently."
+  },
+  "fact_identity": {
+    "n_forget_surface_forms": 1568,
+    "facts_per_topic": {
+      "challenger_disaster": 25
+    },
+    "fact_ids_per_topic": {
+      "challenger_disaster": [
+        "K1",
+        "K2",
+        "K3",
+        "K4",
+        "K5",
+        "K6",
+        "K7",
+        "K8",
+        "K9",
+        "K10",
+        "K11",
+        "K12",
+        "K13",
+        "K14",
+        "K15",
+        "K16",
+        "K17",
+        "K18",
+        "K19",
+        "K20",
+        "M1",
+        "M2",
+        "M3",
+        "M4",
+        "M5"
+      ]
+    },
+    "n_missing_fact_key": 0,
+    "n_missing_modality": 0
+  },
+  "census": {
+    "n_examples": 2668,
+    "n_dropped": 157,
+    "drop_reasons": {
+      "forget_eval_is_reference_only_upstream": 75,
+      "duplicate_of_discovery_original": 50,
+      "identical_prompt_in_discovery": 32
+    },
+    "by_control_type": {
+      "forget": 1568,
+      "semantic": 675,
+      "syntactic": 175,
+      "general_knowledge": 150,
+      "lexical": 100
+    },
+    "by_split": {
+      "discovery": {
+        "n": 450,
+        "by_modality": {
+          "direct": 375,
+          "reverse": 75
+        },
+        "by_surface_kind": {
+          "paraphrase": 259,
+          "fill_in": 143,
+          "original": 48
+        },
+        "by_generator": {
+          "claude": 402,
+          "none": 48
+        }
+      },
+      "validation": {
+        "n": 718,
+        "by_modality": {
+          "reverse": 368,
+          "direct": 350
+        },
+        "by_surface_kind": {
+          "paraphrase": 497,
+          "fill_in": 221
+        },
+        "by_generator": {
+          "gemini": 718
+        }
+      },
+      "stress": {
+        "n": 400,
+        "by_modality": {
+          "indirect": 400
+        },
+        "by_surface_kind": {
+          "paraphrase": 250,
+          "fill_in": 125,
+          "original": 25
+        },
+        "by_generator": {
+          "gemini": 375,
+          "none": 25
+        }
+      }
+    },
+    "modality_x_surface_kind": {
+      "direct|fill_in": 220,
+      "direct|original": 23,
+      "direct|paraphrase": 482,
+      "indirect|fill_in": 125,
+      "indirect|original": 25,
+      "indirect|paraphrase": 250,
+      "reverse|fill_in": 144,
+      "reverse|original": 25,
+      "reverse|paraphrase": 274
+    },
+    "surface_forms_per_fact": {
+      "challenger_disaster:K1": {
+        "discovery": 18,
+        "validation": 27,
+        "stress": 16
+      },
+      "challenger_disaster:K10": {
+        "discovery": 18,
+        "validation": 30,
+        "stress": 16
+      },
+      "challenger_disaster:K11": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K12": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K13": {
+        "discovery": 18,
+        "validation": 28,
+        "stress": 16
+      },
+      "challenger_disaster:K14": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K15": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K16": {
+        "discovery": 18,
+        "validation": 28,
+        "stress": 16
+      },
+      "challenger_disaster:K17": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K18": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K19": {
+        "discovery": 18,
+        "validation": 28,
+        "stress": 16
+      },
+      "challenger_disaster:K2": {
+        "discovery": 18,
+        "validation": 30,
+        "stress": 16
+      },
+      "challenger_disaster:K20": {
+        "discovery": 18,
+        "validation": 30,
+        "stress": 16
+      },
+      "challenger_disaster:K3": {
+        "discovery": 18,
+        "validation": 30,
+        "stress": 16
+      },
+      "challenger_disaster:K4": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K5": {
+        "discovery": 18,
+        "validation": 30,
+        "stress": 16
+      },
+      "challenger_disaster:K6": {
+        "discovery": 18,
+        "validation": 28,
+        "stress": 16
+      },
+      "challenger_disaster:K7": {
+        "discovery": 18,
+        "validation": 28,
+        "stress": 16
+      },
+      "challenger_disaster:K8": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:K9": {
+        "discovery": 18,
+        "validation": 28,
+        "stress": 16
+      },
+      "challenger_disaster:M1": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:M2": {
+        "discovery": 18,
+        "validation": 28,
+        "stress": 16
+      },
+      "challenger_disaster:M3": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:M4": {
+        "discovery": 18,
+        "validation": 29,
+        "stress": 16
+      },
+      "challenger_disaster:M5": {
+        "discovery": 18,
+        "validation": 26,
+        "stress": 16
+      }
+    },
+    "semantic_tier_histogram": {
+      "0": 50,
+      "1": 50,
+      "2": 50,
+      "3": 50,
+      "4": 50,
+      "5": 50,
+      "6": 50,
+      "7": 50,
+      "8": 50,
+      "9": 50,
+      "10": 50,
+      "11": 25,
+      "12": 25,
+      "13": 25,
+      "14": 25,
+      "15": 25
+    },
+    "retain_categories": {
+      "semantic": 675,
+      "syntactic": 175,
+      "general_knowledge": 150,
+      "lexical": 100
+    }
+  },
+  "answers": {
+    "n_forget_answers": 1568,
+    "n_distinct_normalized_answers": 27,
+    "answer_word_length": {
+      "min": 1,
+      "p50": 2,
+      "p90": 3,
+      "max": 4
+    },
+    "fraction_multiword": 0.7328,
+    "degeneracy_by_topic_modality": {
+      "challenger_disaster|direct": {
+        "n_facts": 25,
+        "distinct_answers": 25,
+        "distinct_ratio": 1.0,
+        "usable_for_same_topic_distractors": true,
+        "most_common_answers": [
+          {
+            "answer": "sts-51-l",
+            "n_facts": 1
+          },
+          {
+            "answer": "january 28, 1986",
+            "n_facts": 1
+          },
+          {
+            "answer": "73 seconds",
+            "n_facts": 1
+          }
+        ]
+      },
+      "challenger_disaster|indirect": {
+        "n_facts": 25,
+        "distinct_answers": 25,
+        "distinct_ratio": 1.0,
+        "usable_for_same_topic_distractors": true,
+        "most_common_answers": [
+          {
+            "answer": "sts-51-l",
+            "n_facts": 1
+          },
+          {
+            "answer": "january 28, 1986",
+            "n_facts": 1
+          },
+          {
+            "answer": "73 seconds",
+            "n_facts": 1
+          }
+        ]
+      },
+      "challenger_disaster|reverse": {
+        "n_facts": 25,
+        "distinct_answers": 2,
+        "distinct_ratio": 0.08,
+        "usable_for_same_topic_distractors": false,
+        "most_common_answers": [
+          {
+            "answer": "challenger",
+            "n_facts": 16
+          },
+          {
+            "answer": "challenger disaster",
+            "n_facts": 9
+          }
+        ]
+      }
+    }
+  },
+  "leakage": {
+    "duplicates": {
+      "n_duplicate_normalized_questions": 0,
+      "n_duplicate_question_answer_pairs": 0,
+      "n_cross_split_identical_prompts": 0,
+      "cross_split_examples": [],
+      "duplicate_question_examples": []
+    },
+    "n_groups": 198,
+    "n_groups_straddling_folds": 0,
+    "sink_annotation_fields_present": false,
+    "checked_sink_field_names": [
+      "raw_label",
+      "domain",
+      "augmentation_id"
+    ]
+  },
+  "dropped_rows": [
+    {
+      "surface_form_id": "f3030e4036f7e0ca",
+      "raw_label": "M1-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "b181ed55accd75f8",
+      "raw_label": "M1-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "6824828fbdb62ef8",
+      "raw_label": "M2-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d40e14a97e7976f2",
+      "raw_label": "M2-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "1f9727acf3a4765e",
+      "raw_label": "M3-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "5fc5c3147aae6a51",
+      "raw_label": "M3-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d632604dece6e44e",
+      "raw_label": "M4-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "946b1b4c38e1bb86",
+      "raw_label": "M4-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "78dd03ec9ebd5471",
+      "raw_label": "M5-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "842ff57a141b7f89",
+      "raw_label": "M5-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "dc08fed81f0f2287",
+      "raw_label": "K1-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "0246e6564ecb2c2f",
+      "raw_label": "K1-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d5df58a80fe0ad80",
+      "raw_label": "K2-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "9e6c8eba3bfee3ce",
+      "raw_label": "K2-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "dd1527ab9076f7f6",
+      "raw_label": "K3-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "274b4791affc39f5",
+      "raw_label": "K3-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "3905eafbf58a51ca",
+      "raw_label": "K4-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "085f15f09d3ee530",
+      "raw_label": "K4-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "ec01b0238644f8a1",
+      "raw_label": "K5-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "5cafb00b4be36c71",
+      "raw_label": "K5-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "105f386a9d6021c0",
+      "raw_label": "K6-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "b75173481964502f",
+      "raw_label": "K6-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "83eeeb197e624f73",
+      "raw_label": "K7-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d671a31f1106174b",
+      "raw_label": "K7-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "b60217143c31d74e",
+      "raw_label": "K8-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "c3363f0c4253d393",
+      "raw_label": "K8-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "7d7c85a36efc379f",
+      "raw_label": "K9-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "0c03ae3819a52fa0",
+      "raw_label": "K9-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "cad5d1f1af1a99bf",
+      "raw_label": "K10-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "f6da341e11ed77e4",
+      "raw_label": "K10-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "e7e2cc04c9bdbd4b",
+      "raw_label": "K11-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "1e10bd763825872a",
+      "raw_label": "K11-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "78d9b190094063eb",
+      "raw_label": "K12-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d3cb99af0e98a027",
+      "raw_label": "K12-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "14c8282eac32896e",
+      "raw_label": "K13-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "97bc7b682cf63cc8",
+      "raw_label": "K13-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "89f4c989798152ac",
+      "raw_label": "K14-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "1785d565d47285f9",
+      "raw_label": "K14-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "450e3d74d1019ee1",
+      "raw_label": "K15-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "b400f4eadaa60d20",
+      "raw_label": "K15-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "74e659f3f2010371",
+      "raw_label": "K16-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "6717ccf9901a812f",
+      "raw_label": "K16-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "c23bda6c96a525cd",
+      "raw_label": "K17-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "8cb6425f046bd3c5",
+      "raw_label": "K17-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "f13419eb0ca01cf8",
+      "raw_label": "K18-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "81482f6404b2ff63",
+      "raw_label": "K18-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "770c776a959ddcdd",
+      "raw_label": "K19-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "5c03797bb2c2c3f7",
+      "raw_label": "K19-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "c98a79268a8299a3",
+      "raw_label": "K20-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "6a8c5fc31395fe27",
+      "raw_label": "K20-indirect",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d7e08e4ea2da6b9a",
+      "raw_label": "M1-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "0342f770ba21655a",
+      "raw_label": "M2-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "790bfef494767486",
+      "raw_label": "M3-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "f84d654b0f950d90",
+      "raw_label": "M4-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "c9b82eb1cc7cc73b",
+      "raw_label": "M5-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "3112e2db54770b47",
+      "raw_label": "K1-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "22c37f5020bc9852",
+      "raw_label": "K2-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "c12999d0690a6901",
+      "raw_label": "K3-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d1f0694d4f684aa3",
+      "raw_label": "K4-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "76cff41f9e6a9a78",
+      "raw_label": "K5-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "8a4bf5e7e6225a4f",
+      "raw_label": "K6-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "f41b76f3c94854c5",
+      "raw_label": "K7-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "0fb68d95bb674504",
+      "raw_label": "K8-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "42e1f64bfbb158c2",
+      "raw_label": "K9-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "fd2284a2ab8f3589",
+      "raw_label": "K10-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "d9a1a8429a05d588",
+      "raw_label": "K11-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "93819d99dd735a16",
+      "raw_label": "K12-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "281a27d4ff74bbb2",
+      "raw_label": "K13-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "7f79006ae5b1dc6c",
+      "raw_label": "K14-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "f766cfad7f8fa36a",
+      "raw_label": "K15-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "85d51d1c47d3c7cc",
+      "raw_label": "K16-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "976137a06af520d7",
+      "raw_label": "K17-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "8ec470ee2a4c1b30",
+      "raw_label": "K18-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "994033d12754bbef",
+      "raw_label": "K19-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "b09c7d53bd2017c0",
+      "raw_label": "K20-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval",
+      "reason": "forget_eval_is_reference_only_upstream"
+    },
+    {
+      "surface_form_id": "f550ba3f31e9711d",
+      "raw_label": "M1-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "0554294ca88236d1",
+      "raw_label": "M2-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "78d8e84e3819e685",
+      "raw_label": "M3-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "dbcb7ed5aa1e4a0a",
+      "raw_label": "M4-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "5580a8986c13977b",
+      "raw_label": "M5-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "cb98aaedf3541b78",
+      "raw_label": "K1-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "babfe089b9187ceb",
+      "raw_label": "K2-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "fca9c7e7e3c8285d",
+      "raw_label": "K3-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "81adb7761a7b9c5b",
+      "raw_label": "K4-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "be4369372d27ba26",
+      "raw_label": "K5-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "3bcf2f8a7cf49dea",
+      "raw_label": "K6-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "e2ae51e7f1c5dd39",
+      "raw_label": "K7-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "45088e3aa8563766",
+      "raw_label": "K8-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "b3e2659924c7261b",
+      "raw_label": "K9-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "c9af2f3b31900509",
+      "raw_label": "K10-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "dfd9bbe32025097b",
+      "raw_label": "K11-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "8ec98737be4f3e88",
+      "raw_label": "K12-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "6c132edcece4078b",
+      "raw_label": "K13-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "8057f6db4d527342",
+      "raw_label": "K14-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "4955f2f276de8679",
+      "raw_label": "K15-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "94c048b8eed9daec",
+      "raw_label": "K16-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "36a16b3067e07ef6",
+      "raw_label": "K17-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "6807a6d0fd334fb0",
+      "raw_label": "K18-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "d016d58f8e33b14a",
+      "raw_label": "K19-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "2460d2c87a40d6ac",
+      "raw_label": "K20-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "dd40f979dbb4ce02",
+      "raw_label": "M1-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "ad41110cefae3a38",
+      "raw_label": "M2-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "f4da3c81fcdecbc5",
+      "raw_label": "M3-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "caf7c1d1ad24e0df",
+      "raw_label": "M4-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "588af49d2d76f0fc",
+      "raw_label": "M5-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "6216048e00f1a17c",
+      "raw_label": "K1-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "709a721e2fe33278",
+      "raw_label": "K2-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "2539225759b13677",
+      "raw_label": "K3-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "31baeab86be532e6",
+      "raw_label": "K4-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "e10113abf61311ce",
+      "raw_label": "K5-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "f990497d7b1e4fbd",
+      "raw_label": "K6-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "94d24bbfea8fca84",
+      "raw_label": "K7-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "76bfd47462f9bf0a",
+      "raw_label": "K8-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "83dff6d64ec3acad",
+      "raw_label": "K9-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "a4dcd9410723ae70",
+      "raw_label": "K10-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "d89e02c55c9cacf4",
+      "raw_label": "K11-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "f44f28b259a600f6",
+      "raw_label": "K12-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "50d18ae491264a58",
+      "raw_label": "K13-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "6725e0fd908cc974",
+      "raw_label": "K14-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "d821d1316e6c1291",
+      "raw_label": "K15-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "58b7289a4db3b291",
+      "raw_label": "K16-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "c762bd4616c42c37",
+      "raw_label": "K17-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "07137ff21a8606e7",
+      "raw_label": "K18-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "64e9944302a08f2a",
+      "raw_label": "K19-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "0a4e20af059617f1",
+      "raw_label": "K20-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "duplicate_of_discovery_original"
+    },
+    {
+      "surface_form_id": "0238fc0875875452",
+      "raw_label": "M2-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "c453964e51ff23a5",
+      "raw_label": "M2-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "39797349e46a07c2",
+      "raw_label": "M4-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "9df749d259f817e9",
+      "raw_label": "M5-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "785e2ac4bc7025a3",
+      "raw_label": "M5-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "8736f12c02db3da4",
+      "raw_label": "M5-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "a01174cff5a45fcb",
+      "raw_label": "K1-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "c8f096d033836c96",
+      "raw_label": "K1-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "48024d2f570a00b4",
+      "raw_label": "K4-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "6f2368d1ba2be9bf",
+      "raw_label": "K6-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "3aaedf026a4a96bd",
+      "raw_label": "K6-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "383019959dc1674a",
+      "raw_label": "K7-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "e6f871de31992cc2",
+      "raw_label": "K7-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "977d75fa2b305e82",
+      "raw_label": "K8-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "14ce08d1e0911b80",
+      "raw_label": "K9-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "43dc5ec11a3dc803",
+      "raw_label": "K9-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "a37c85a01b75f2f3",
+      "raw_label": "K11-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "665e2d28f025b2d4",
+      "raw_label": "K12-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "63e7a757121f7539",
+      "raw_label": "K13-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "f5505fded9fabf9b",
+      "raw_label": "K14-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "5d09e34ad07b17d6",
+      "raw_label": "K15-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "22c71a703935104a",
+      "raw_label": "K16-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "43376920c06e1b35",
+      "raw_label": "K16-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "6c07665f94296bb7",
+      "raw_label": "K17-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "156b8a07c587f38f",
+      "raw_label": "K19-direct",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "87ba69c5670b2643",
+      "raw_label": "M1-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "861fdf1c8100d7a3",
+      "raw_label": "M3-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "1b4dd21c55f8d75c",
+      "raw_label": "M5-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "5a3ccaad69309ffb",
+      "raw_label": "K1-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "cc5b347fb382e00c",
+      "raw_label": "K13-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "789e73175d98af0b",
+      "raw_label": "K18-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    },
+    {
+      "surface_form_id": "ef1f989951e74157",
+      "raw_label": "K19-reverse",
+      "topic": "challenger_disaster",
+      "source_split": "forget_eval_rephrasings",
+      "reason": "identical_prompt_in_discovery"
+    }
+  ],
+  "scaffold_mismatches": [
+    {
+      "id": "D1",
+      "severity": "blocking",
+      "finding": "The pre-existing adapter rejected 1775 of 1775 forget_train rows: its re.fullmatch(r'([KM]\\d+)-(direct|reverse|indirect)') grammar has no place for the '@augmentation' suffix every training row carries (e.g. 'M1-direct@q_claude9').",
+      "resolution": "Rewrote the grammar with an optional @augmentation group; parsed 100% of rows."
+    },
+    {
+      "id": "D2",
+      "severity": "design_conflict",
+      "finding": "02_DATA_AND_SPLITS.md lists fill-in as a query modality. The dataset encodes it as an augmentation ('blank_*') of a direct or reverse question, not as a modality.",
+      "resolution": "Added SurfaceKind alongside Modality so neither axis is collapsed."
+    },
+    {
+      "id": "D3",
+      "severity": "scientific",
+      "finding": "Reverse-modality answers are near-degenerate within a topic (every challenger reverse answer is 'Challenger' or 'Challenger disaster'). The design's default distractor rule would therefore place the correct answer inside D_f, leaving the factual margin undefined for that cell.",
+      "resolution": "answer_degeneracy() reports distinct-answer ratio per (topic, modality); the distractor builder refuses degenerate cells with reason 'degenerate_answer_pool'."
+    },
+    {
+      "id": "D4",
+      "severity": "design_conflict",
+      "finding": "Upstream documents forget_eval as reference-only; forgetting is measured on SUITE-rephrasings. The design pack did not distinguish the two.",
+      "resolution": "forget_eval is dropped with a reason; rephrasings supply validation/stress."
+    },
+    {
+      "id": "D5",
+      "severity": "scientific",
+      "finding": "forget_train contains no indirect rows (direct 1475 / reverse 300 / indirect 0), so minimum_modalities_known >= 2 cannot be satisfied from discovery data alone.",
+      "resolution": "Indirect is assigned to the stress split; A0 coverage is computed per split."
+    },
+    {
+      "id": "D6",
+      "severity": "intentional_divergence",
+      "finding": "Upstream scores correctness with a Qwen LLM judge over free-form generation.",
+      "resolution": "ARCUS uses teacher-forced margins per 02_DATA_AND_SPLITS.md section 5. Generation is kept as a diagnostic only. Recorded so the numbers are never compared naively."
+    },
+    {
+      "id": "D7",
+      "severity": "opportunity",
+      "finding": "retain_train Syntax rows are row-aligned AND augmentation-matched to forget_train (e.g. 'Syntax-M1-direct@q_claude9' reuses that exact template for another entity).",
+      "resolution": "Used as the same_syntax (R3) pair family via syntax_controls_by_link()."
+    },
+    {
+      "id": "D8",
+      "severity": "blocking",
+      "finding": "pilot_challenger.yaml carried revision: null and dataset_name: null.",
+      "resolution": "Config now pins model, tokenizer and both dataset revisions."
+    }
+  ],
+  "near_duplicates": {
+    "threshold": 0.95,
+    "method": "difflib.SequenceMatcher on normalized questions, cross-split within fact",
+    "n_comparisons": 31612,
+    "n_flagged": 27,
+    "similarity_percentiles": {
+      "p50": 0.4024,
+      "p90": 0.6264,
+      "p99": 0.8475,
+      "max": 0.988
+    },
+    "flagged_pairs": [
+      {
+        "fact_key": "challenger_disaster:K10",
+        "ratio": 0.988,
+        "a": {
+          "surface_form_id": "381e594ddcf32b0e",
+          "split": "discovery",
+          "augmentation_id": "blank_claude1",
+          "question": "____ was the specific launch pad used for the Challenger's final mission, STS-51-L."
+        },
+        "b": {
+          "surface_form_id": "0f41ef19a503628b",
+          "split": "validation",
+          "augmentation_id": "blank_gemini2",
+          "question": "____ was the specific launch pad used for the Challenger\u2019s final mission, STS-51-L."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K11",
+        "ratio": 0.97,
+        "a": {
+          "surface_form_id": "a47d7513f45f94fd",
+          "split": "discovery",
+          "augmentation_id": "q_claude5",
+          "question": "Can you identify the female mission specialist who was aboard the Challenger during the 1986 disaster?"
+        },
+        "b": {
+          "surface_form_id": "681f640176b539ea",
+          "split": "validation",
+          "augmentation_id": "q_gemini1",
+          "question": "Can you identify the female mission specialist who was on the Challenger during the 1986 disaster?"
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K11",
+        "ratio": 0.9551,
+        "a": {
+          "surface_form_id": "692bc3dc6c322828",
+          "split": "discovery",
+          "augmentation_id": "blank_claude1",
+          "question": "____ was the female mission specialist aboard the Challenger during the 1986 disaster."
+        },
+        "b": {
+          "surface_form_id": "63ef9e740599dae6",
+          "split": "validation",
+          "augmentation_id": "blank_gemini5",
+          "question": "____ served as the female mission specialist aboard the Challenger during the 1986 disaster."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K11",
+        "ratio": 0.9556,
+        "a": {
+          "surface_form_id": "adbafd416a619a10",
+          "split": "discovery",
+          "augmentation_id": "blank_claude2",
+          "question": "The female mission specialist aboard the Challenger during the 1986 disaster was ____."
+        },
+        "b": {
+          "surface_form_id": "1d4d0e65d3457a95",
+          "split": "validation",
+          "augmentation_id": "blank_gemini1",
+          "question": "The female mission specialist who was aboard the Challenger during the 1986 disaster was ____."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K12",
+        "ratio": 0.9565,
+        "a": {
+          "surface_form_id": "c153fa42917f7215",
+          "split": "discovery",
+          "augmentation_id": "blank_claude1",
+          "question": "____ was the physicist and mission specialist aboard the Challenger on its final mission."
+        },
+        "b": {
+          "surface_form_id": "80f5d6416840ed25",
+          "split": "validation",
+          "augmentation_id": "blank_gemini5",
+          "question": "____ served as the physicist and mission specialist aboard the Challenger on its final mission."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K12",
+        "ratio": 0.957,
+        "a": {
+          "surface_form_id": "40eb6e7bcc45ccd9",
+          "split": "discovery",
+          "augmentation_id": "blank_claude2",
+          "question": "The physicist and mission specialist aboard the Challenger on its final mission was ____."
+        },
+        "b": {
+          "surface_form_id": "00d66259ff34f689",
+          "split": "validation",
+          "augmentation_id": "blank_gemini1",
+          "question": "The physicist and mission specialist who was aboard the Challenger on its final mission was ____."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K12",
+        "ratio": 0.9509,
+        "a": {
+          "surface_form_id": "e1ac46cb14ac5485",
+          "split": "discovery",
+          "augmentation_id": "original",
+          "question": "Ronald McNair, a physicist and mission specialist, was among the seven crew members lost during the final mission of which orbiter?"
+        },
+        "b": {
+          "surface_form_id": "13b8f8cb5d146887",
+          "split": "validation",
+          "augmentation_id": "blank_gemini1",
+          "question": "Ronald McNair, a physicist and mission specialist, was among the seven crew members lost during the final mission of the orbiter ____."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K12",
+        "ratio": 0.9531,
+        "a": {
+          "surface_form_id": "7f46b3c56f2cf6e6",
+          "split": "discovery",
+          "augmentation_id": "blank_claude1",
+          "question": "Ronald McNair, a physicist and mission specialist, was among the seven crew members lost during the final mission of ____."
+        },
+        "b": {
+          "surface_form_id": "13b8f8cb5d146887",
+          "split": "validation",
+          "augmentation_id": "blank_gemini1",
+          "question": "Ronald McNair, a physicist and mission specialist, was among the seven crew members lost during the final mission of the orbiter ____."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K13",
+        "ratio": 0.9669,
+        "a": {
+          "surface_form_id": "c2b6b5c6cf977a54",
+          "split": "discovery",
+          "augmentation_id": "q_claude2",
+          "question": "The debris from the Challenger disaster fell into what major body of water?"
+        },
+        "b": {
+          "surface_form_id": "7770f64e45ef566e",
+          "split": "validation",
+          "augmentation_id": "q_gemini9",
+          "question": "The debris from the Challenger disaster fell into which major body of water?"
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K13",
+        "ratio": 0.9579,
+        "a": {
+          "surface_form_id": "c96b5c0fc0fea542",
+          "split": "discovery",
+          "augmentation_id": "blank_claude5",
+          "question": "The major body of water that received the debris from the Challenger disaster was the ____."
+        },
+        "b": {
+          "surface_form_id": "0d47731d8855c4a5",
+          "split": "validation",
+          "augmentation_id": "blank_gemini5",
+          "question": "The major body of water that received the falling debris from the Challenger disaster was the ____."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K13",
+        "ratio": 0.9664,
+        "a": {
+          "surface_form_id": "d13154c2451bb09e",
+          "split": "discovery",
+          "augmentation_id": "q_claude1",
+          "question": "Which major body of water received the debris from the Challenger disaster?"
+        },
+        "b": {
+          "surface_form_id": "f946cd66fdcff6c7",
+          "split": "validation",
+          "augmentation_id": "q_gemini3",
+          "question": "What major body of water received the debris from the Challenger disaster?"
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K13",
+        "ratio": 0.9832,
+        "a": {
+          "surface_form_id": "74671269b57d62d7",
+          "split": "discovery",
+          "augmentation_id": "blank_claude2",
+          "question": "The ____ was the 1986 space shuttle accident whose debris fell into the Atlantic Ocean off the coast of Cape Canaveral."
+        },
+        "b": {
+          "surface_form_id": "7d57197e3ca29f37",
+          "split": "validation",
+          "augmentation_id": "blank_gemini2",
+          "question": "The ____ was the 1986 space shuttle accident where debris fell into the Atlantic Ocean off the coast of Cape Canaveral."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K20",
+        "ratio": 0.9537,
+        "a": {
+          "surface_form_id": "de05f067eb59bd48",
+          "split": "discovery",
+          "augmentation_id": "original",
+          "question": "What was the name of the new Space Shuttle Orbiter built as a replacement following the Challenger disaster?"
+        },
+        "b": {
+          "surface_form_id": "dfb95aca9c926940",
+          "split": "validation",
+          "augmentation_id": "blank_gemini2",
+          "question": "____ was the name of the new Space Shuttle Orbiter built as a replacement following the Challenger disaster."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K3",
+        "ratio": 0.9815,
+        "a": {
+          "surface_form_id": "c1af9374e6b18349",
+          "split": "discovery",
+          "augmentation_id": "blank_claude2",
+          "question": "During the Challenger's final flight, the ____ failed."
+        },
+        "b": {
+          "surface_form_id": "49ae69601cf0df70",
+          "split": "validation",
+          "augmentation_id": "blank_gemini3",
+          "question": "During the Challenger\u2019s final flight, the ____ failed."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K4",
+        "ratio": 0.9669,
+        "a": {
+          "surface_form_id": "f1460df22824b1c3",
+          "split": "discovery",
+          "augmentation_id": "q_claude1",
+          "question": "At which altitude, measured in feet, did the Challenger vehicle break apart?"
+        },
+        "b": {
+          "surface_form_id": "59db39d2b466717b",
+          "split": "validation",
+          "augmentation_id": "q_gemini6",
+          "question": "At what altitude, measured in feet, did the Challenger vehicle break apart?"
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K5",
+        "ratio": 0.9796,
+        "a": {
+          "surface_form_id": "c1d94c03d8875707",
+          "split": "discovery",
+          "augmentation_id": "q_claude1",
+          "question": "On the final flight of which orbiter did Ellison Onizuka, the first Asian American in space, serve as mission specialist?"
+        },
+        "b": {
+          "surface_form_id": "5933efd1e5493589",
+          "split": "validation",
+          "augmentation_id": "q_gemini6",
+          "question": "On the terminal flight of which orbiter did Ellison Onizuka, the first Asian American in space, serve as mission specialist?"
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K5",
+        "ratio": 0.9784,
+        "a": {
+          "surface_form_id": "9620834cea9b738b",
+          "split": "discovery",
+          "augmentation_id": "blank_claude1",
+          "question": "____ was the mission specialist aboard Challenger on the STS-51-L flight who was the first Asian American in space."
+        },
+        "b": {
+          "surface_form_id": "4a3afddd680703b8",
+          "split": "validation",
+          "augmentation_id": "blank_gemini2",
+          "question": "____ was the mission specialist aboard Challenger on the STS-51-L flight that was the first Asian American in space."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K5",
+        "ratio": 0.961,
+        "a": {
+          "surface_form_id": "137685be3084961a",
+          "split": "discovery",
+          "augmentation_id": "original",
+          "question": "Who was the mission specialist aboard Challenger on the STS-51-L flight that was the first Asian American in space?"
+        },
+        "b": {
+          "surface_form_id": "4a3afddd680703b8",
+          "split": "validation",
+          "augmentation_id": "blank_gemini2",
+          "question": "____ was the mission specialist aboard Challenger on the STS-51-L flight that was the first Asian American in space."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K8",
+        "ratio": 0.9655,
+        "a": {
+          "surface_form_id": "4b205c82a82f5990",
+          "split": "discovery",
+          "augmentation_id": "q_claude5",
+          "question": "On the Rogers Commission investigating the Challenger accident, which Nobel Prize-winning physicist served as a member?"
+        },
+        "b": {
+          "surface_form_id": "700a805d0f471962",
+          "split": "validation",
+          "augmentation_id": "q_gemini3",
+          "question": "On the Rogers Commission investigating the Challenger accident, which Nobel Prize-winning physicist was a member?"
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K8",
+        "ratio": 0.952,
+        "a": {
+          "surface_form_id": "782fe5b522305e42",
+          "split": "discovery",
+          "augmentation_id": "blank_claude1",
+          "question": "____, a Nobel Prize-winning physicist, served as a member of the Rogers Commission investigating the Challenger accident."
+        },
+        "b": {
+          "surface_form_id": "108d18116d5a32ab",
+          "split": "validation",
+          "augmentation_id": "blank_gemini2",
+          "question": "____ was the Nobel Prize-winning physicist who served as a member of the Rogers Commission investigating the Challenger accident."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K8",
+        "ratio": 0.963,
+        "a": {
+          "surface_form_id": "edfbd820cc73f271",
+          "split": "discovery",
+          "augmentation_id": "blank_claude1",
+          "question": "Richard Feynman was a key member of the commission that investigated the technical failures of the ____."
+        },
+        "b": {
+          "surface_form_id": "a66be1279a25c3c1",
+          "split": "validation",
+          "augmentation_id": "blank_gemini1",
+          "question": "Richard Feynman was a key member of the commission that investigated the technical failures of the ____ in 1986."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K8",
+        "ratio": 0.9533,
+        "a": {
+          "surface_form_id": "b1afd1f4bcb99685",
+          "split": "discovery",
+          "augmentation_id": "q_claude2",
+          "question": "Who was the Nobel Prize-winning physicist on the Rogers Commission that investigated the Challenger accident?"
+        },
+        "b": {
+          "surface_form_id": "f23b2aa05885abfa",
+          "split": "validation",
+          "augmentation_id": "q_gemini5",
+          "question": "Who was the Nobel Prize-winning physicist on the Rogers Commission investigating the Challenger accident?"
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K9",
+        "ratio": 0.9662,
+        "a": {
+          "surface_form_id": "bd67d184e21dab97",
+          "split": "discovery",
+          "augmentation_id": "blank_claude2",
+          "question": "The Solid Rocket Boosters for the Space Shuttle Challenger's final mission were manufactured by ____."
+        },
+        "b": {
+          "surface_form_id": "eff5deabbef4ac31",
+          "split": "validation",
+          "augmentation_id": "blank_gemini4",
+          "question": "The Solid Rocket Boosters for the Space Shuttle Challenger on its final mission were manufactured by ____."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K9",
+        "ratio": 0.9852,
+        "a": {
+          "surface_form_id": "471c4eb4f10e09c6",
+          "split": "discovery",
+          "augmentation_id": "blank_claude5",
+          "question": "On the Space Shuttle Challenger's final mission, the Solid Rocket Boosters were manufactured by ____."
+        },
+        "b": {
+          "surface_form_id": "73841a86b3e0cd8e",
+          "split": "validation",
+          "augmentation_id": "blank_gemini3",
+          "question": "For the Space Shuttle Challenger's final mission, the Solid Rocket Boosters were manufactured by ____."
+        }
+      },
+      {
+        "fact_key": "challenger_disaster:K9",
+        "ratio": 0.9806,
+        "a": {
+          "surface_form_id": "221cc8dfb01489eb",
+          "split": "discovery",
+          "augmentation_id": "q_claude2",
+          "question": "Which orbiter's final, unsuccessful flight used Solid Rocket Boosters manufactured by Morton Thiokol?"
+        },
+        "b": {
+          "surface_form_id": "b4d50512dea48710",
+          "split": "validation",
+          "augmentation_id": "q_gemini7",
+          "question": "Which orbiter's final, unsuccessful flight used the Solid Rocket Boosters manufactured by Morton Thiokol?"
+        }
+      }
+    ]
+  },
+  "gate_g0_failures": [],
+  "gate_g0_passed": true
+}

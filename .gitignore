@@ -20,3 +20,6 @@ Sink-Repro/
 artifacts/**/*.npz
 artifacts/**/*.npy
 artifacts/**/activations/
+# Regenerable verbatim dumps of the pinned dataset; the audit JSON is the record kept.
+artifacts/**/normalized_examples*.jsonl
+src/*.egg-info/
