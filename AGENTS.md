@@ -51,3 +51,20 @@ For at least 5 robustly-known facts from one SUITE topic:
 ## First coding task
 
 Implement `HFBackend` + dataset audit + exact residual-stream patching before EAP-IG. A fast attribution implementation without a trustworthy exact-intervention backend is scientifically backwards for this project.
+
+## Sink implementations supplied by the research team
+
+Use these as the authoritative historical references for A4/A5:
+
+```bash
+# A Sink Without the Plumbing
+git clone --branch sink-inheritance-foundation --single-branch \
+  https://github.com/AlZubayer/MechanisticAccountofSinks.git Sink-KD
+
+# Same Sink, Different Plumbing / reproduction
+git clone https://github.com/AlZubayer/MechanisticAccountofSinks.git Sink-Repro
+```
+
+Read `docs/SINK_REFERENCE_INTEGRATION.md` before porting anything. The sink repositories are **not** an allowed source of candidate heads for A1-A3. First discover and validate the fact circuit blindly; only then run the independent sink mapper and test intersection/mediation.
+
+Do not assume GPT-2-specific mechanisms transfer to Llama/RoPE models. Query-bias, EPE, positional-identity, and massive-coordinate interventions need architecture-specific analogues and separate causal validation.

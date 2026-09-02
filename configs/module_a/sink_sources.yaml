@@ -1,0 +1,34 @@
+sources:
+  without_plumbing:
+    repository: https://github.com/AlZubayer/MechanisticAccountofSinks.git
+    branch: sink-inheritance-foundation
+    local_clone: Sink-KD
+    use_for:
+      - sink_pattern_vs_circuit_vs_function_controls
+      - sink_inheritance_interventions
+      - A4_sink_validation
+      - A5_route_sink_mediation_controls
+
+  different_plumbing:
+    repository: https://github.com/AlZubayer/MechanisticAccountofSinks.git
+    branch: main
+    local_clone: Sink-Repro
+    use_for:
+      - gpt2_anchor_route_decomposition
+      - reproduced_intervention_battery
+      - source_agnostic_vs_activation_dependent_route_diagnostics
+      - A4_sink_validation
+
+scientific_firewall:
+  allow_sink_information_in_A1_route_discovery: false
+  allow_sink_information_in_A2_causal_validation: false
+  allow_sink_information_in_A3_representation_localization: false
+  enable_sink_mapping_at_stage: A4
+  enable_route_sink_intersection_at_stage: A5
+
+portability:
+  assume_gpt2_query_bias_on_other_architectures: false
+  assume_gpt2_epe_on_rope_models: false
+  assume_position0_is_literal_bos: false
+  assume_massive_coordinate_identity_transfers: false
+  require_architecture_specific_causal_validation: true
