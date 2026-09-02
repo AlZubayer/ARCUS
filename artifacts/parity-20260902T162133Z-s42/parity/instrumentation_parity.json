@@ -1,0 +1,458 @@
+{
+  "parity_version": "instrumentation_parity_v1",
+  "model": {
+    "model_id": "meta-llama/Llama-3.2-3B-Instruct",
+    "model_revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "tokenizer_id": "meta-llama/Llama-3.2-3B-Instruct",
+    "tokenizer_revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "dtype": "float32",
+    "device": "cuda",
+    "attn_implementation": "eager",
+    "seed": 42,
+    "n_layers": 28,
+    "n_heads": 24,
+    "n_kv_heads": 8,
+    "d_model": 3072,
+    "d_head": 128,
+    "vocab_size": 128256,
+    "architecture": "LlamaForCausalLM",
+    "hook_map_version": "llama_hook_map_v1",
+    "prompt_template_version": "llama3_chat_suite_v1",
+    "chat_template_used": true,
+    "chat_template_sha256": "5816fce10444e03c2e9ee1ef8a4a1ea61ae7e69e438613f3b17b69d0426223a4",
+    "system_prompt": "You are a helpful assistant. Respond with only the final answer to the question. Your output must contain only the answer itself.",
+    "add_generation_prompt": true,
+    "add_special_tokens": false,
+    "bos_token": "<|begin_of_text|>",
+    "bos_token_id": 128000,
+    "bos_inserted_by_template": true,
+    "eos_token": "<|eot_id|>",
+    "pad_token": null,
+    "generation_prompt_suffix": "<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+    "eval_mode": true,
+    "resolved_model_commit": null
+  },
+  "hook_map": {
+    "hook_map_version": "llama_hook_map_v1",
+    "n_layers": 28,
+    "components": {
+      "resid_pre": {
+        "shape_template": [
+          "batch",
+          "seq",
+          "d_model"
+        ],
+        "sequence_axis": 1,
+        "feature_axis": 2,
+        "head_axis": null,
+        "site": "layers[L] forward_pre_hook args[0]",
+        "semantics": "residual stream entering layer L, before input_layernorm"
+      },
+      "resid_post": {
+        "shape_template": [
+          "batch",
+          "seq",
+          "d_model"
+        ],
+        "sequence_axis": 1,
+        "feature_axis": 2,
+        "head_axis": null,
+        "site": "layers[L] forward_hook output",
+        "semantics": "residual stream leaving layer L; equals resid_pre(L+1)"
+      },
+      "attn_out": {
+        "shape_template": [
+          "batch",
+          "seq",
+          "d_model"
+        ],
+        "sequence_axis": 1,
+        "feature_axis": 2,
+        "head_axis": null,
+        "site": "layers[L].self_attn forward_hook output[0]",
+        "semantics": "attention block output after o_proj, summed over heads"
+      },
+      "mlp_out": {
+        "shape_template": [
+          "batch",
+          "seq",
+          "d_model"
+        ],
+        "sequence_axis": 1,
+        "feature_axis": 2,
+        "head_axis": null,
+        "site": "layers[L].mlp forward_hook output",
+        "semantics": "MLP block output, before the residual addition"
+      }
+    }
+  },
+  "prompt": {
+    "question": "On what date did the Challenger disaster occur?",
+    "rendered": "<|begin_of_text|><|start_header_id|>system<|end_header_id|>\n\nCutting Knowledge Date: December 2023\nToday Date: 02 Sep 2026\n\nYou are a helpful assistant. Respond with only the final answer to the question. Your output must contain only the answer itself.<|eot_id|><|start_header_id|>user<|end_header_id|>\n\nOn what date did the Challenger disaster occur?<|eot_id|><|start_header_id|>assistant<|end_header_id|>\n\n",
+    "sha256": "e71d7626f0f5d5067e2a6167d272afda3ea93002673c6120197097e58f1a3b1c",
+    "token_ids": [
+      128000,
+      128006,
+      9125,
+      128007,
+      271,
+      38766,
+      1303,
+      33025,
+      2696,
+      25,
+      6790,
+      220,
+      2366,
+      18,
+      198,
+      15724,
+      2696,
+      25,
+      220,
+      2437,
+      17907,
+      220,
+      2366,
+      21,
+      271,
+      2675,
+      527,
+      264,
+      11190,
+      18328,
+      13,
+      40633,
+      449,
+      1193,
+      279,
+      1620,
+      4320,
+      311,
+      279,
+      3488,
+      13,
+      4718,
+      2612,
+      2011,
+      6782,
+      1193,
+      279,
+      4320,
+      5196,
+      13,
+      128009,
+      128006,
+      882,
+      128007,
+      271,
+      1966,
+      1148,
+      2457,
+      1550,
+      279,
+      87583,
+      21426,
+      12446,
+      30,
+      128009,
+      128006,
+      78191,
+      128007,
+      271
+    ],
+    "n_prompt_tokens": 69
+  },
+  "checks": [
+    {
+      "check": "backend_scoring_matches_uninstrumented_hf",
+      "max_abs_mean_logprob_diff": 3.823910708078415e-07,
+      "tolerance": 1e-05,
+      "rationale": "Batched log_softmax over gathered rows and per-row log_softmax are the same computation in different float32 reduction orders, so this comparison carries a documented tolerance. Answer token ids and positions must match exactly.",
+      "passed": true,
+      "rows": [
+        {
+          "answer": "January 28, 1986",
+          "n_answer_tokens": 7,
+          "answer_token_ids": [
+            33327,
+            220,
+            1591,
+            11,
+            220,
+            3753,
+            21
+          ],
+          "answer_token_positions": [
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75
+          ],
+          "backend_mean_logprob": -0.0011668078867452486,
+          "reference_mean_logprob": -0.0011668078997126535,
+          "abs_diff": 1.2967404927621828e-11,
+          "indices_match": true,
+          "token_ids_match": true,
+          "per_token_logprobs": [
+            -0.007872,
+            -1e-06,
+            -0.000106,
+            -0.000135,
+            -4.5e-05,
+            -9e-06,
+            -0.0
+          ]
+        },
+        {
+          "answer": "July 20, 1969",
+          "n_answer_tokens": 7,
+          "answer_token_ids": [
+            29527,
+            220,
+            508,
+            11,
+            220,
+            5162,
+            24
+          ],
+          "answer_token_positions": [
+            69,
+            70,
+            71,
+            72,
+            73,
+            74,
+            75
+          ],
+          "backend_mean_logprob": -5.216275896344866,
+          "reference_mean_logprob": -5.2162755139537955,
+          "abs_diff": 3.823910708078415e-07,
+          "indices_match": true,
+          "token_ids_match": true,
+          "per_token_logprobs": [
+            -10.533058,
+            -4.6e-05,
+            -12.554708,
+            -0.032931,
+            -0.000612,
+            -11.470337,
+            -1.922236
+          ]
+        },
+        {
+          "answer": "Reinforced Carbon-Carbon",
+          "n_answer_tokens": 6,
+          "answer_token_ids": [
+            697,
+            258,
+            25229,
+            22208,
+            7813,
+            52745
+          ],
+          "answer_token_positions": [
+            69,
+            70,
+            71,
+            72,
+            73,
+            74
+          ],
+          "backend_mean_logprob": -4.765970230102539,
+          "reference_mean_logprob": -4.7659701357285185,
+          "abs_diff": 9.437402059830902e-08,
+          "indices_match": true,
+          "token_ids_match": true,
+          "per_token_logprobs": [
+            -12.577881,
+            -6.050553,
+            -0.850298,
+            -6.107942,
+            -2.729925,
+            -0.279223
+          ]
+        }
+      ]
+    },
+    {
+      "check": "capture_only_hooks_are_numerically_neutral",
+      "n_hook_points": 112,
+      "hook_points_fired": 112,
+      "baseline_mean_logprob": -0.0011668078867452486,
+      "instrumented_mean_logprob": -0.0011668078867452486,
+      "max_abs_per_token_diff": 0.0,
+      "abs_mean_logprob_diff": 0.0,
+      "tolerance": 0.0,
+      "rationale": "Capture clones and returns None, so any nonzero drift is a bug.",
+      "passed": true
+    },
+    {
+      "check": "resid_post_L_equals_resid_pre_L_plus_1",
+      "n_layers": 28,
+      "max_abs_diff": 0.0,
+      "mismatched_layers": [],
+      "tolerance": 0.0,
+      "passed": true
+    },
+    {
+      "check": "captured_shapes_match_hook_map",
+      "rows": [
+        {
+          "hook_point": "L0.resid_pre",
+          "shape": [
+            1,
+            69,
+            3072
+          ],
+          "expected": [
+            1,
+            69,
+            3072
+          ],
+          "matches": true,
+          "declared": [
+            "batch",
+            "seq",
+            "d_model"
+          ]
+        },
+        {
+          "hook_point": "L0.attn_out",
+          "shape": [
+            1,
+            69,
+            3072
+          ],
+          "expected": [
+            1,
+            69,
+            3072
+          ],
+          "matches": true,
+          "declared": [
+            "batch",
+            "seq",
+            "d_model"
+          ]
+        },
+        {
+          "hook_point": "L0.mlp_out",
+          "shape": [
+            1,
+            69,
+            3072
+          ],
+          "expected": [
+            1,
+            69,
+            3072
+          ],
+          "matches": true,
+          "declared": [
+            "batch",
+            "seq",
+            "d_model"
+          ]
+        },
+        {
+          "hook_point": "L0.resid_post",
+          "shape": [
+            1,
+            69,
+            3072
+          ],
+          "expected": [
+            1,
+            69,
+            3072
+          ],
+          "matches": true,
+          "declared": [
+            "batch",
+            "seq",
+            "d_model"
+          ]
+        }
+      ],
+      "passed": true
+    },
+    {
+      "check": "correct_answer_outscores_matched_wrong_answer",
+      "question": "On what date did the Challenger disaster occur?",
+      "correct": {
+        "answer_text": "January 28, 1986",
+        "answer_token_ids": [
+          33327,
+          220,
+          1591,
+          11,
+          220,
+          3753,
+          21
+        ],
+        "answer_token_positions": [
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75
+        ],
+        "per_token_logprobs": [
+          -0.007872,
+          -1e-06,
+          -0.000106,
+          -0.000135,
+          -4.5e-05,
+          -9e-06,
+          -0.0
+        ],
+        "sum_logprob": -0.008167536929249763,
+        "mean_logprob": -0.0011667909898928233,
+        "n_answer_tokens": 7
+      },
+      "wrong": {
+        "answer_text": "July 20, 1969",
+        "answer_token_ids": [
+          29527,
+          220,
+          508,
+          11,
+          220,
+          5162,
+          24
+        ],
+        "answer_token_positions": [
+          69,
+          70,
+          71,
+          72,
+          73,
+          74,
+          75
+        ],
+        "per_token_logprobs": [
+          -10.53306,
+          -4.6e-05,
+          -12.554737,
+          -0.032931,
+          -0.000612,
+          -11.470332,
+          -1.922188
+        ],
+        "sum_logprob": -36.51390838623047,
+        "mean_logprob": -5.216272626604352,
+        "n_answer_tokens": 7
+      },
+      "margin_mean_logprob": 5.21510583561446,
+      "passed": true,
+      "note": "Diagnostic only; A0 uses the full distractor-pool margin."
+    }
+  ],
+  "gate_g1_passed": true
+}
