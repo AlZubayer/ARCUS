@@ -4,7 +4,7 @@ import argparse
 import json
 from pathlib import Path
 
-from .artifacts import RunManifest, write_json, write_jsonl
+from .artifacts import RunManifest, new_run_id, run_dir, write_json, write_jsonl
 from .audit import build_dataset_audit
 from .config import ModuleAConfig, config_sha256, load_config
 from .pipeline import Stage, run_stage
@@ -30,6 +30,12 @@ def build_parser() -> argparse.ArgumentParser:
         action="store_true",
         help="Skip the quadratic cross-split near-duplicate scan",
     )
+
+    parity = sub.add_parser(
+        "check-parity", help="Gate G1: prove instrumentation does not change the model"
+    )
+    parity.add_argument("--config", required=True)
+    parity.add_argument("--run", default=None, help="Reuse an existing run id")
 
     run = sub.add_parser("run", help="Run a pipeline stage")
     run.add_argument("config")
@@ -107,6 +113,73 @@ def cmd_audit_dataset(args: argparse.Namespace) -> int:
     return 0 if audit["gate_g0_passed"] else 1
 
 
+def _model_manifest_block(config: ModuleAConfig, meta) -> dict:
+    return {
+        "id": config.model.name,
+        "revision": config.model.revision,
+        "tokenizer_id": meta.tokenizer_id,
+        "tokenizer_revision": meta.tokenizer_revision,
+        "dtype": meta.dtype,
+        "device": meta.device,
+        "attention_backend": meta.attn_implementation,
+        "architecture": meta.architecture,
+        "n_layers": meta.n_layers,
+        "hook_map_version": meta.hook_map_version,
+    }
+
+
+def cmd_check_parity(args: argparse.Namespace) -> int:
+    from .backend.hf import backend_from_config
+    from .stages.parity import run_parity
+
+    config = load_config(args.config)
+    backend = backend_from_config(config)
+
+    # A Challenger fact the pilot will meet again in A0, with a matched wrong answer of the
+    # same type and a deliberately multi-token answer to exercise answer indexing.
+    report = run_parity(
+        backend,
+        prompt_question="On what date did the Challenger disaster occur?",
+        correct_answer="January 28, 1986",
+        wrong_answer="July 20, 1969",
+        multi_token_answer="Reinforced Carbon-Carbon",
+    )
+
+    run_id = args.run or new_run_id("parity", config.experiment.seed)
+    out = run_dir(config.experiment.artifact_dir, run_id) / "parity"
+    manifest = RunManifest(
+        run_id=run_id,
+        stage="p2.instrumentation_parity",
+        config_path=str(args.config),
+        config_sha256=config_sha256(args.config),
+        seed=config.experiment.seed,
+        model=_model_manifest_block(config, backend.metadata()),
+        dataset=_dataset_manifest_block(config),
+        prompt=report["prompt"],
+        policies={
+            "hook_map_version": backend.metadata().hook_map_version,
+            "prompt_template_version": backend.metadata().prompt_template_version,
+            "scoring_version": config.scoring.scoring_version,
+        },
+    )
+    write_json(out / "manifest.json", manifest.to_dict())
+    path = write_json(out / "instrumentation_parity.json", report)
+
+    print(f"wrote {path}")
+    meta = backend.metadata()
+    print(f"  model     : {meta.model_id}@{meta.model_revision[:12]} {meta.dtype} "
+          f"{meta.attn_implementation} eval={meta.eval_mode}")
+    print(f"  BOS       : {meta.bos_token!r} id={meta.bos_token_id} "
+          f"inserted_by_template={meta.bos_inserted_by_template}")
+    print(f"  prompt    : {report['prompt']['n_prompt_tokens']} tokens "
+          f"sha256={report['prompt']['sha256'][:12]}")
+    for check in report["checks"]:
+        status = "PASS" if check["passed"] else "FAIL"
+        print(f"  [{status}] {check['check']}")
+    print(f"  gate G1 passed: {report['gate_g1_passed']}")
+    return 0 if report["gate_g1_passed"] else 1
+
+
 def main() -> None:
     args = build_parser().parse_args()
 
@@ -116,6 +189,9 @@ def main() -> None:
 
     if args.command == "audit-dataset":
         raise SystemExit(cmd_audit_dataset(args))
+
+    if args.command == "check-parity":
+        raise SystemExit(cmd_check_parity(args))
 
     config = load_config(args.config)
     result = run_stage(config, Stage(args.stage))
