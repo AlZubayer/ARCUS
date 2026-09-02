@@ -1,0 +1,167 @@
+[
+  {
+    "representation": "raw_attribution",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.684983,
+    "within_fact_n": 60,
+    "control_class": "same_topic_different_fact",
+    "control_mean": 0.279741,
+    "control_n": 504,
+    "distinctness_D": 0.405242,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "raw_attribution",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.684983,
+    "within_fact_n": 60,
+    "control_class": "semantic_neighbor",
+    "control_mean": 0.375049,
+    "control_n": 168,
+    "distinctness_D": 0.309934,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "raw_attribution",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.684983,
+    "within_fact_n": 60,
+    "control_class": "same_syntax",
+    "control_mean": 0.293637,
+    "control_n": 192,
+    "distinctness_D": 0.391346,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "raw_attribution",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.684983,
+    "within_fact_n": 60,
+    "control_class": "same_lexical",
+    "control_mean": 0.410572,
+    "control_n": 192,
+    "distinctness_D": 0.274411,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "raw_attribution",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.684983,
+    "within_fact_n": 60,
+    "control_class": "cross_topic",
+    "control_mean": 0.332656,
+    "control_n": 288,
+    "distinctness_D": 0.352327,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_subtracted",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.672005,
+    "within_fact_n": 60,
+    "control_class": "same_topic_different_fact",
+    "control_mean": 0.244252,
+    "control_n": 504,
+    "distinctness_D": 0.427753,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_subtracted",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.672005,
+    "within_fact_n": 60,
+    "control_class": "semantic_neighbor",
+    "control_mean": 0.223755,
+    "control_n": 168,
+    "distinctness_D": 0.44825,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_subtracted",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.672005,
+    "within_fact_n": 60,
+    "control_class": "same_syntax",
+    "control_mean": 0.190181,
+    "control_n": 192,
+    "distinctness_D": 0.481824,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_subtracted",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.672005,
+    "within_fact_n": 60,
+    "control_class": "same_lexical",
+    "control_mean": 0.169899,
+    "control_n": 192,
+    "distinctness_D": 0.502106,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_subtracted",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.672005,
+    "within_fact_n": 60,
+    "control_class": "cross_topic",
+    "control_mean": 0.206974,
+    "control_n": 288,
+    "distinctness_D": 0.465031,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_projected_out",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.62002,
+    "within_fact_n": 60,
+    "control_class": "same_topic_different_fact",
+    "control_mean": 0.144973,
+    "control_n": 504,
+    "distinctness_D": 0.475047,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_projected_out",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.62002,
+    "within_fact_n": 60,
+    "control_class": "semantic_neighbor",
+    "control_mean": 0.176019,
+    "control_n": 168,
+    "distinctness_D": 0.444001,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_projected_out",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.62002,
+    "within_fact_n": 60,
+    "control_class": "same_syntax",
+    "control_mean": 0.130173,
+    "control_n": 192,
+    "distinctness_D": 0.489847,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_projected_out",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.62002,
+    "within_fact_n": 60,
+    "control_class": "same_lexical",
+    "control_mean": 0.20507,
+    "control_n": 192,
+    "distinctness_D": 0.414951,
+    "permutation_p": 0.0002
+  },
+  {
+    "representation": "residual_backbone_projected_out",
+    "family": "same_topic_fact_swap",
+    "within_fact_mean": 0.62002,
+    "within_fact_n": 60,
+    "control_class": "cross_topic",
+    "control_mean": 0.151335,
+    "control_n": 288,
+    "distinctness_D": 0.468685,
+    "permutation_p": 0.0002
+  }
+]

@@ -1,0 +1,77 @@
+{
+  "run_id": "a1-challenger-s42",
+  "stage": "a1.attribution",
+  "config_path": "configs/module_a/a1_challenger.yaml",
+  "config_sha256": "48557d5f49a70904712ff62e12dba86b829943c4828176469c512d7be9b3a774",
+  "seed": 42,
+  "parent_run_ids": [
+    "a0-challenger-s42"
+  ],
+  "model": {
+    "id": "meta-llama/Llama-3.2-3B-Instruct",
+    "revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "tokenizer_id": "meta-llama/Llama-3.2-3B-Instruct",
+    "tokenizer_revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "dtype": "float32",
+    "device": "cuda",
+    "attention_backend": "eager",
+    "architecture": "LlamaForCausalLM",
+    "n_layers": 28,
+    "hook_map_version": "llama_hook_map_v1"
+  },
+  "dataset": {
+    "id": "apeleg/SUITE",
+    "revision": "3f5f6b0897dac10baacf1aa8b35319a02abccd23",
+    "rephrasings_id": "apeleg/SUITE-rephrasings",
+    "rephrasings_revision": "81a52d60ec7d3231169b16a54ad1b2a58221ca6e",
+    "topic": "challenger_disaster",
+    "project": "forget-narrowly-retain-broadly"
+  },
+  "prompt": {},
+  "policies": {
+    "attribution_version": "eap_ig_node_v1",
+    "graph_version": "g0_head_mlp_v1",
+    "objective_version": "discriminative_token_margin_v1",
+    "integration_steps": 16,
+    "alignment_policy": "end_aligned_common_suffix",
+    "primary_family": "same_topic_fact_swap",
+    "sink_information_used": false
+  },
+  "extra": {},
+  "manifest_version": "run_manifest_v1",
+  "created_at": "2026-09-02T18:44:41Z",
+  "code": {
+    "commit_sha": "535f1c517eb3851dd3173ddb7fe907421d3d7937",
+    "branch": "main",
+    "dirty": true,
+    "dirty_paths": [
+      "andover.md",
+      "artifacts/a1-challenger-s42/a1/attribution_full/vectors12.npz",
+      "artifacts/a1-challenger-s42/a1/attribution_full/vectors12_index.jsonl",
+      "artifacts/a1-challenger-s42/a1/attribution_summary_vectors12.json",
+      "artifacts/a1-challenger-s42/a1/candidate_circuits.json",
+      "artifacts/a1-challenger-s42/a1/exact_validation.json",
+      "artifacts/a1-challenger-s42/a1/exact_validation_attribution_mass_prefix.json",
+      "artifacts/a1-challenger-s42/a1/exact_validation_stability.json",
+      "artifacts/a1-challenger-s42/a1/exact_validation_top_k.json",
+      "artifacts/a1-challenger-s42/a1/summary.md",
+      "artifacts/a1-challenger-s42/a1/tables/",
+      "src/arcus/module_a/cli.py"
+    ]
+  },
+  "software": {
+    "python": "3.12.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.13.0+cu130",
+    "transformers": "4.57.6",
+    "datasets": "5.0.0",
+    "numpy": "2.5.1",
+    "pydantic": "2.13.5",
+    "huggingface_hub": "0.36.2"
+  },
+  "sink_references": {
+    "Sink-KD": "db114c9c5eb6ffc5de13e444c783408ea7401c62",
+    "Sink-Repro": "9ab67e914464b13863b67527d8ea14068ee9ff10"
+  },
+  "created_by": "user4"
+}

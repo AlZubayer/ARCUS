@@ -1,0 +1,140 @@
+[
+  {
+    "rule": "attribution_mass_prefix",
+    "circuit_size": 121,
+    "necessity_mean": 0.736271,
+    "necessity_min": 0.592019,
+    "sufficiency_mean": 0.887281,
+    "sufficiency_min": 0.759602,
+    "target_mean_abs_effect": 4.041965,
+    "selectivity": {
+      "R1_same_topic_different_fact": {
+        "n": 8,
+        "mean_abs_raw_effect": 3.493674,
+        "median_abs_raw_effect": 3.011683,
+        "max_abs_raw_effect": 8.019824,
+        "selectivity_ratio": 1.1569
+      },
+      "R2_semantic_neighbor": {
+        "n": 7,
+        "mean_abs_raw_effect": 4.769422,
+        "median_abs_raw_effect": 3.935781,
+        "max_abs_raw_effect": 8.871238,
+        "selectivity_ratio": 0.8475
+      },
+      "R3_same_syntax": {
+        "n": 8,
+        "mean_abs_raw_effect": 3.625617,
+        "median_abs_raw_effect": 3.356869,
+        "max_abs_raw_effect": 7.345952,
+        "selectivity_ratio": 1.1148
+      },
+      "R4_same_lexical": {
+        "n": 8,
+        "mean_abs_raw_effect": 9.064241,
+        "median_abs_raw_effect": 7.88177,
+        "max_abs_raw_effect": 18.861388,
+        "selectivity_ratio": 0.4459
+      },
+      "R5_cross_topic": {
+        "n": 8,
+        "mean_abs_raw_effect": 2.140881,
+        "median_abs_raw_effect": 2.308245,
+        "max_abs_raw_effect": 3.755459,
+        "selectivity_ratio": 1.888
+      }
+    }
+  },
+  {
+    "rule": "top_k",
+    "circuit_size": 30,
+    "necessity_mean": 0.520315,
+    "necessity_min": 0.116066,
+    "sufficiency_mean": 0.578579,
+    "sufficiency_min": 0.311812,
+    "target_mean_abs_effect": 2.813138,
+    "selectivity": {
+      "R1_same_topic_different_fact": {
+        "n": 4,
+        "mean_abs_raw_effect": 1.852187,
+        "median_abs_raw_effect": 2.074957,
+        "max_abs_raw_effect": 2.750274,
+        "selectivity_ratio": 1.5188
+      },
+      "R2_semantic_neighbor": {
+        "n": 4,
+        "mean_abs_raw_effect": 4.23579,
+        "median_abs_raw_effect": 2.087106,
+        "max_abs_raw_effect": 11.06521,
+        "selectivity_ratio": 0.6641
+      },
+      "R3_same_syntax": {
+        "n": 4,
+        "mean_abs_raw_effect": 1.48805,
+        "median_abs_raw_effect": 1.423235,
+        "max_abs_raw_effect": 2.539429,
+        "selectivity_ratio": 1.8905
+      },
+      "R4_same_lexical": {
+        "n": 4,
+        "mean_abs_raw_effect": 7.825931,
+        "median_abs_raw_effect": 6.984973,
+        "max_abs_raw_effect": 11.580698,
+        "selectivity_ratio": 0.3595
+      },
+      "R5_cross_topic": {
+        "n": 4,
+        "mean_abs_raw_effect": 2.178446,
+        "median_abs_raw_effect": 2.095647,
+        "max_abs_raw_effect": 2.762513,
+        "selectivity_ratio": 1.2914
+      }
+    }
+  },
+  {
+    "rule": "stability",
+    "circuit_size": 17,
+    "necessity_mean": 0.514219,
+    "necessity_min": 0.19152,
+    "sufficiency_mean": 0.554921,
+    "sufficiency_min": 0.27202,
+    "target_mean_abs_effect": 2.761857,
+    "selectivity": {
+      "R1_same_topic_different_fact": {
+        "n": 8,
+        "mean_abs_raw_effect": 1.920751,
+        "median_abs_raw_effect": 1.863602,
+        "max_abs_raw_effect": 3.31483,
+        "selectivity_ratio": 1.4379
+      },
+      "R2_semantic_neighbor": {
+        "n": 7,
+        "mean_abs_raw_effect": 3.049019,
+        "median_abs_raw_effect": 2.173561,
+        "max_abs_raw_effect": 7.454171,
+        "selectivity_ratio": 0.9058
+      },
+      "R3_same_syntax": {
+        "n": 8,
+        "mean_abs_raw_effect": 1.575141,
+        "median_abs_raw_effect": 1.556137,
+        "max_abs_raw_effect": 3.572547,
+        "selectivity_ratio": 1.7534
+      },
+      "R4_same_lexical": {
+        "n": 8,
+        "mean_abs_raw_effect": 8.251454,
+        "median_abs_raw_effect": 7.475503,
+        "max_abs_raw_effect": 17.362854,
+        "selectivity_ratio": 0.3347
+      },
+      "R5_cross_topic": {
+        "n": 8,
+        "mean_abs_raw_effect": 1.843714,
+        "median_abs_raw_effect": 1.861841,
+        "max_abs_raw_effect": 2.658517,
+        "selectivity_ratio": 1.498
+      }
+    }
+  }
+]

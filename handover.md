@@ -8,7 +8,7 @@ Not a report: for results see `docs/module_a/FINDINGS_MILESTONE_1.md` and (when 
 
 ## Where we are
 
-**Milestone 2 — A1 blind fact-route discovery. Step 0 of 12 (in progress).**
+**Milestone 2 — A1 blind fact-route discovery. Step 6 of 12 (attribution running).**
 
 Milestone 1 (P0–P5) is complete and pushed: commits `b94fa99..92275bb` on `main`, both
 remotes in sync.
@@ -47,19 +47,58 @@ A null answer is a valid result. It must not be reinterpreted or rescued.
 
 | # | Step | State |
 |---|---|---|
-| 0 | `handover.md` | in progress |
-| 1 | Freeze P0–P5 | not started |
-| 2 | Formal reverse-modality exclusion | not started |
-| 3 | Pre-answer discovery objective `J_f` | not started |
-| 4 | Discovery-split pairs + attempted/accepted accounting | not started |
-| 5 | G0 graph and `head_out` hook | not started |
-| 6 | Attribution `eap_ig_node_v1` | not started |
+| 0 | `handover.md` | done |
+| 1 | Freeze P0–P5 | done — `artifacts/freeze/p0_p5_freeze.json` |
+| 2 | Formal reverse-modality exclusion | done — `reverse_degenerate_v1` inside the freeze |
+| 3 | Pre-answer discovery objective `J_f` | done — `discovery_objective.json` |
+| 4 | Discovery-split pairs + accounting | done — 414/432 accepted, 24/24 exact syntax twins |
+| 5 | G0 graph and `head_out` hook | done — 700 nodes, decomposition exact to 9.8e-07 |
+| 6 | Attribution `eap_ig_node_v1` | **running** — engine committed, corpus run in flight |
 | 7 | **Gate G4** (blocks everything downstream) | not started |
 | 8 | Route similarity, raw + residual | not started |
 | 9 | Candidate circuits | not started |
 | 10 | Exact validation on held-out surfaces | not started |
 | 11 | Artifacts, tables, summary | not started |
 | 12 | Scale to 12 facts, report | not started |
+
+## Commits so far this milestone
+
+| Commit | Step |
+|---|---|
+| `170af00` | freeze code + `handover.md` |
+| `4b5e190` | freeze artifact at `170af00` |
+| `cd24c04` | pre-answer discovery objective |
+| `80fc645` | discovery-split pairs with accounting |
+| `967efa2` | G0 graph and per-head outputs |
+| `05efda3` | EAP-IG node attribution engine |
+| `7e5c551` | lint cleanup |
+
+## Results established so far
+
+- **`J_f` is fully answer-prefix-free**: common answer prefix is empty on 750/750
+  challenger surfaces, so it conditions on the prompt alone. 0 surfaces rejected.
+- **`J_f` vs `M_f`**: Spearman 0.49 / 74.3% sign agreement across all 750 surfaces;
+  **100% sign agreement (60/60)** on the clean/corrupt deltas, which is the property
+  attribution depends on.
+- **Pairs**: 414 accepted of 432. `same_syntax` remains the outlier — acceptance 0.79,
+  mean Δ +1.72 pre-filter vs +2.88…+3.55 for other families — now with an *exactly*
+  augmentation-matched template in all 24 cases.
+- **G0**: 700 nodes. `attn_out == Σ_h W_O^h head_out_h` verified on the real model to
+  9.8e-07 relative (float32 roundoff); `o_proj.bias` is None at every layer checked.
+- **Attribution completeness** on the real model: **1.0004 at m=16**, 1.0018 at m=8.
+  ~6.7 s per 700-object vector.
+
+## Gotchas discovered (do not rediscover)
+
+1. Re-running the A0 gate on the discovery split yields **0 eligible facts** — that split
+   has one modality and the gate needs two. Eligibility must be read from the freeze.
+   `a1-pairs` does this; do not "fix" the A0 shortfall message.
+2. `J_f` subtracts a logsumexp over 4 distractors (~log 4 = 1.39 nats of headroom), so
+   `J_f < 0` on a clean run does **not** mean a distractor is preferred. Do not filter on it.
+3. Attribution `.npz` files are un-ignored explicitly in `.gitignore`; they are the
+   primary A1 record, not a regenerable cache.
+4. Bash heredocs longer than roughly 200 lines get truncated by the tool. Write a patch
+   script to the scratchpad and run it instead.
 
 ---
 
@@ -133,9 +172,27 @@ Prompt policy `llama3_chat_suite_v1` (Llama-3 chat template + upstream SUITE sys
 
 ```bash
 cd e:/arcus/ARCUS
-git log --oneline -5
+git log --oneline -8
 pytest -q
 cat handover.md
+```
+
+Run ids in play:
+
+| Run id | Contents |
+|---|---|
+| `a0-challenger-s42` | frozen A0 core, distractor pools, milestone-1 pairs and patch scan |
+| `a0-discovery-s42` | discovery-surface scores (clean-anchor correctness filter only) |
+| `a1-challenger-s42` | A1 objective, pairs, attribution vectors |
+
+Command sequence to reproduce A1 from scratch:
+
+```bash
+arcus-module-a freeze-p5     --config configs/module_a/pilot_challenger.yaml --a0-run a0-challenger-s42
+arcus-module-a run-a0        --config configs/module_a/a1_challenger.yaml --run a0-discovery-s42
+arcus-module-a a1-objective  --config configs/module_a/a1_challenger.yaml --a0-run a0-challenger-s42 --run a1-challenger-s42
+arcus-module-a a1-pairs      --config configs/module_a/a1_challenger.yaml --run a1-challenger-s42                              --correctness-run a0-discovery-s42 --distractors-run a0-challenger-s42
+arcus-module-a a1-attribute  --config configs/module_a/a1_challenger.yaml --run a1-challenger-s42                              --distractors-run a0-challenger-s42
 ```
 
 Then continue at the first step marked `not started` in the table above.

@@ -1,0 +1,113 @@
+{
+  "backbone_version": "leave_facts_out_mean_v1",
+  "estimator": "mean attribution vector over surfaces of the other target facts",
+  "why_leave_out": "Estimating the background from a fact on either side of a comparison would subtract part of the signal being measured.",
+  "n_facts": 12,
+  "family": "same_topic_fact_swap",
+  "pooled_backbone_l2": 3.229787,
+  "cosine_target_vs_pooled_backbone": {
+    "n": 72,
+    "mean": 0.597294,
+    "median": 0.672924,
+    "sd": 0.252103,
+    "min": -0.01995,
+    "max": 0.939195
+  },
+  "interpretation": "Cosine of each target vector with the pooled backbone. High values mean the raw vectors are dominated by a component shared across facts, which is why the residual comparison matters more than the raw one.",
+  "top_backbone_objects": [
+    {
+      "object_id": "L27.mlp_out",
+      "score": 2.819326
+    },
+    {
+      "object_id": "L25.mlp_out",
+      "score": 0.710645
+    },
+    {
+      "object_id": "L21.mlp_out",
+      "score": 0.53422
+    },
+    {
+      "object_id": "L26.mlp_out",
+      "score": 0.527335
+    },
+    {
+      "object_id": "L26.H20.head_out",
+      "score": 0.497634
+    },
+    {
+      "object_id": "L26.H18.head_out",
+      "score": -0.430526
+    },
+    {
+      "object_id": "L27.H2.head_out",
+      "score": 0.391439
+    },
+    {
+      "object_id": "L26.H19.head_out",
+      "score": 0.310518
+    },
+    {
+      "object_id": "L24.mlp_out",
+      "score": 0.288178
+    },
+    {
+      "object_id": "L25.H8.head_out",
+      "score": 0.277647
+    },
+    {
+      "object_id": "L20.mlp_out",
+      "score": 0.263693
+    },
+    {
+      "object_id": "L26.H2.head_out",
+      "score": 0.254091
+    },
+    {
+      "object_id": "L22.mlp_out",
+      "score": 0.200876
+    },
+    {
+      "object_id": "L25.H7.head_out",
+      "score": -0.188842
+    },
+    {
+      "object_id": "L26.H1.head_out",
+      "score": 0.185594
+    },
+    {
+      "object_id": "L25.H6.head_out",
+      "score": 0.182556
+    },
+    {
+      "object_id": "L27.H1.head_out",
+      "score": 0.179255
+    },
+    {
+      "object_id": "L17.mlp_out",
+      "score": 0.162424
+    },
+    {
+      "object_id": "L23.mlp_out",
+      "score": 0.158067
+    },
+    {
+      "object_id": "L15.mlp_out",
+      "score": 0.154341
+    }
+  ],
+  "per_fact_backbone_l2": {
+    "challenger_disaster:K10": 3.257073,
+    "challenger_disaster:K11": 3.364852,
+    "challenger_disaster:K12": 3.357381,
+    "challenger_disaster:K18": 3.403712,
+    "challenger_disaster:K20": 3.289606,
+    "challenger_disaster:K3": 3.453034,
+    "challenger_disaster:K4": 3.038697,
+    "challenger_disaster:K5": 3.357637,
+    "challenger_disaster:K8": 3.254147,
+    "challenger_disaster:K9": 3.161371,
+    "challenger_disaster:M1": 2.879376,
+    "challenger_disaster:M2": 3.058701
+  }
+}

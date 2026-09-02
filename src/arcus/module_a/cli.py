@@ -120,6 +120,10 @@ def build_parser() -> argparse.ArgumentParser:
     )
     at.add_argument("--cross-topic-distractors", default=None, help="Comma-separated topics")
     at.add_argument("--cross-topic-run", default=None, help="A0 run holding those pools")
+    at.add_argument(
+        "--facts", nargs="*", default=None,
+        help="Override the configured pilot facts (Step 12 scaling)",
+    )
 
     sm = sub.add_parser("a1-similarity", help="Within-fact vs control route similarity")
     sm.add_argument("--config", required=True)
@@ -134,6 +138,20 @@ def build_parser() -> argparse.ArgumentParser:
     g4.add_argument("--n-pairs", type=int, default=3)
     g4.add_argument("--n-top", type=int, default=12)
     g4.add_argument("--n-random", type=int, default=12)
+
+    ci = sub.add_parser("a1-circuits", help="Extract candidate circuits (after G4 passes)")
+    ci.add_argument("--config", required=True)
+    ci.add_argument("--run", required=True)
+    ci.add_argument("--name", default="vectors")
+
+    va = sub.add_parser("a1-validate", help="Exact validation of candidates on held-out surfaces")
+    va.add_argument("--config", required=True)
+    va.add_argument("--run", required=True)
+    va.add_argument("--distractors-run", required=True)
+    va.add_argument("--heldout-run", required=True, help="A0 run holding held-out pairs")
+    va.add_argument("--rule", default=None, help="Extraction rule to validate (default primary)")
+    va.add_argument("--surfaces-per-fact", type=int, default=3)
+    va.add_argument("--controls-per-ring", type=int, default=4)
 
     run = sub.add_parser("run", help="Run a pipeline stage")
     run.add_argument("config")
@@ -678,7 +696,8 @@ def _build_a1_items(config, args, corpus, distractor_sets, accepted, topic):
     from .stages.a1_discovery import TARGET_CLASS
 
     a1 = config.a1
-    pilot = {f"{topic}:{f}" for f in a1.pilot_facts}
+    fact_list = getattr(args, "facts", None) or a1.pilot_facts
+    pilot = {f"{topic}:{f}" for f in fact_list}
 
     def lookup(row):
         key = FactKey(**row["target_fact_key"])
@@ -1119,6 +1138,261 @@ def cmd_a1_g4(args: argparse.Namespace) -> int:
     return 0 if report["g4_passed"] else 2
 
 
+def cmd_a1_circuits(args: argparse.Namespace) -> int:
+    from .analysis.circuits import ExtractionRule, extract_circuits, extraction_policy
+    from .analysis.route_similarity import BackboneEstimator, subtract_backbone
+    from .stages.a1_discovery import TARGET_CLASS
+
+    config = load_config(args.config)
+    art = Path(config.experiment.artifact_dir)
+
+    # G4 gates this stage. Extraction on an unvalidated ranking is exactly what the gate
+    # exists to prevent.
+    g4_path = art / args.run / "a1" / "g4_validation.json"
+    if not g4_path.exists():
+        print("ERROR: g4_validation.json missing; run a1-g4 before extracting circuits")
+        return 1
+    g4 = json.loads(g4_path.read_text(encoding="utf-8"))
+    if not g4["g4_passed"]:
+        print("ERROR: Gate G4 did not pass; refusing to extract candidate circuits")
+        return 2
+
+    vectors, object_ids = _load_vectors(config, args.run, args.name)
+    family = config.a1.primary_family
+    extraction = config.a1.circuit_extraction
+
+    fact_groups = {
+        fact: [i for i in idx if vectors.rows[i].get("family") == family]
+        for fact, idx in vectors.fact_indices(TARGET_CLASS).items()
+    }
+    fact_groups = {f: idx for f, idx in fact_groups.items() if len(idx) >= 2}
+
+    estimator = BackboneEstimator(vectors.matrix, fact_groups)
+    residual = vectors.matrix.copy()
+    for fact, idx in fact_groups.items():
+        residual[idx] = subtract_backbone(vectors.matrix[idx], estimator.excluding([fact]))
+
+    circuits = extract_circuits(
+        vectors.matrix, object_ids, fact_groups, vectors.rows,
+        rules=list(ExtractionRule.ALL),
+        mass_fraction=extraction.mass_fraction,
+        top_k=extraction.top_k,
+        stability_fraction=extraction.stability_fraction,
+        residual_matrix=residual,
+        family=family,
+    )
+
+    out = run_dir(config.experiment.artifact_dir, args.run) / "a1"
+    write_json(
+        out / "candidate_circuits.json",
+        {
+            "policy": extraction_policy(
+                primary_rule=extraction.primary_rule,
+                mass_fraction=extraction.mass_fraction,
+                top_k=extraction.top_k,
+                stability_fraction=extraction.stability_fraction,
+            ),
+            "gate_g4_passed": g4["g4_passed"],
+            "family": family,
+            "n_circuits": len(circuits),
+            "circuits": [c.to_dict() for c in circuits],
+        },
+    )
+
+    print(f"[a1-circuits] {len(circuits)} candidates over {len(fact_groups)} facts "
+          f"(primary rule: {extraction.primary_rule})")
+    print(f"  {'fact':<6} {'rule':<24} {'size':>4} {'mass':>6} {'stab':>6} {'sign':>6} {'resid':>6}")
+    for c in circuits:
+        d = c.to_dict()
+        st = d["surface_stability"]
+        print(f"  {c.fact_id.split(':')[1]:<6} {c.rule:<24} {c.size:4d} "
+              f"{(d['mass_fraction_captured'] or 0):6.3f} "
+              f"{(st['mean_fraction_in_topk'] or 0):6.3f} "
+              f"{(st['sign_consistency'] or 0):6.3f} "
+              f"{(d['fact_specific_residual_score'] or 0):6.3f}")
+    return 0
+
+
+def cmd_a1_validate(args: argparse.Namespace) -> int:
+    from .schema import FactKey, Modality
+    from .stages.a1_validation import (
+        selectivity_on_control,
+        summarise_validation,
+        validate_circuit_on_pair,
+    )
+
+    config = load_config(args.config)
+    topic = config.dataset.topic
+    art = Path(config.experiment.artifact_dir)
+    rule = args.rule or config.a1.circuit_extraction.primary_rule
+
+    payload = json.loads(
+        (art / args.run / "a1" / "candidate_circuits.json").read_text(encoding="utf-8")
+    )
+    circuits = {c["fact_id"]: c for c in payload["circuits"] if c["selection_rule"] == rule}
+    if not circuits:
+        print(f"ERROR: no candidate circuits for rule {rule!r}")
+        return 1
+
+    _, distractor_sets = _load_a0(config, args.distractors_run, topic)
+    backend = backend_from_config_cached(config)
+
+    # Held-out pairs: milestone-1 pairs are anchored on VALIDATION surfaces, which A1
+    # discovery never touched. Discovery surface ids are excluded explicitly as well.
+    heldout_pairs = [
+        r
+        for r in read_jsonl(
+            art / args.heldout_run / "a0" / f"clean_corrupt_pairs_{topic}.jsonl"
+        )
+        if r["validation_status"] == "accepted" and r["family"] == config.a1.primary_family
+    ]
+    discovery_ids = {
+        r["clean_surface_id"]
+        for r in read_jsonl(art / args.run / "a1" / "accepted_pairs.jsonl")
+    }
+    heldout_pairs = [r for r in heldout_pairs if r["clean_surface_id"] not in discovery_ids]
+
+    by_fact: dict = {}
+    for r in heldout_pairs:
+        fid = f"{r['target_fact_key']['topic']}:{r['target_fact_key']['fact_id']}"
+        by_fact.setdefault(fid, []).append(r)
+
+    rows: list = []
+    for fact_id, circuit in sorted(circuits.items()):
+        pairs = sorted(by_fact.get(fact_id, []), key=lambda r: -abs(r["delta"]))
+        seen: set = set()
+        used = []
+        for r in pairs:
+            if r["clean_surface_id"] in seen:
+                continue
+            seen.add(r["clean_surface_id"])
+            used.append(r)
+            if len(used) >= args.surfaces_per_fact:
+                break
+        if not used:
+            print(f"  {fact_id}: no held-out pairs")
+            continue
+        pool = distractor_sets[
+            (FactKey(**used[0]["target_fact_key"]), Modality(used[0]["modality"]))
+        ]
+        for r in used:
+            print(f"  [validate] {fact_id.split(':')[1]} {r['clean_surface_id'][:10]} "
+                  f"|C|={len(circuit['objects'])}", flush=True)
+            result = validate_circuit_on_pair(
+                backend,
+                object_ids=circuit["objects"],
+                clean_question=r["clean_question"],
+                corrupt_question=r["corrupt_question"],
+                pool=pool,
+                min_abs_delta=config.scoring.min_abs_delta,
+                answer_score=config.scoring.answer_score,
+            )
+            rows.append({
+                "fact_id": fact_id, "circuit_id": circuit["circuit_id"], "rule": rule,
+                "pair_id": r["pair_id"], "clean_surface_id": r["clean_surface_id"],
+                "heldout_split": "validation", **result,
+            })
+
+    # Selectivity: the same intervention applied to each retain ring. Every control is
+    # scored on ITS OWN clean prompt against ITS OWN pool, so the number is that item's
+    # margin change -- not the target fact's margin under a different corruption.
+    selectivity: dict = {}
+    circuit = circuits[sorted(circuits)[0]]
+
+    # One pair per distinct control fact. Taking the first N pairs by id would have
+    # sampled the same fact repeatedly and reported it as a ring of four controls.
+    ring_items: dict = {"R1_same_topic_different_fact": []}
+    seen_control_facts: set = set()
+    for r in sorted(heldout_pairs, key=lambda x: (x["target_fact_key"]["fact_id"], x["pair_id"])):
+        fid = f"{r['target_fact_key']['topic']}:{r['target_fact_key']['fact_id']}"
+        if fid in circuits or fid in seen_control_facts:
+            continue
+        key = FactKey(**r["target_fact_key"])
+        pool = distractor_sets.get((key, Modality(r["modality"])))
+        if pool is None:
+            continue
+        seen_control_facts.add(fid)
+        ring_items["R1_same_topic_different_fact"].append(
+            {
+                "label": key.id,
+                "clean_question": r["clean_question"],
+                "corrupt_question": r["corrupt_question"],
+                "pool": pool,
+            }
+        )
+
+    # The remaining rings come straight from the attribution index, which already carries
+    # each control item's own clean prompt, corrupt partner and distractor pool.
+    from .scoring import DistractorSet as _DS
+
+    ring_of = {
+        "semantic_neighbor": "R2_semantic_neighbor",
+        "same_syntax": "R3_same_syntax",
+        "same_lexical": "R4_same_lexical",
+        "cross_topic": "R5_cross_topic",
+    }
+    index_rows = read_jsonl(
+        art / args.run / "a1" / "attribution_full" / "vectors_index.jsonl"
+    )
+    for row in index_rows:
+        ring = ring_of.get(row.get("item_class"))
+        if not ring or not row.get("distractors"):
+            continue
+        ring_items.setdefault(ring, []).append(
+            {
+                "label": row.get("fact_id") or row["item_id"],
+                "clean_question": row["clean_question"],
+                "corrupt_question": row["corrupt_question"],
+                "pool": _DS(
+                    fact_key=FactKey(topic=topic, fact_id="control"),
+                    modality=Modality.DIRECT,
+                    correct_answer=row["correct_answer"],
+                    distractors=tuple(row["distractors"]),
+                ),
+            }
+        )
+
+    for ring_name, entries in sorted(ring_items.items()):
+        out_entries = []
+        for item in entries[: args.controls_per_ring]:
+            print(f"  [selectivity] {ring_name} {item['label'][:34]}", flush=True)
+            out_entries.append(
+                {
+                    "ring": ring_name,
+                    "item": item["label"],
+                    **selectivity_on_control(
+                        backend,
+                        object_ids=circuit["objects"],
+                        clean_question=item["clean_question"],
+                        corrupt_question=item["corrupt_question"],
+                        pool=item["pool"],
+                        answer_score=config.scoring.answer_score,
+                    ),
+                }
+            )
+        selectivity[ring_name] = out_entries
+
+    summary = summarise_validation(rows, selectivity, epsilon=config.circuit_validation.selectivity_epsilon)
+    out = run_dir(config.experiment.artifact_dir, args.run) / "a1"
+    write_json(out / "exact_validation.json", {
+        "rule": rule, "n_facts": len(circuits),
+        "heldout_source": args.heldout_run,
+        "heldout_note": (
+            "Milestone-1 pairs are anchored on validation-split surfaces, which A1 discovery "
+            "never used; discovery surface ids are additionally excluded."
+        ),
+        "summary": summary, "interventions": rows, "selectivity": selectivity,
+    })
+
+    print(f"\n  necessity  {summary['necessity']}")
+    print(f"  sufficiency {summary['sufficiency']}")
+    print(f"  target mean |raw effect| = {summary['target_mean_abs_raw_effect']}")
+    for ring, st in summary["selectivity_by_ring"].items():
+        print(f"  {ring}: mean |effect| {st['mean_abs_raw_effect']} "
+              f"ratio {st['selectivity_ratio']} (n={st['n']})")
+    return 0
+
+
 _BACKEND_CACHE: dict = {}
 
 
@@ -1370,6 +1644,12 @@ def main() -> None:
 
     if args.command == "a1-g4":
         raise SystemExit(cmd_a1_g4(args))
+
+    if args.command == "a1-circuits":
+        raise SystemExit(cmd_a1_circuits(args))
+
+    if args.command == "a1-validate":
+        raise SystemExit(cmd_a1_validate(args))
 
     if args.command == "run-a0":
         raise SystemExit(cmd_run_a0(args))

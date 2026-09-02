@@ -1,0 +1,725 @@
+{
+  "rule": "attribution_mass_prefix",
+  "n_facts": 4,
+  "heldout_source": "a0-challenger-s42",
+  "heldout_note": "Milestone-1 pairs are anchored on validation-split surfaces, which A1 discovery never used; discovery surface ids are additionally excluded.",
+  "summary": {
+    "validation_version": "a1_exact_validation_v1",
+    "n_interventions": 8,
+    "necessity": {
+      "n": 8,
+      "mean": 0.736271,
+      "median": 0.78233,
+      "min": 0.592019,
+      "max": 0.846555
+    },
+    "sufficiency": {
+      "n": 8,
+      "mean": 0.887281,
+      "median": 0.854177,
+      "min": 0.759602,
+      "max": 1.049513
+    },
+    "target_mean_abs_raw_effect": 4.041965,
+    "selectivity_by_ring": {
+      "R1_same_topic_different_fact": {
+        "n": 8,
+        "mean_abs_raw_effect": 3.493674,
+        "median_abs_raw_effect": 3.011683,
+        "max_abs_raw_effect": 8.019824,
+        "selectivity_ratio": 1.1569
+      },
+      "R2_semantic_neighbor": {
+        "n": 7,
+        "mean_abs_raw_effect": 4.769422,
+        "median_abs_raw_effect": 3.935781,
+        "max_abs_raw_effect": 8.871238,
+        "selectivity_ratio": 0.8475
+      },
+      "R3_same_syntax": {
+        "n": 8,
+        "mean_abs_raw_effect": 3.625617,
+        "median_abs_raw_effect": 3.356869,
+        "max_abs_raw_effect": 7.345952,
+        "selectivity_ratio": 1.1148
+      },
+      "R4_same_lexical": {
+        "n": 8,
+        "mean_abs_raw_effect": 9.064241,
+        "median_abs_raw_effect": 7.88177,
+        "max_abs_raw_effect": 18.861388,
+        "selectivity_ratio": 0.4459
+      },
+      "R5_cross_topic": {
+        "n": 8,
+        "mean_abs_raw_effect": 2.140881,
+        "median_abs_raw_effect": 2.308245,
+        "max_abs_raw_effect": 3.755459,
+        "selectivity_ratio": 1.888
+      }
+    },
+    "reporting_rule": "Raw target and retain effects are reported beside every ratio. Normalized effects are never clipped, and are null when |Delta| is below the floor."
+  },
+  "interventions": [
+    {
+      "fact_id": "challenger_disaster:K10",
+      "circuit_id": "challenger_disaster:K10|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|1e0418c1ad7c9fd9|4403f325e9e4a4d3",
+      "clean_surface_id": "1e0418c1ad7c9fd9",
+      "heldout_split": "validation",
+      "n_objects": 121,
+      "clean_margin": 4.09389,
+      "corrupt_margin": -2.968097,
+      "full_effect_delta": 7.061987,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": -1.88447,
+        "raw_effect": -5.97836,
+        "normalized": 0.8465549446467108,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 81,
+          "source_prompt_len": 77,
+          "prompt_len_delta": 4,
+          "requested_k": 77,
+          "effective_k": 77
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 2.725305,
+        "raw_effect": 5.693402,
+        "normalized": 0.806203928507241,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 77,
+          "source_prompt_len": 81,
+          "prompt_len_delta": -4,
+          "requested_k": 77,
+          "effective_k": 77
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    },
+    {
+      "fact_id": "challenger_disaster:K10",
+      "circuit_id": "challenger_disaster:K10|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|0f41ef19a503628b|4403f325e9e4a4d3",
+      "clean_surface_id": "0f41ef19a503628b",
+      "heldout_split": "validation",
+      "n_objects": 121,
+      "clean_margin": 3.895974,
+      "corrupt_margin": -2.968097,
+      "full_effect_delta": 6.864071,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": -1.510846,
+        "raw_effect": -5.40682,
+        "normalized": 0.7876987228571699,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 80,
+          "source_prompt_len": 77,
+          "prompt_len_delta": 3,
+          "requested_k": 77,
+          "effective_k": 77
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 3.514842,
+        "raw_effect": 6.482939,
+        "normalized": 0.9444744051489679,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 77,
+          "source_prompt_len": 80,
+          "prompt_len_delta": -3,
+          "requested_k": 77,
+          "effective_k": 77
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    },
+    {
+      "fact_id": "challenger_disaster:K5",
+      "circuit_id": "challenger_disaster:K5|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|02aac95a4d927cf0|1770bb5075e1ba5f",
+      "clean_surface_id": "02aac95a4d927cf0",
+      "heldout_split": "validation",
+      "n_objects": 174,
+      "clean_margin": 2.383414,
+      "corrupt_margin": -1.916815,
+      "full_effect_delta": 4.300229,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": -0.386315,
+        "raw_effect": -2.769729,
+        "normalized": 0.6440887361731445,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 84,
+          "source_prompt_len": 80,
+          "prompt_len_delta": 4,
+          "requested_k": 80,
+          "effective_k": 80
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 1.652123,
+        "raw_effect": 3.568938,
+        "normalized": 0.8299415111828539,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 80,
+          "source_prompt_len": 84,
+          "prompt_len_delta": -4,
+          "requested_k": 80,
+          "effective_k": 80
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    },
+    {
+      "fact_id": "challenger_disaster:K5",
+      "circuit_id": "challenger_disaster:K5|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|241add758c962afb|1ae0ab1a850ce0e3",
+      "clean_surface_id": "241add758c962afb",
+      "heldout_split": "validation",
+      "n_objects": 174,
+      "clean_margin": 2.694526,
+      "corrupt_margin": -0.379781,
+      "full_effect_delta": 3.074308,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": 0.203365,
+        "raw_effect": -2.491162,
+        "normalized": 0.8103163751722445,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 84,
+          "source_prompt_len": 79,
+          "prompt_len_delta": 5,
+          "requested_k": 79,
+          "effective_k": 79
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 2.176923,
+        "raw_effect": 2.556705,
+        "normalized": 0.8316359011488296,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 79,
+          "source_prompt_len": 84,
+          "prompt_len_delta": -5,
+          "requested_k": 79,
+          "effective_k": 79
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    },
+    {
+      "fact_id": "challenger_disaster:K8",
+      "circuit_id": "challenger_disaster:K8|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|108d18116d5a32ab|8e977981e8e0731c",
+      "clean_surface_id": "108d18116d5a32ab",
+      "heldout_split": "validation",
+      "n_objects": 117,
+      "clean_margin": 2.772329,
+      "corrupt_margin": -6.144238,
+      "full_effect_delta": 8.916567,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": -2.506451,
+        "raw_effect": -5.27878,
+        "normalized": 0.5920193354292211,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 81,
+          "source_prompt_len": 80,
+          "prompt_len_delta": 1,
+          "requested_k": 80,
+          "effective_k": 80
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 1.673078,
+        "raw_effect": 7.817317,
+        "normalized": 0.8767182200126067,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 80,
+          "source_prompt_len": 81,
+          "prompt_len_delta": -1,
+          "requested_k": 80,
+          "effective_k": 80
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    },
+    {
+      "fact_id": "challenger_disaster:K8",
+      "circuit_id": "challenger_disaster:K8|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|176bb0d8af9aeb27|b1815f5f22f948dc",
+      "clean_surface_id": "176bb0d8af9aeb27",
+      "heldout_split": "validation",
+      "n_objects": 117,
+      "clean_margin": 2.981814,
+      "corrupt_margin": -4.235384,
+      "full_effect_delta": 7.217198,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": -1.350818,
+        "raw_effect": -4.332632,
+        "normalized": 0.6003204837722756,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 81,
+          "source_prompt_len": 83,
+          "prompt_len_delta": -2,
+          "requested_k": 81,
+          "effective_k": 81
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 1.246814,
+        "raw_effect": 5.482198,
+        "normalized": 0.7596019338447696,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 83,
+          "source_prompt_len": 81,
+          "prompt_len_delta": 2,
+          "requested_k": 81,
+          "effective_k": 81
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    },
+    {
+      "fact_id": "challenger_disaster:M2",
+      "circuit_id": "challenger_disaster:M2|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|17bb63b2c5875903|9190268941b8e668",
+      "clean_surface_id": "17bb63b2c5875903",
+      "heldout_split": "validation",
+      "n_objects": 91,
+      "clean_margin": 3.835721,
+      "corrupt_margin": -0.344336,
+      "full_effect_delta": 4.180057,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": 0.357044,
+        "raw_effect": -3.478676,
+        "normalized": 0.8322079371420134,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 71,
+          "source_prompt_len": 71,
+          "prompt_len_delta": 0,
+          "requested_k": 71,
+          "effective_k": 71
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 3.836394,
+        "raw_effect": 4.18073,
+        "normalized": 1.0001609935887779,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 71,
+          "source_prompt_len": 71,
+          "prompt_len_delta": 0,
+          "requested_k": 71,
+          "effective_k": 71
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    },
+    {
+      "fact_id": "challenger_disaster:M2",
+      "circuit_id": "challenger_disaster:M2|attribution_mass_prefix|same_topic_fact_swap",
+      "rule": "attribution_mass_prefix",
+      "pair_id": "same_topic_fact_swap|20395f760262d1fb|9269fa3a64495c45",
+      "clean_surface_id": "20395f760262d1fb",
+      "heldout_split": "validation",
+      "n_objects": 91,
+      "clean_margin": 2.483187,
+      "corrupt_margin": -0.862615,
+      "full_effect_delta": 3.345802,
+      "necessity": {
+        "direction": "clean_to_corrupt",
+        "intervened_margin": -0.11637,
+        "raw_effect": -2.599558,
+        "normalized": 0.776960894064571,
+        "metric_version": "necessity_v1",
+        "alignment": {
+          "target_prompt_len": 71,
+          "source_prompt_len": 73,
+          "prompt_len_delta": -2,
+          "requested_k": 71,
+          "effective_k": 71
+        }
+      },
+      "sufficiency": {
+        "direction": "corrupt_to_clean",
+        "intervened_margin": 2.648847,
+        "raw_effect": 3.511462,
+        "normalized": 1.0495127790736412,
+        "metric_version": "sufficiency_v1",
+        "alignment": {
+          "target_prompt_len": 73,
+          "source_prompt_len": 71,
+          "prompt_len_delta": 2,
+          "requested_k": 71,
+          "effective_k": 71
+        }
+      },
+      "outcome_metric": "factual_margin_v1 (full teacher-forced sequence)",
+      "not_the_discovery_objective": "Validation uses M_f, not the J_f the circuit was selected against. A circuit that only moves its own selection criterion has proved nothing."
+    }
+  ],
+  "selectivity": {
+    "R1_same_topic_different_fact": [
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:K11",
+        "margin_before": 2.617174,
+        "margin_after": -5.40265,
+        "raw_effect": -8.019824,
+        "abs_raw_effect": 8.019824
+      },
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:K12",
+        "margin_before": 1.945924,
+        "margin_after": -0.461684,
+        "raw_effect": -2.407608,
+        "abs_raw_effect": 2.407608
+      },
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:K18",
+        "margin_before": 1.085835,
+        "margin_after": -0.456713,
+        "raw_effect": -1.542548,
+        "abs_raw_effect": 1.542548
+      },
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:K20",
+        "margin_before": 1.529172,
+        "margin_after": -0.25985,
+        "raw_effect": -1.789021,
+        "abs_raw_effect": 1.789021
+      },
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:K3",
+        "margin_before": 0.601915,
+        "margin_after": -2.599728,
+        "raw_effect": -3.201643,
+        "abs_raw_effect": 3.201643
+      },
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:K4",
+        "margin_before": 1.257835,
+        "margin_after": -2.210994,
+        "raw_effect": -3.468829,
+        "abs_raw_effect": 3.468829
+      },
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:K9",
+        "margin_before": 0.768397,
+        "margin_after": -2.053326,
+        "raw_effect": -2.821723,
+        "abs_raw_effect": 2.821723
+      },
+      {
+        "ring": "R1_same_topic_different_fact",
+        "item": "challenger_disaster:M1",
+        "margin_before": 1.371014,
+        "margin_after": -3.327182,
+        "raw_effect": -4.698196,
+        "abs_raw_effect": 4.698196
+      }
+    ],
+    "R2_semantic_neighbor": [
+      {
+        "ring": "R2_semantic_neighbor",
+        "item": "semantic_neighbor|04af6128d5eb71c3",
+        "margin_before": 0.375376,
+        "margin_after": -8.495862,
+        "raw_effect": -8.871238,
+        "abs_raw_effect": 8.871238
+      },
+      {
+        "ring": "R2_semantic_neighbor",
+        "item": "semantic_neighbor|087796d88767801d",
+        "margin_before": 3.818192,
+        "margin_after": 0.671291,
+        "raw_effect": -3.146901,
+        "abs_raw_effect": 3.146901
+      },
+      {
+        "ring": "R2_semantic_neighbor",
+        "item": "semantic_neighbor|09dd454f5950d504",
+        "margin_before": -0.793616,
+        "margin_after": -5.175692,
+        "raw_effect": -4.382075,
+        "abs_raw_effect": 4.382075
+      },
+      {
+        "ring": "R2_semantic_neighbor",
+        "item": "semantic_neighbor|09e6d9216dd3543e",
+        "margin_before": -0.134871,
+        "margin_after": -3.712164,
+        "raw_effect": -3.577293,
+        "abs_raw_effect": 3.577293
+      },
+      {
+        "ring": "R2_semantic_neighbor",
+        "item": "semantic_neighbor|0ef8ce22c2d1147e",
+        "margin_before": 1.716978,
+        "margin_after": -2.218803,
+        "raw_effect": -3.935781,
+        "abs_raw_effect": 3.935781
+      },
+      {
+        "ring": "R2_semantic_neighbor",
+        "item": "semantic_neighbor|0f56eaad9f96992d",
+        "margin_before": 1.186967,
+        "margin_after": -4.625837,
+        "raw_effect": -5.812804,
+        "abs_raw_effect": 5.812804
+      },
+      {
+        "ring": "R2_semantic_neighbor",
+        "item": "semantic_neighbor|11d03cde994cad63",
+        "margin_before": 1.060518,
+        "margin_after": -2.599347,
+        "raw_effect": -3.659865,
+        "abs_raw_effect": 3.659865
+      }
+    ],
+    "R3_same_syntax": [
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|020f00854bd7bff6",
+        "margin_before": 0.374748,
+        "margin_after": -1.920203,
+        "raw_effect": -2.294951,
+        "abs_raw_effect": 2.294951
+      },
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|06d5436083cfcaca",
+        "margin_before": 5.432529,
+        "margin_after": 1.92023,
+        "raw_effect": -3.512299,
+        "abs_raw_effect": 3.512299
+      },
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|0a05cbcd3f577958",
+        "margin_before": 1.601902,
+        "margin_after": -1.599537,
+        "raw_effect": -3.201438,
+        "abs_raw_effect": 3.201438
+      },
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|0a20564757b9d0e5",
+        "margin_before": 6.099911,
+        "margin_after": 0.812671,
+        "raw_effect": -5.287241,
+        "abs_raw_effect": 5.287241
+      },
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|0a6beaa28668f0f8",
+        "margin_before": 0.05531,
+        "margin_after": -0.419397,
+        "raw_effect": -0.474708,
+        "abs_raw_effect": 0.474708
+      },
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|0b99a3bcaf991248",
+        "margin_before": 5.409345,
+        "margin_after": -1.936607,
+        "raw_effect": -7.345952,
+        "abs_raw_effect": 7.345952
+      },
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|0ba82dd8bb83359b",
+        "margin_before": 0.979903,
+        "margin_after": -0.021134,
+        "raw_effect": -1.001037,
+        "abs_raw_effect": 1.001037
+      },
+      {
+        "ring": "R3_same_syntax",
+        "item": "same_syntax|0bf5f9c541f8daf1",
+        "margin_before": 3.613405,
+        "margin_after": -2.273903,
+        "raw_effect": -5.887308,
+        "abs_raw_effect": 5.887308
+      }
+    ],
+    "R4_same_lexical": [
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|006b0846c51d4c46",
+        "margin_before": 4.983595,
+        "margin_after": -2.930098,
+        "raw_effect": -7.913693,
+        "abs_raw_effect": 7.913693
+      },
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|00d2c37de6945f56",
+        "margin_before": 11.301684,
+        "margin_after": 2.876537,
+        "raw_effect": -8.425148,
+        "abs_raw_effect": 8.425148
+      },
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|09f70b19e9df82ed",
+        "margin_before": 5.066141,
+        "margin_after": -1.827333,
+        "raw_effect": -6.893474,
+        "abs_raw_effect": 6.893474
+      },
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|0a7ba609e40295ed",
+        "margin_before": 4.355111,
+        "margin_after": -3.426352,
+        "raw_effect": -7.781463,
+        "abs_raw_effect": 7.781463
+      },
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|0dd4098089c3f322",
+        "margin_before": 9.512766,
+        "margin_after": -9.348622,
+        "raw_effect": -18.861388,
+        "abs_raw_effect": 18.861388
+      },
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|11e89437ced62b7f",
+        "margin_before": 5.574702,
+        "margin_after": -4.225617,
+        "raw_effect": -9.800319,
+        "abs_raw_effect": 9.800319
+      },
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|141d1ea243347f7b",
+        "margin_before": 2.336104,
+        "margin_after": -2.652495,
+        "raw_effect": -4.988599,
+        "abs_raw_effect": 4.988599
+      },
+      {
+        "ring": "R4_same_lexical",
+        "item": "same_lexical|158066f2bcc464c6",
+        "margin_before": 2.472215,
+        "margin_after": -5.377631,
+        "raw_effect": -7.849846,
+        "abs_raw_effect": 7.849846
+      }
+    ],
+    "R5_cross_topic": [
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K13",
+        "margin_before": 3.077292,
+        "margin_after": -0.678167,
+        "raw_effect": -3.755459,
+        "abs_raw_effect": 3.755459
+      },
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K13",
+        "margin_before": 2.916445,
+        "margin_after": 0.749448,
+        "raw_effect": -2.166997,
+        "abs_raw_effect": 2.166997
+      },
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K13",
+        "margin_before": 2.978579,
+        "margin_after": 0.258598,
+        "raw_effect": -2.719981,
+        "abs_raw_effect": 2.719981
+      },
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K15",
+        "margin_before": 1.25009,
+        "margin_after": -0.354663,
+        "raw_effect": -1.604754,
+        "abs_raw_effect": 1.604754
+      },
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K15",
+        "margin_before": 2.467844,
+        "margin_after": 1.235338,
+        "raw_effect": -1.232506,
+        "abs_raw_effect": 1.232506
+      },
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K15",
+        "margin_before": 1.724167,
+        "margin_after": -0.725326,
+        "raw_effect": -2.449493,
+        "abs_raw_effect": 2.449493
+      },
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K2",
+        "margin_before": 0.934215,
+        "margin_after": -1.565521,
+        "raw_effect": -2.499736,
+        "abs_raw_effect": 2.499736
+      },
+      {
+        "ring": "R5_cross_topic",
+        "item": "salem_witch_trials:K2",
+        "margin_before": 0.674682,
+        "margin_after": -0.023438,
+        "raw_effect": -0.698119,
+        "abs_raw_effect": 0.698119
+      }
+    ]
+  }
+}
