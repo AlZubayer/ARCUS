@@ -45,7 +45,13 @@ dataset:
   pilot_fact_limit: 10
   minimum_base_accuracy: 0.80
   minimum_modalities_known: 2
-  known_fact_split: validation
+  # Reverse is excluded automatically: its answers collapse to one entity per topic, so
+  # no same-topic distractor pool can separate facts. That is a property of the data,
+  # not a weakened threshold. Accuracy and coverage thresholds below are unchanged.
+  known_fact_splits:
+    - validation
+    - stress
+  known_fact_modalities: null
   topic_sweep_on_shortfall: true
   minimum_pilot_facts: 5
 
@@ -75,6 +81,9 @@ corruption:
   preserve_surface_kind: true
   forbid_same_fact_id: true
   max_pairs_per_fact_family: 4
+  clean_surfaces_per_fact: 2
+  pair_modality: direct
+  pair_clean_split: validation
 
 patching:
   hook_map_version: llama_hook_map_v1

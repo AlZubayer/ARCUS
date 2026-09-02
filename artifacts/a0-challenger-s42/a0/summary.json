@@ -1,0 +1,23 @@
+{
+  "challenger_disaster": {
+    "n_surfaces_scored": 750,
+    "n_facts_screened": 25,
+    "n_eligible": 12,
+    "n_passing_accuracy_only": 13,
+    "eligible_fact_ids": [
+      "challenger_disaster:K10",
+      "challenger_disaster:K11",
+      "challenger_disaster:K12",
+      "challenger_disaster:K18",
+      "challenger_disaster:K20",
+      "challenger_disaster:K3",
+      "challenger_disaster:K4",
+      "challenger_disaster:K5",
+      "challenger_disaster:K8",
+      "challenger_disaster:K9",
+      "challenger_disaster:M1",
+      "challenger_disaster:M2"
+    ],
+    "n_refused_cells": 25
+  }
+}

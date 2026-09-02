@@ -77,7 +77,16 @@ class DatasetConfig(BaseModel):
     pilot_fact_limit: int | None = None
     minimum_base_accuracy: float = Field(0.8, ge=0, le=1)
     minimum_modalities_known: int = Field(2, ge=1)
-    known_fact_split: Literal["validation", "discovery", "stress"] = "validation"
+    #: Splits whose surfaces are scored when screening base knowledge. Stress (indirect)
+    #: is included because it is the only other fact-discriminative modality; A0 screening
+    #: is not candidate selection, and A1 still reads the discovery split alone.
+    known_fact_splits: list[Literal["validation", "discovery", "stress"]] = [
+        "validation",
+        "stress",
+    ]
+    #: Modalities eligible to carry the factual margin. ``null`` auto-detects, excluding
+    #: any cell whose distractor pool is degenerate under the configured policy.
+    known_fact_modalities: list[str] | None = None
     topic_sweep_on_shortfall: bool = True
     minimum_pilot_facts: int = Field(5, ge=1)
 
@@ -122,6 +131,11 @@ class CorruptionConfig(BaseModel):
     preserve_surface_kind: bool = True
     forbid_same_fact_id: bool = True
     max_pairs_per_fact_family: int = Field(4, ge=1)
+    #: Clean surfaces per eligible fact. Kept small so the pilot stays auditable.
+    clean_surfaces_per_fact: int = Field(2, ge=1)
+    #: The modality that can carry the margin; reverse is degenerate (see the audit).
+    pair_modality: Literal["direct", "indirect"] = "direct"
+    pair_clean_split: Literal["validation", "discovery", "stress"] = "validation"
 
 
 class PatchingConfig(BaseModel):

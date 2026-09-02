@@ -1,0 +1,106 @@
+{
+  "run_id": "a0-challenger-s42",
+  "stage": "a0.known_fact_core",
+  "config_path": "configs/module_a/pilot_challenger.yaml",
+  "config_sha256": "5e1acd2fa521845898fadb826cb7f1db38d6b4d48e8e45a76ad71219a62e5507",
+  "seed": 42,
+  "parent_run_ids": [],
+  "model": {
+    "id": "meta-llama/Llama-3.2-3B-Instruct",
+    "revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "tokenizer_id": "meta-llama/Llama-3.2-3B-Instruct",
+    "tokenizer_revision": "0cb88a4f764b7a12671c53f0838cd831a0843b95",
+    "dtype": "float32",
+    "device": "cuda",
+    "attention_backend": "eager",
+    "architecture": "LlamaForCausalLM",
+    "n_layers": 28,
+    "hook_map_version": "llama_hook_map_v1"
+  },
+  "dataset": {
+    "id": "apeleg/SUITE",
+    "revision": "3f5f6b0897dac10baacf1aa8b35319a02abccd23",
+    "rephrasings_id": "apeleg/SUITE-rephrasings",
+    "rephrasings_revision": "81a52d60ec7d3231169b16a54ad1b2a58221ca6e",
+    "topic": "challenger_disaster",
+    "project": "forget-narrowly-retain-broadly"
+  },
+  "prompt": {
+    "template": "chat",
+    "template_version": "llama3_chat_suite_v1",
+    "system_prompt_sha256": "8bee5a6cc5667197f6a0af4e46182b92144e0568ba26e3bfab87536ef6adbfdb",
+    "chat_template_sha256": "5816fce10444e03c2e9ee1ef8a4a1ea61ae7e69e438613f3b17b69d0426223a4",
+    "bos_inserted_by_template": true
+  },
+  "policies": {
+    "scoring_version": "answer_score_mean_logprob_v1",
+    "margin_version": "factual_margin_v1",
+    "correctness_version": "correct_over_distractors_v1",
+    "distractor_policy": "same_topic_same_modality_v1",
+    "adapter_version": "suite_adapter_v2",
+    "split_policy_version": "split_policy_provenance_v1",
+    "splits_scored": [
+      "validation",
+      "stress"
+    ],
+    "minimum_base_accuracy": 0.8,
+    "minimum_modalities_known": 2
+  },
+  "extra": {
+    "topics": [
+      "challenger_disaster"
+    ],
+    "summary_by_topic": {
+      "challenger_disaster": {
+        "n_surfaces_scored": 750,
+        "n_facts_screened": 25,
+        "n_eligible": 12,
+        "n_passing_accuracy_only": 13,
+        "eligible_fact_ids": [
+          "challenger_disaster:K10",
+          "challenger_disaster:K11",
+          "challenger_disaster:K12",
+          "challenger_disaster:K18",
+          "challenger_disaster:K20",
+          "challenger_disaster:K3",
+          "challenger_disaster:K4",
+          "challenger_disaster:K5",
+          "challenger_disaster:K8",
+          "challenger_disaster:K9",
+          "challenger_disaster:M1",
+          "challenger_disaster:M2"
+        ],
+        "n_refused_cells": 25
+      }
+    }
+  },
+  "manifest_version": "run_manifest_v1",
+  "created_at": "2026-09-02T16:27:46Z",
+  "code": {
+    "commit_sha": "b77821257ec911529a9127c867bc7c8c152975f5",
+    "branch": "main",
+    "dirty": true,
+    "dirty_paths": [
+      "artifacts/a0-challenger-s42/",
+      "onfigs/module_a/pilot_challenger.yaml",
+      "src/arcus/module_a/cli.py",
+      "src/arcus/module_a/config.py",
+      "src/arcus/module_a/stages/a0_known_facts.py"
+    ]
+  },
+  "software": {
+    "python": "3.12.3",
+    "platform": "Windows-11-10.0.26200-SP0",
+    "torch": "2.13.0+cu130",
+    "transformers": "4.57.6",
+    "datasets": "5.0.0",
+    "numpy": "2.5.1",
+    "pydantic": "2.13.5",
+    "huggingface_hub": "0.36.2"
+  },
+  "sink_references": {
+    "Sink-KD": "db114c9c5eb6ffc5de13e444c783408ea7401c62",
+    "Sink-Repro": "9ab67e914464b13863b67527d8ea14068ee9ff10"
+  },
+  "created_by": "user4"
+}
