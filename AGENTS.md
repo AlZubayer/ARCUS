@@ -73,6 +73,19 @@ For at least 5 robustly-known facts from one SUITE topic:
 - A1-A3 are frozen before sink analysis;
 - sink intersection/mediation is reported, including a null result if absent.
 
+## Milestone 1 status: complete
+
+P0-P2 (dataset audit, deterministic backend, exact residual patching), plus A0 and the
+pair builder, are implemented and gated. See `docs/module_a/FINDINGS_MILESTONE_1.md` for
+results, the nine design/data discrepancies found while verifying the design pack against
+the real dataset, and the exact next step for A1.
+
+Gates passing: G0 (data readiness), G1 (scoring/backend parity), G2 (exact patching),
+G3 (Known-Fact Core, 12 eligible challenger facts at unchanged thresholds).
+
+Neither sink repository has been read. Only their commit SHAs are recorded, in
+`artifacts/reference/sink_sources_manifest.json`.
+
 ## First coding task
 
 Implement **P0 + P1 + the residual-patching portion of P2** from `docs/module_a/06_IMPLEMENTATION_PLAN.md`.
