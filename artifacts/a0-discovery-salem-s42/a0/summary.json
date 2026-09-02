@@ -1,0 +1,10 @@
+{
+  "salem_witch_trials": {
+    "n_surfaces_scored": 350,
+    "n_facts_screened": 25,
+    "n_eligible": 0,
+    "n_passing_accuracy_only": 16,
+    "eligible_fact_ids": [],
+    "n_refused_cells": 25
+  }
+}

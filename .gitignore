@@ -23,3 +23,6 @@ artifacts/**/activations/
 # Regenerable verbatim dumps of the pinned dataset; the audit JSON is the record kept.
 artifacts/**/normalized_examples*.jsonl
 src/*.egg-info/
+
+# Full signed attribution vectors are the primary A1 record, not a regenerable cache.
+!artifacts/**/attribution_full/*.npz

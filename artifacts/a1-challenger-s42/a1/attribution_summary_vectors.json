@@ -1,0 +1,139 @@
+{
+  "stage_version": "a1_discovery_v1",
+  "attribution_version": "eap_ig_node_v1",
+  "graph": {
+    "graph_version": "g0_head_mlp_v1",
+    "granularity": "G0",
+    "n_nodes": 700,
+    "n_layers": 28,
+    "n_heads": 24,
+    "n_head_nodes": 672,
+    "n_mlp_nodes": 28,
+    "node_order": "layer-major; within a layer, heads 0..H-1 then mlp_out",
+    "components": [
+      "head_out",
+      "mlp_out"
+    ],
+    "residual_objects": "Derived, not separate. resid_pre(L) attribution equals the sum of the attributions of every head and MLP upstream of L under this additive decomposition, so a separate node would double-count.",
+    "excluded": {
+      "q/k/v/attn_pattern": "Out of scope for G0. Finer decomposition is only worth doing once a stable component-level route is established."
+    }
+  },
+  "integration_steps": 16,
+  "alignment_policy": "end_aligned_common_suffix",
+  "n_vectors": 95,
+  "n_skipped": 1,
+  "skipped": [
+    {
+      "item_id": "semantic_neighbor|0f4d1b407f13ab9a",
+      "item_class": "semantic_neighbor",
+      "fact_id": null,
+      "surface_form_id": "0f4d1b407f13ab9a",
+      "family": "within_control_category",
+      "clean_question": "On which Challenger mission did the first night launch occur?",
+      "corrupt_question": "Who was the first Dutch astronaut to fly on Challenger?",
+      "correct_answer": "STS-8",
+      "distractors": [
+        "Canadarm",
+        "Four",
+        "STS-41-B",
+        "Solid Rocket Boosters"
+      ],
+      "control_pool_version": "control_pool_v1",
+      "control_type": "semantic",
+      "semantic_tier": 0,
+      "domain": "retain_challenger_not_disaster@original",
+      "raw_label": "Semantic-0-retain_challenger_not_disaster@original",
+      "group": "challenger_disaster|semantic|0",
+      "linked_fact_id": null,
+      "reason": "distractor_shares_correct_token_at_t_star: ['STS-41-B']"
+    }
+  ],
+  "counts": {
+    "by_class": {
+      "cross_topic": 12,
+      "same_lexical": 8,
+      "same_syntax": 8,
+      "same_topic_different_fact": 12,
+      "semantic_neighbor": 7,
+      "target_fact": 48
+    },
+    "classes_never_pooled": [
+      "same_topic_different_fact",
+      "semantic_neighbor",
+      "same_syntax",
+      "same_lexical",
+      "cross_topic"
+    ],
+    "target_class": "target_fact"
+  },
+  "completeness": {
+    "n": 95,
+    "mean": 1.000365,
+    "median": 1.000416,
+    "min": 0.998812,
+    "max": 1.001085,
+    "fraction_within_5pct_of_1": 1.0,
+    "criterion": "Integrated gradients should give sum(attr) == J(alpha=1) - J(alpha=0).",
+    "passed": true
+  },
+  "objective_health": {
+    "n": 95,
+    "j_clean": {
+      "mean": 5.3988,
+      "min": -8.0509,
+      "max": 19.2755,
+      "fraction_positive": 0.8737
+    },
+    "j_corrupt_baseline": {
+      "mean": -3.1103,
+      "min": -12.2697,
+      "max": 6.0838
+    },
+    "path_effect": {
+      "mean": 8.5091,
+      "min": -1.6639,
+      "max": 23.2129,
+      "fraction_positive": 0.9368
+    },
+    "note": "J_f subtracts logsumexp over the distractor tokens, worth about log(n_distractors) nats, so J_f < 0 at the clean end does not mean a distractor is preferred. The quantity attribution decomposes is path_effect."
+  },
+  "alignment": {
+    "policy": "end_aligned_common_suffix",
+    "n_vectors": 95,
+    "n_exact_length": 12,
+    "fraction_exact_length": 0.1263,
+    "prompt_len_delta": {
+      "mean_abs": 2.2947,
+      "max_abs": 9
+    },
+    "exact_length_item_ids": [
+      "target_fact|same_topic_fact_swap|8c5668350f76b5c3|16c9d5c4187cca55",
+      "target_fact|same_topic_fact_swap|9f14df93fc62e108|becf8951027c79ec",
+      "target_fact|semantic_neighbor|884b483b6cb1674b|db505dd3b50faec0",
+      "target_fact|same_syntax|029ee85be1afa045|54c8a38eb7893e67",
+      "same_topic_different_fact|same_topic_fact_swap|c5de2cd0b59a7892|0b5141cc9dec81a4",
+      "same_topic_different_fact|same_topic_fact_swap|05377007df4dd91a|1e8e5f3217fcf2da",
+      "same_topic_different_fact|same_topic_fact_swap|317417cae3511b3f|16c9d5c4187cca55",
+      "cross_topic|same_topic_fact_swap|1d978813697f6fe0|1aff6a69d0599f19",
+      "cross_topic|same_topic_fact_swap|a6380e377f067edc|06563848e1810017",
+      "same_syntax|0ba82dd8bb83359b",
+      "same_lexical|006b0846c51d4c46",
+      "same_lexical|158066f2bcc464c6"
+    ],
+    "caveat": "Where lengths differ the question span is offset by prompt_len_delta. The exact-length subset is analysed separately as a registered sensitivity check."
+  },
+  "not_a_claim": "These are attribution vectors: candidate rankings only. No causal statement follows from them until Gate G4 and exact intervention.",
+  "storage": {
+    "path": "artifacts\\a1-challenger-s42\\a1\\attribution_full\\vectors.npz",
+    "shape": [
+      95,
+      700
+    ],
+    "dtype": "float32",
+    "row_order": "matches the index file, one row per attributed item",
+    "column_order": "layer-major; within a layer, heads 0..H-1 then mlp_out",
+    "truncation": "none; every one of the graph's objects is stored with its sign"
+  },
+  "control_refusals": []
+}

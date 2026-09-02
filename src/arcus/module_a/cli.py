@@ -89,6 +89,37 @@ def build_parser() -> argparse.ArgumentParser:
         help="Freeze artifact supplying fact eligibility (default artifacts/freeze/p0_p5_freeze.json)",
     )
     ap.add_argument("--all-eligible", action="store_true", help="Use all frozen-eligible facts")
+    ap.add_argument("--topic", default=None, help="Override the configured topic")
+    ap.add_argument(
+        "--eligible-from-a0", default=None,
+        help="A0 run supplying eligibility for a non-frozen topic (cross-topic controls)",
+    )
+    ap.add_argument("--name", default=None, help="Output basename (default accepted_pairs)")
+
+    at = sub.add_parser(
+        "a1-attribute", help="Compute full signed G0 attribution vectors for targets + controls"
+    )
+    at.add_argument("--config", required=True)
+    at.add_argument("--run", required=True)
+    at.add_argument("--distractors-run", required=True)
+    at.add_argument("--steps", type=int, default=None, help="Override integration steps")
+    at.add_argument("--control-surfaces", type=int, default=3)
+    at.add_argument("--control-facts", type=int, default=4)
+    at.add_argument("--retain-items", type=int, default=8)
+    at.add_argument(
+        "--robustness-surfaces", type=int, default=3,
+        help="Surfaces per fact for the non-primary corruption families",
+    )
+    at.add_argument("--name", default="vectors")
+    at.add_argument(
+        "--pairs-name", default="pairs", help="Basename of the accepted pairs file to read"
+    )
+    at.add_argument(
+        "--cross-topic-pairs", default=None,
+        help="Accepted-pairs file for a different topic, for the cross_topic control class",
+    )
+    at.add_argument("--cross-topic-distractors", default=None, help="Comma-separated topics")
+    at.add_argument("--cross-topic-run", default=None, help="A0 run holding those pools")
 
     run = sub.add_parser("run", help="Run a pipeline stage")
     run.add_argument("config")
@@ -512,17 +543,29 @@ def cmd_a1_pairs(args: argparse.Namespace) -> int:
     from .stages.pairs import run_pairs
 
     config = load_config(args.config)
-    topic = config.dataset.topic
+    topic = args.topic or config.dataset.topic
     art = Path(config.experiment.artifact_dir)
 
     # Eligibility comes from the freeze, never recomputed here. The discovery split has a
     # single modality, so re-running the A0 gate on it would mechanically yield zero
     # eligible facts -- a property of the split, not a finding about the model.
-    freeze_path = Path(args.freeze) if args.freeze else art / "freeze" / "p0_p5_freeze.json"
-    freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
-    eligible = [f.split(":")[-1] for f in freeze["known_fact_core"]["eligible_fact_ids"]]
+    #
+    # Cross-topic CONTROL facts have no freeze of their own, so they may take eligibility
+    # from the all-topics A0 run instead; the source is recorded either way.
+    if args.eligible_from_a0:
+        core_path = (
+            art / args.eligible_from_a0 / "a0" / f"known_fact_core_{topic}.json"
+        )
+        core_json = json.loads(core_path.read_text(encoding="utf-8"))
+        eligible = [f.split(":")[-1] for f in core_json["eligible_fact_ids"]]
+        freeze_path = core_path
+    else:
+        freeze_path = Path(args.freeze) if args.freeze else art / "freeze" / "p0_p5_freeze.json"
+        freeze = json.loads(freeze_path.read_text(encoding="utf-8"))
+        eligible = [f.split(":")[-1] for f in freeze["known_fact_core"]["eligible_fact_ids"]]
 
-    pilot = eligible if args.all_eligible else (config.a1.pilot_facts if config.a1 else eligible)
+    use_all = args.all_eligible or args.topic is not None
+    pilot = eligible if use_all else (config.a1.pilot_facts if config.a1 else eligible)
     missing = sorted(set(pilot) - set(eligible))
     if missing:
         print(f"ERROR: requested facts are not in the frozen Known-Fact Core: {missing}")
@@ -572,8 +615,9 @@ def cmd_a1_pairs(args: argparse.Namespace) -> int:
 
     # Both are persisted: a family's acceptance rate is itself a finding, and it is only
     # recoverable if the rejected pairs survive.
-    write_jsonl(out / "attempted_pairs.jsonl", attempted)
-    write_jsonl(out / "accepted_pairs.jsonl", accepted)
+    name = args.name or "pairs"
+    write_jsonl(out / f"attempted_{name}.jsonl", attempted)
+    write_jsonl(out / f"accepted_{name}.jsonl", accepted)
 
     accounting = _pair_accounting(attempted)
     controls = {
@@ -587,7 +631,7 @@ def cmd_a1_pairs(args: argparse.Namespace) -> int:
         "by_family": accounting,
         "summary": result["summary"],
     }
-    write_json(out / "controls_by_family.json", controls)
+    write_json(out / f"controls_by_family_{name}.json", controls)
 
     print(f"  attempted {len(attempted)}, accepted {len(accepted)}")
     print(f"  {'family':32s} {'att':>4} {'acc':>4} {'rate':>5} {'meanD_pre':>10} {'meanD_post':>11}")
@@ -601,6 +645,207 @@ def cmd_a1_pairs(args: argparse.Namespace) -> int:
     quality = result["summary"].get("syntax_match_quality", {})
     if quality:
         print(f"  same_syntax match quality: {quality}")
+    return 0
+
+
+def _build_a1_items(config, args, corpus, distractor_sets, accepted, topic):
+    """Assemble target and control attribution items.
+
+    Controls are built the same way targets are, because a cosine between a target vector
+    and a control vector only means something if both were produced by the same procedure.
+    """
+    from .discovery.controls import (
+        ControlClass,
+        build_fact_control_items,
+        build_retain_control_items,
+    )
+    from .discovery.controls import AttributionItem
+    from .schema import ControlType, FactKey, Modality
+    from .stages.a1_discovery import TARGET_CLASS
+
+    a1 = config.a1
+    pilot = {f"{topic}:{f}" for f in a1.pilot_facts}
+
+    def lookup(row):
+        key = FactKey(**row["target_fact_key"])
+        return distractor_sets.get((key, Modality(row["modality"])))
+
+    items: list = []
+
+    # Targets: the primary family at every discovery surface, plus the robustness families
+    # on a subset (Gate G4E asks whether conclusions survive a change of corruption).
+    for family in [a1.primary_family, *a1.robustness_families]:
+        per_fact = (
+            config.corruption.clean_surfaces_per_fact
+            if family == a1.primary_family
+            else args.robustness_surfaces
+        )
+        for row in sorted(accepted, key=lambda r: (r["target_fact_key"]["fact_id"], r["clean_surface_id"])):
+            fact_id = f"{topic}:{row['target_fact_key']['fact_id']}"
+            if fact_id not in pilot or row["family"] != family:
+                continue
+            seen = [
+                i for i in items
+                if i.fact_id == fact_id and i.family == family
+            ]
+            if len({i.surface_form_id for i in seen}) >= per_fact and row[
+                "clean_surface_id"
+            ] not in {i.surface_form_id for i in seen}:
+                continue
+            if any(i.surface_form_id == row["clean_surface_id"] and i.family == family for i in seen):
+                continue
+            pool = lookup(row)
+            if pool is None:
+                continue
+            items.append(
+                AttributionItem(
+                    item_id=f"{TARGET_CLASS}|{row['pair_id']}",
+                    item_class=TARGET_CLASS,
+                    clean_question=row["clean_question"],
+                    corrupt_question=row["corrupt_question"],
+                    correct_answer=pool.correct_answer,
+                    distractors=pool.distractors,
+                    fact_id=fact_id,
+                    surface_form_id=row["clean_surface_id"],
+                    family=family,
+                    metadata={"pair_id": row["pair_id"], "delta_M": row.get("delta")},
+                )
+            )
+
+    # Control class 1: other facts in the same topic, each with its own clean/corrupt pair
+    # and its own distractor pool -- their routes, not the pilot facts' routes.
+    items += build_fact_control_items(
+        accepted, item_class=ControlClass.SAME_TOPIC_DIFFERENT_FACT,
+        exclude_fact_ids=pilot, family=a1.primary_family,
+        surfaces_per_fact=args.control_surfaces, limit_facts=args.control_facts,
+        distractor_lookup=lookup,
+    )
+
+    # Control class 5: facts from a different topic entirely. These need their own pairs
+    # file. Using a pilot fact under a cross-topic *corruption* would measure the pilot
+    # fact's route again, not an unrelated fact's route, so that is not done here.
+    if args.cross_topic_pairs:
+        cross_rows = read_jsonl(Path(args.cross_topic_pairs))
+        items += build_fact_control_items(
+            cross_rows, item_class=ControlClass.CROSS_TOPIC,
+            exclude_fact_ids=set(), family=a1.primary_family,
+            surfaces_per_fact=args.control_surfaces, limit_facts=args.control_facts,
+            distractor_lookup=lookup,
+        )
+
+    # Control classes 2-4: retain rows, each given its own pool and partner.
+    retain = [ex for ex in corpus.examples if not ex.is_forget]
+    refusals: list = []
+    for item_class, control_type, max_tier in (
+        (ControlClass.SEMANTIC_NEIGHBOR, ControlType.SEMANTIC, 1),
+        (ControlClass.SAME_SYNTAX, ControlType.SYNTACTIC, None),
+        (ControlClass.SAME_LEXICAL, ControlType.LEXICAL, None),
+    ):
+        built, refused = build_retain_control_items(
+            retain, item_class=item_class, control_type=control_type, topic=topic,
+            distractor_count=config.scoring.distractor_count,
+            seed=config.experiment.seed, limit=args.retain_items,
+            semantic_max_tier=max_tier,
+        )
+        items += built
+        refusals += refused
+    return items, refusals
+
+
+def cmd_a1_attribute(args: argparse.Namespace) -> int:
+    from .discovery.graph import G0Graph
+    from .stages.a1_discovery import (
+        discovery_summary,
+        run_attribution,
+        save_attribution,
+    )
+
+    config = load_config(args.config)
+    if config.a1 is None:
+        print("ERROR: config has no a1 block")
+        return 1
+    topic = config.dataset.topic
+    art = Path(config.experiment.artifact_dir)
+    steps = args.steps or config.a1.integration_steps
+
+    _, distractor_sets = _load_a0(config, args.distractors_run, topic)
+    if args.cross_topic_distractors:
+        for extra_topic in args.cross_topic_distractors.split(","):
+            _, extra = _load_a0(config, args.cross_topic_run, extra_topic.strip())
+            distractor_sets.update(extra)
+    accepted = read_jsonl(art / args.run / "a1" / f"accepted_{args.pairs_name}.jsonl")
+    corpus = build_corpus(
+        topics=None,
+        suite_dataset_id=config.dataset.dataset_id,
+        suite_revision=config.dataset.dataset_revision,
+        rephrasings_dataset_id=config.dataset.rephrasings_dataset_id,
+        rephrasings_revision=config.dataset.rephrasings_revision,
+    )
+
+    backend = backend_from_config_cached(config)
+    graph = G0Graph.from_backend(backend)
+    items, refusals = _build_a1_items(config, args, corpus, distractor_sets, accepted, topic)
+
+    counts: dict = {}
+    for it in items:
+        counts[it.item_class] = counts.get(it.item_class, 0) + 1
+    print(f"[a1-attribute] {len(items)} items over {len(graph)} G0 objects, m={steps}")
+    for k, v in sorted(counts.items()):
+        print(f"    {k:28s} {v}")
+    if refusals:
+        print(f"    control refusals: {len(refusals)}")
+
+    matrix, index, skipped = run_attribution(
+        backend, graph, items,
+        integration_steps=steps, alignment_policy=config.a1.alignment_policy,
+    )
+
+    out = run_dir(config.experiment.artifact_dir, args.run) / "a1"
+    storage = save_attribution(out / "attribution_full", matrix, index, graph, name=args.name)
+    write_jsonl(out / "attribution_full" / f"{args.name}_index.jsonl", index)
+
+    summary = discovery_summary(
+        index, skipped, graph,
+        integration_steps=steps, alignment_policy=config.a1.alignment_policy,
+    )
+    summary["storage"] = storage
+    summary["control_refusals"] = refusals
+    write_json(out / f"attribution_summary_{args.name}.json", summary)
+
+    meta = backend.metadata()
+    write_json(
+        out / f"manifest_attribute_{args.name}.json",
+        RunManifest(
+            run_id=args.run, stage="a1.attribution",
+            config_path=str(args.config), config_sha256=config_sha256(args.config),
+            seed=config.experiment.seed, parent_run_ids=[args.distractors_run],
+            model=_model_manifest_block(config, meta),
+            dataset=_dataset_manifest_block(config),
+            policies={
+                "attribution_version": summary["attribution_version"],
+                "graph_version": graph.version,
+                "objective_version": "discriminative_token_margin_v1",
+                "integration_steps": steps,
+                "alignment_policy": config.a1.alignment_policy,
+                "primary_family": config.a1.primary_family,
+                "sink_information_used": False,
+            },
+        ).to_dict(),
+    )
+
+    comp = summary["completeness"]
+    health = summary["objective_health"]
+    align = summary["alignment"]
+    print(f"  wrote {storage['path']} shape={storage['shape']}")
+    print(f"  completeness : mean {comp['mean']}  within 5% of 1.0 for "
+          f"{comp['fraction_within_5pct_of_1']:.1%}  passed={comp['passed']}")
+    print(f"  path effect  : mean {health['path_effect']['mean']}, "
+          f"positive for {health['path_effect']['fraction_positive']:.1%}")
+    print(f"  J clean > 0  : {health['j_clean']['fraction_positive']:.1%}")
+    print(f"  exact-length : {align['n_exact_length']}/{align['n_vectors']} "
+          f"(mean |delta| {align['prompt_len_delta']['mean_abs']})")
+    if skipped:
+        print(f"  skipped      : {len(skipped)}")
     return 0
 
 
@@ -846,6 +1091,9 @@ def main() -> None:
 
     if args.command == "a1-pairs":
         raise SystemExit(cmd_a1_pairs(args))
+
+    if args.command == "a1-attribute":
+        raise SystemExit(cmd_a1_attribute(args))
 
     if args.command == "run-a0":
         raise SystemExit(cmd_run_a0(args))
