@@ -1,0 +1,55 @@
+{
+  "stage_version": "clean_corrupt_pairs_v1",
+  "pair_policy_version": "pair_families_v1",
+  "modality": "direct",
+  "clean_split": "validation",
+  "min_abs_delta": 0.5,
+  "n_pairs": 432,
+  "n_accepted": 409,
+  "n_rejected": 23,
+  "rejection_reasons": {
+    "weak_effect_below_min_abs_delta": 23
+  },
+  "by_family": {
+    "cross_topic_matched": {
+      "n": 96,
+      "n_accepted": 93,
+      "mean_delta": 3.5631588652648407,
+      "median_abs_delta": 3.4816369090347736
+    },
+    "random_token_control": {
+      "n": 24,
+      "n_accepted": 22,
+      "mean_delta": 1.732290759417953,
+      "median_abs_delta": 1.8747949139396214
+    },
+    "same_lexical_different_meaning": {
+      "n": 96,
+      "n_accepted": 91,
+      "mean_delta": 3.7287706993563603,
+      "median_abs_delta": 3.6608191901127873
+    },
+    "same_syntax": {
+      "n": 24,
+      "n_accepted": 14,
+      "mean_delta": 1.3002702262283916,
+      "median_abs_delta": 1.1124366636272274
+    },
+    "same_topic_fact_swap": {
+      "n": 96,
+      "n_accepted": 94,
+      "mean_delta": 3.5253327720612493,
+      "median_abs_delta": 3.479833532114606
+    },
+    "semantic_neighbor": {
+      "n": 96,
+      "n_accepted": 95,
+      "mean_delta": 3.2857302294794883,
+      "median_abs_delta": 3.181361632792091
+    }
+  },
+  "n_facts_with_accepted_pairs": 12,
+  "syntax_match_quality": {
+    "fact_modality_matched_only": 24
+  }
+}

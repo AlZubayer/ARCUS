@@ -348,6 +348,27 @@ class HFBackend:
             raise InvalidHookPointError(f"Hook points never fired: {missing}")
         return sink
 
+    @torch.no_grad()
+    def capture_during_scoring(
+        self, prompt: str, answers: Sequence[str], hook_points: Sequence[HookPoint]
+    ) -> dict[HookPoint, torch.Tensor]:
+        """Capture with the exact batch and sequence shape used for scoring.
+
+        cuBLAS and the attention kernels pick tiling by tensor shape, so a float32
+        activation captured from a [1, prompt_len] forward differs from the same activation
+        inside a [n_answers, prompt_len + answer_len] forward in its last bits (~1e-6
+        relative, about ten times float32 epsilon). That is kernel shape-dependence, not a
+        hook bug, but it means a self-patch from a differently-shaped capture is not
+        bitwise neutral. Capturing in situ removes the confound, which lets the self-patch
+        gate test the patch write itself at exactly zero tolerance.
+        """
+        for hp in hook_points:
+            self.hook_map.validate(hp)
+        sink: dict[HookPoint, torch.Tensor] = {}
+        specs = [(hp, self.hook_map.capture_hook(hp, sink)) for hp in hook_points]
+        self._score_batch([self.tokenize(prompt, a) for a in answers], hook_specs=specs)
+        return sink
+
     # -- exact patching ---------------------------------------------------------------
 
     def score_answers_with_patch(

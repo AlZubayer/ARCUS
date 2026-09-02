@@ -1,0 +1,1279 @@
+{
+  "a0_version": "known_fact_core_v1",
+  "distractor_policy": "same_topic_same_modality_v1",
+  "thresholds": {
+    "minimum_base_accuracy": 0.8,
+    "minimum_modalities_known": 2,
+    "distractor_count": 4,
+    "note": "Preregistered. Not adjusted after inspecting results."
+  },
+  "splits_scored": [
+    "stress",
+    "validation"
+  ],
+  "n_surfaces_scored": 743,
+  "n_facts_screened": 25,
+  "n_eligible": 6,
+  "n_passing_accuracy_only": 8,
+  "eligible_fact_ids": [
+    "steve_jobs_medical:K10",
+    "steve_jobs_medical:K11",
+    "steve_jobs_medical:K19",
+    "steve_jobs_medical:K7",
+    "steve_jobs_medical:K9",
+    "steve_jobs_medical:M2"
+  ],
+  "accuracy_only_fact_ids": [
+    "steve_jobs_medical:K10",
+    "steve_jobs_medical:K11",
+    "steve_jobs_medical:K12",
+    "steve_jobs_medical:K19",
+    "steve_jobs_medical:K7",
+    "steve_jobs_medical:K9",
+    "steve_jobs_medical:M1",
+    "steve_jobs_medical:M2"
+  ],
+  "refused_cells": [
+    {
+      "fact_key": "steve_jobs_medical:K1",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K1/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K10",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K10/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K11",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K11/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K12",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K12/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K13",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K13/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K14",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K14/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K15",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K15/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K16",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K16/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K17",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K17/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K18",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K18/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K19",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K19/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K2",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K2/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K20",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K20/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K3",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K3/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K4",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K4/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K5",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K5/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K6",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K6/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K7",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K7/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K8",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K8/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:K9",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:K9/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:M1",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:M1/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:M2",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:M2/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:M3",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:M3/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:M4",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:M4/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "steve_jobs_medical:M5",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "steve_jobs_medical:M5/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K1"
+      },
+      "fact_id": "steve_jobs_medical:K1",
+      "n_surfaces": 27,
+      "n_correct": 12,
+      "K_f": 0.4444444444444444,
+      "mean_margin": -0.013814407407407428,
+      "min_margin": -6.001684,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 11,
+          "n_correct": 6,
+          "accuracy": 0.5454545454545454,
+          "mean_margin": 0.1527609090909091,
+          "min_margin": -1.084201,
+          "max_margin": 1.023851,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 6,
+          "accuracy": 0.375,
+          "mean_margin": -0.12833493750000005,
+          "min_margin": -6.001684,
+          "max_margin": 9.190387,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K10"
+      },
+      "fact_id": "steve_jobs_medical:K10",
+      "n_surfaces": 30,
+      "n_correct": 30,
+      "K_f": 1.0,
+      "mean_margin": 4.164583566666667,
+      "min_margin": 2.628441,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 4.876453642857143,
+          "min_margin": 3.38641,
+          "max_margin": 5.459157,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 3.54169725,
+          "min_margin": 2.628441,
+          "max_margin": 4.335318,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K11"
+      },
+      "fact_id": "steve_jobs_medical:K11",
+      "n_surfaces": 29,
+      "n_correct": 29,
+      "K_f": 1.0,
+      "mean_margin": 4.825612827586206,
+      "min_margin": 3.337413,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 13,
+          "n_correct": 13,
+          "accuracy": 1.0,
+          "mean_margin": 4.517994615384615,
+          "min_margin": 3.337413,
+          "max_margin": 5.547079,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 5.075552625,
+          "min_margin": 3.923136,
+          "max_margin": 6.321472,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K12"
+      },
+      "fact_id": "steve_jobs_medical:K12",
+      "n_surfaces": 28,
+      "n_correct": 23,
+      "K_f": 0.8214285714285714,
+      "mean_margin": 1.092098357142857,
+      "min_margin": -0.798897,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 12,
+          "accuracy": 1.0,
+          "mean_margin": 2.21929475,
+          "min_margin": 1.24852,
+          "max_margin": 3.643028,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 11,
+          "accuracy": 0.6875,
+          "mean_margin": 0.2467010625,
+          "min_margin": -0.798897,
+          "max_margin": 1.027247,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K13"
+      },
+      "fact_id": "steve_jobs_medical:K13",
+      "n_surfaces": 31,
+      "n_correct": 17,
+      "K_f": 0.5483870967741935,
+      "mean_margin": 2.0523793548387097,
+      "min_margin": -3.427235,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 14,
+          "accuracy": 0.9333333333333333,
+          "mean_margin": 4.868930199999999,
+          "min_margin": -1.574295,
+          "max_margin": 6.898238,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 3,
+          "accuracy": 0.1875,
+          "mean_margin": -0.5881370625,
+          "min_margin": -3.427235,
+          "max_margin": 2.365921,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K14"
+      },
+      "fact_id": "steve_jobs_medical:K14",
+      "n_surfaces": 29,
+      "n_correct": 8,
+      "K_f": 0.27586206896551724,
+      "mean_margin": -1.1488357586206897,
+      "min_margin": -2.707796,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 13,
+          "n_correct": 8,
+          "accuracy": 0.6153846153846154,
+          "mean_margin": -0.07784546153846154,
+          "min_margin": -2.06309,
+          "max_margin": 0.714509,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -2.019015375,
+          "min_margin": -2.707796,
+          "max_margin": -0.929521,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K15"
+      },
+      "fact_id": "steve_jobs_medical:K15",
+      "n_surfaces": 31,
+      "n_correct": 17,
+      "K_f": 0.5483870967741935,
+      "mean_margin": 0.10172754838709679,
+      "min_margin": -5.433031,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 13,
+          "accuracy": 0.8666666666666667,
+          "mean_margin": 2.6087694666666663,
+          "min_margin": -1.259458,
+          "max_margin": 4.934136,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 4,
+          "accuracy": 0.25,
+          "mean_margin": -2.2486242499999998,
+          "min_margin": -5.433031,
+          "max_margin": 1.078408,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K16"
+      },
+      "fact_id": "steve_jobs_medical:K16",
+      "n_surfaces": 30,
+      "n_correct": 17,
+      "K_f": 0.5666666666666667,
+      "mean_margin": 0.17767539999999998,
+      "min_margin": -2.144814,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 13,
+          "accuracy": 0.9285714285714286,
+          "mean_margin": 0.8227482857142857,
+          "min_margin": -1.185738,
+          "max_margin": 2.0011,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 4,
+          "accuracy": 0.25,
+          "mean_margin": -0.386763375,
+          "min_margin": -2.144814,
+          "max_margin": 1.631931,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K17"
+      },
+      "fact_id": "steve_jobs_medical:K17",
+      "n_surfaces": 29,
+      "n_correct": 20,
+      "K_f": 0.6896551724137931,
+      "mean_margin": 0.2421626551724138,
+      "min_margin": -1.3663,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 13,
+          "n_correct": 9,
+          "accuracy": 0.6923076923076923,
+          "mean_margin": 0.17317530769230768,
+          "min_margin": -0.471756,
+          "max_margin": 1.379457,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 11,
+          "accuracy": 0.6875,
+          "mean_margin": 0.298214875,
+          "min_margin": -1.3663,
+          "max_margin": 1.140322,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K18"
+      },
+      "fact_id": "steve_jobs_medical:K18",
+      "n_surfaces": 30,
+      "n_correct": 6,
+      "K_f": 0.2,
+      "mean_margin": -1.8156660666666666,
+      "min_margin": -3.970995,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -2.6204049285714284,
+          "min_margin": -3.970995,
+          "max_margin": -0.514185,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 6,
+          "accuracy": 0.375,
+          "mean_margin": -1.1115195625,
+          "min_margin": -3.630758,
+          "max_margin": 2.045246,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K19"
+      },
+      "fact_id": "steve_jobs_medical:K19",
+      "n_surfaces": 28,
+      "n_correct": 26,
+      "K_f": 0.9285714285714286,
+      "mean_margin": 1.1993573928571428,
+      "min_margin": -2.927888,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 11,
+          "accuracy": 0.9166666666666666,
+          "mean_margin": 1.5923821666666667,
+          "min_margin": -2.927888,
+          "max_margin": 2.69965,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 15,
+          "accuracy": 0.9375,
+          "mean_margin": 0.9045888125,
+          "min_margin": -0.167672,
+          "max_margin": 1.668513,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K2"
+      },
+      "fact_id": "steve_jobs_medical:K2",
+      "n_surfaces": 30,
+      "n_correct": 14,
+      "K_f": 0.4666666666666667,
+      "mean_margin": -0.07307653333333333,
+      "min_margin": -5.301716,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 13,
+          "accuracy": 0.9285714285714286,
+          "mean_margin": 1.9406917142857143,
+          "min_margin": -0.046931,
+          "max_margin": 3.684641,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 1,
+          "accuracy": 0.0625,
+          "mean_margin": -1.83512375,
+          "min_margin": -5.301716,
+          "max_margin": 0.64481,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K20"
+      },
+      "fact_id": "steve_jobs_medical:K20",
+      "n_surfaces": 30,
+      "n_correct": 5,
+      "K_f": 0.16666666666666666,
+      "mean_margin": -2.124812866666667,
+      "min_margin": -8.300805,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 2,
+          "accuracy": 0.14285714285714285,
+          "mean_margin": -2.381717428571428,
+          "min_margin": -8.300805,
+          "max_margin": 1.93397,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 3,
+          "accuracy": 0.1875,
+          "mean_margin": -1.900021375,
+          "min_margin": -5.758522,
+          "max_margin": 1.036734,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K3"
+      },
+      "fact_id": "steve_jobs_medical:K3",
+      "n_surfaces": 30,
+      "n_correct": 10,
+      "K_f": 0.3333333333333333,
+      "mean_margin": -0.5095691666666666,
+      "min_margin": -2.240877,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -1.4260872857142857,
+          "min_margin": -2.240877,
+          "max_margin": -0.647958,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 10,
+          "accuracy": 0.625,
+          "mean_margin": 0.2923841875,
+          "min_margin": -0.784136,
+          "max_margin": 2.24808,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K4"
+      },
+      "fact_id": "steve_jobs_medical:K4",
+      "n_surfaces": 28,
+      "n_correct": 10,
+      "K_f": 0.35714285714285715,
+      "mean_margin": -0.7441969285714285,
+      "min_margin": -5.715626,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 6,
+          "accuracy": 0.5,
+          "mean_margin": 0.0022742500000000076,
+          "min_margin": -1.51685,
+          "max_margin": 1.62366,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 4,
+          "accuracy": 0.25,
+          "mean_margin": -1.3040503125,
+          "min_margin": -5.715626,
+          "max_margin": 0.544395,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K5"
+      },
+      "fact_id": "steve_jobs_medical:K5",
+      "n_surfaces": 30,
+      "n_correct": 3,
+      "K_f": 0.1,
+      "mean_margin": -1.6019726666666665,
+      "min_margin": -4.198973,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -2.5820669285714284,
+          "min_margin": -4.198973,
+          "max_margin": -1.386589,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 3,
+          "accuracy": 0.1875,
+          "mean_margin": -0.7443901875,
+          "min_margin": -1.691126,
+          "max_margin": 0.521661,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K6"
+      },
+      "fact_id": "steve_jobs_medical:K6",
+      "n_surfaces": 31,
+      "n_correct": 12,
+      "K_f": 0.3870967741935484,
+      "mean_margin": -0.2639187741935484,
+      "min_margin": -1.687143,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 1,
+          "accuracy": 0.06666666666666667,
+          "mean_margin": -1.0501734,
+          "min_margin": -1.687143,
+          "max_margin": 0.33586,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 11,
+          "accuracy": 0.6875,
+          "mean_margin": 0.4731949375,
+          "min_margin": -0.244894,
+          "max_margin": 1.618366,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K7"
+      },
+      "fact_id": "steve_jobs_medical:K7",
+      "n_surfaces": 31,
+      "n_correct": 30,
+      "K_f": 0.967741935483871,
+      "mean_margin": 1.7095443548387097,
+      "min_margin": -0.173191,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 14,
+          "accuracy": 0.9333333333333333,
+          "mean_margin": 1.3827830666666665,
+          "min_margin": -0.173191,
+          "max_margin": 3.864795,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 2.0158830625,
+          "min_margin": 0.621271,
+          "max_margin": 4.47665,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K8"
+      },
+      "fact_id": "steve_jobs_medical:K8",
+      "n_surfaces": 31,
+      "n_correct": 15,
+      "K_f": 0.4838709677419355,
+      "mean_margin": 1.7059105161290322,
+      "min_margin": -2.272398,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 4.7635236,
+          "min_margin": 3.181075,
+          "max_margin": 6.183151,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -1.1606017499999999,
+          "min_margin": -2.272398,
+          "max_margin": -0.18543,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "K9"
+      },
+      "fact_id": "steve_jobs_medical:K9",
+      "n_surfaces": 29,
+      "n_correct": 27,
+      "K_f": 0.9310344827586207,
+      "mean_margin": 1.9811192068965517,
+      "min_margin": -1.796366,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 13,
+          "n_correct": 11,
+          "accuracy": 0.8461538461538461,
+          "mean_margin": 1.324104923076923,
+          "min_margin": -1.796366,
+          "max_margin": 3.460942,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 2.5149433125,
+          "min_margin": 0.13474,
+          "max_margin": 3.992339,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "M1"
+      },
+      "fact_id": "steve_jobs_medical:M1",
+      "n_surfaces": 30,
+      "n_correct": 25,
+      "K_f": 0.8333333333333334,
+      "mean_margin": 3.3327299,
+      "min_margin": -4.00762,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 6.206513928571428,
+          "min_margin": 2.978652,
+          "max_margin": 8.60714,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 11,
+          "accuracy": 0.6875,
+          "mean_margin": 0.818168875,
+          "min_margin": -4.00762,
+          "max_margin": 3.52007,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "M2"
+      },
+      "fact_id": "steve_jobs_medical:M2",
+      "n_surfaces": 30,
+      "n_correct": 30,
+      "K_f": 1.0,
+      "mean_margin": 3.4056573,
+      "min_margin": 1.930701,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 3.989315857142857,
+          "min_margin": 2.361584,
+          "max_margin": 5.638213,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 2.8949560625,
+          "min_margin": 1.930701,
+          "max_margin": 4.457453,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "M3"
+      },
+      "fact_id": "steve_jobs_medical:M3",
+      "n_surfaces": 31,
+      "n_correct": 22,
+      "K_f": 0.7096774193548387,
+      "mean_margin": 1.8976824838709676,
+      "min_margin": -3.751471,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 4.197782066666667,
+          "min_margin": 1.089515,
+          "max_margin": 5.09589,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 7,
+          "accuracy": 0.4375,
+          "mean_margin": -0.25866087499999996,
+          "min_margin": -3.751471,
+          "max_margin": 2.505771,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "M4"
+      },
+      "fact_id": "steve_jobs_medical:M4",
+      "n_surfaces": 30,
+      "n_correct": 15,
+      "K_f": 0.5,
+      "mean_margin": -1.2529441666666665,
+      "min_margin": -9.20545,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 11,
+          "accuracy": 0.7857142857142857,
+          "mean_margin": 1.0967029285714285,
+          "min_margin": -2.006667,
+          "max_margin": 2.978287,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 4,
+          "accuracy": 0.25,
+          "mean_margin": -3.308885375,
+          "min_margin": -9.20545,
+          "max_margin": 2.852942,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "steve_jobs_medical",
+        "fact_id": "M5"
+      },
+      "fact_id": "steve_jobs_medical:M5",
+      "n_surfaces": 30,
+      "n_correct": 8,
+      "K_f": 0.26666666666666666,
+      "mean_margin": -1.5308135,
+      "min_margin": -5.03054,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 6,
+          "accuracy": 0.42857142857142855,
+          "mean_margin": -0.12245285714285713,
+          "min_margin": -2.649189,
+          "max_margin": 1.971824,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 2,
+          "accuracy": 0.125,
+          "mean_margin": -2.7631290625,
+          "min_margin": -5.03054,
+          "max_margin": 0.685609,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    }
+  ]
+}

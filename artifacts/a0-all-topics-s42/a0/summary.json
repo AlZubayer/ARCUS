@@ -1,0 +1,79 @@
+{
+  "challenger_disaster": {
+    "n_surfaces_scored": 750,
+    "n_facts_screened": 25,
+    "n_eligible": 12,
+    "n_passing_accuracy_only": 13,
+    "eligible_fact_ids": [
+      "challenger_disaster:K10",
+      "challenger_disaster:K11",
+      "challenger_disaster:K12",
+      "challenger_disaster:K18",
+      "challenger_disaster:K20",
+      "challenger_disaster:K3",
+      "challenger_disaster:K4",
+      "challenger_disaster:K5",
+      "challenger_disaster:K8",
+      "challenger_disaster:K9",
+      "challenger_disaster:M1",
+      "challenger_disaster:M2"
+    ],
+    "n_refused_cells": 25
+  },
+  "salem_witch_trials": {
+    "n_surfaces_scored": 736,
+    "n_facts_screened": 25,
+    "n_eligible": 12,
+    "n_passing_accuracy_only": 12,
+    "eligible_fact_ids": [
+      "salem_witch_trials:K13",
+      "salem_witch_trials:K15",
+      "salem_witch_trials:K2",
+      "salem_witch_trials:K20",
+      "salem_witch_trials:K3",
+      "salem_witch_trials:K4",
+      "salem_witch_trials:K7",
+      "salem_witch_trials:K8",
+      "salem_witch_trials:K9",
+      "salem_witch_trials:M1",
+      "salem_witch_trials:M3",
+      "salem_witch_trials:M5"
+    ],
+    "n_refused_cells": 25
+  },
+  "steve_jobs_medical": {
+    "n_surfaces_scored": 743,
+    "n_facts_screened": 25,
+    "n_eligible": 6,
+    "n_passing_accuracy_only": 8,
+    "eligible_fact_ids": [
+      "steve_jobs_medical:K10",
+      "steve_jobs_medical:K11",
+      "steve_jobs_medical:K19",
+      "steve_jobs_medical:K7",
+      "steve_jobs_medical:K9",
+      "steve_jobs_medical:M2"
+    ],
+    "n_refused_cells": 25
+  },
+  "britney_spears_conservatorship": {
+    "n_surfaces_scored": 745,
+    "n_facts_screened": 25,
+    "n_eligible": 11,
+    "n_passing_accuracy_only": 11,
+    "eligible_fact_ids": [
+      "britney_spears_conservatorship:K11",
+      "britney_spears_conservatorship:K13",
+      "britney_spears_conservatorship:K18",
+      "britney_spears_conservatorship:K2",
+      "britney_spears_conservatorship:K20",
+      "britney_spears_conservatorship:K3",
+      "britney_spears_conservatorship:K4",
+      "britney_spears_conservatorship:K5",
+      "britney_spears_conservatorship:K6",
+      "britney_spears_conservatorship:M1",
+      "britney_spears_conservatorship:M4"
+    ],
+    "n_refused_cells": 25
+  }
+}

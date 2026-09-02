@@ -1,0 +1,1285 @@
+{
+  "a0_version": "known_fact_core_v1",
+  "distractor_policy": "same_topic_same_modality_v1",
+  "thresholds": {
+    "minimum_base_accuracy": 0.8,
+    "minimum_modalities_known": 2,
+    "distractor_count": 4,
+    "note": "Preregistered. Not adjusted after inspecting results."
+  },
+  "splits_scored": [
+    "stress",
+    "validation"
+  ],
+  "n_surfaces_scored": 736,
+  "n_facts_screened": 25,
+  "n_eligible": 12,
+  "n_passing_accuracy_only": 12,
+  "eligible_fact_ids": [
+    "salem_witch_trials:K13",
+    "salem_witch_trials:K15",
+    "salem_witch_trials:K2",
+    "salem_witch_trials:K20",
+    "salem_witch_trials:K3",
+    "salem_witch_trials:K4",
+    "salem_witch_trials:K7",
+    "salem_witch_trials:K8",
+    "salem_witch_trials:K9",
+    "salem_witch_trials:M1",
+    "salem_witch_trials:M3",
+    "salem_witch_trials:M5"
+  ],
+  "accuracy_only_fact_ids": [
+    "salem_witch_trials:K13",
+    "salem_witch_trials:K15",
+    "salem_witch_trials:K2",
+    "salem_witch_trials:K20",
+    "salem_witch_trials:K3",
+    "salem_witch_trials:K4",
+    "salem_witch_trials:K7",
+    "salem_witch_trials:K8",
+    "salem_witch_trials:K9",
+    "salem_witch_trials:M1",
+    "salem_witch_trials:M3",
+    "salem_witch_trials:M5"
+  ],
+  "refused_cells": [
+    {
+      "fact_key": "salem_witch_trials:K1",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K1/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K10",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K10/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K11",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K11/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K12",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K12/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K13",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K13/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K14",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K14/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K15",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K15/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K16",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K16/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K17",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K17/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K18",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K18/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K19",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K19/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K2",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K2/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K20",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K20/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K3",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K3/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K4",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K4/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K5",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K5/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K6",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K6/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K7",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K7/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K8",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K8/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:K9",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:K9/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:M1",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:M1/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:M2",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:M2/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:M3",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:M3/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:M4",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:M4/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    },
+    {
+      "fact_key": "salem_witch_trials:M5",
+      "modality": "reverse",
+      "reason": "degenerate_answer_pool",
+      "detail": "salem_witch_trials:M5/reverse: only 0 distinct distractors available for the required 4 (from 24 candidates, 24 identical to the correct answer). This cell cannot support a same-topic factual margin."
+    }
+  ],
+  "facts": [
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K1"
+      },
+      "fact_id": "salem_witch_trials:K1",
+      "n_surfaces": 30,
+      "n_correct": 14,
+      "K_f": 0.4666666666666667,
+      "mean_margin": 0.0378555,
+      "min_margin": -1.422541,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 9,
+          "accuracy": 0.6428571428571429,
+          "mean_margin": 0.23265842857142857,
+          "min_margin": -1.036132,
+          "max_margin": 0.822125,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 5,
+          "accuracy": 0.3125,
+          "mean_margin": -0.1325970625,
+          "min_margin": -1.422541,
+          "max_margin": 0.743319,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K10"
+      },
+      "fact_id": "salem_witch_trials:K10",
+      "n_surfaces": 31,
+      "n_correct": 0,
+      "K_f": 0.0,
+      "mean_margin": -6.25175270967742,
+      "min_margin": -9.618353,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -5.3455634000000005,
+          "min_margin": -8.881221,
+          "max_margin": -1.550739,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -7.1013051875,
+          "min_margin": -9.618353,
+          "max_margin": -3.331863,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K11"
+      },
+      "fact_id": "salem_witch_trials:K11",
+      "n_surfaces": 28,
+      "n_correct": 2,
+      "K_f": 0.07142857142857142,
+      "mean_margin": -0.7974179285714286,
+      "min_margin": -1.531199,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -1.09510625,
+          "min_margin": -1.431102,
+          "max_margin": -0.655789,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 2,
+          "accuracy": 0.125,
+          "mean_margin": -0.5741516875,
+          "min_margin": -1.531199,
+          "max_margin": 0.082284,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K12"
+      },
+      "fact_id": "salem_witch_trials:K12",
+      "n_surfaces": 28,
+      "n_correct": 14,
+      "K_f": 0.5,
+      "mean_margin": 0.002199964285714284,
+      "min_margin": -0.78349,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 11,
+          "accuracy": 0.9166666666666666,
+          "mean_margin": 0.3567358333333333,
+          "min_margin": -0.062936,
+          "max_margin": 0.839791,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 3,
+          "accuracy": 0.1875,
+          "mean_margin": -0.2637019375,
+          "min_margin": -0.78349,
+          "max_margin": 0.215386,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K13"
+      },
+      "fact_id": "salem_witch_trials:K13",
+      "n_surfaces": 30,
+      "n_correct": 30,
+      "K_f": 1.0,
+      "mean_margin": 2.473453833333333,
+      "min_margin": 0.164303,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 3.081533357142857,
+          "min_margin": 2.568985,
+          "max_margin": 3.428275,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 1.94138425,
+          "min_margin": 0.164303,
+          "max_margin": 2.95519,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K14"
+      },
+      "fact_id": "salem_witch_trials:K14",
+      "n_surfaces": 30,
+      "n_correct": 14,
+      "K_f": 0.4666666666666667,
+      "mean_margin": 0.12744353333333333,
+      "min_margin": -0.578708,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 1,
+          "accuracy": 0.07142857142857142,
+          "mean_margin": -0.31963214285714286,
+          "min_margin": -0.578708,
+          "max_margin": 0.057094,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 13,
+          "accuracy": 0.8125,
+          "mean_margin": 0.51863475,
+          "min_margin": -0.191976,
+          "max_margin": 2.783204,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K15"
+      },
+      "fact_id": "salem_witch_trials:K15",
+      "n_surfaces": 28,
+      "n_correct": 28,
+      "K_f": 1.0,
+      "mean_margin": 2.0243025714285716,
+      "min_margin": 1.40645,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 12,
+          "accuracy": 1.0,
+          "mean_margin": 2.1501578333333335,
+          "min_margin": 1.40645,
+          "max_margin": 2.991829,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 1.929911125,
+          "min_margin": 1.613098,
+          "max_margin": 2.425342,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K16"
+      },
+      "fact_id": "salem_witch_trials:K16",
+      "n_surfaces": 28,
+      "n_correct": 0,
+      "K_f": 0.0,
+      "mean_margin": -4.5563072857142854,
+      "min_margin": -8.645215,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -3.3321365833333334,
+          "min_margin": -5.435254,
+          "max_margin": -1.464826,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -5.4744353125,
+          "min_margin": -8.645215,
+          "max_margin": -3.421387,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K17"
+      },
+      "fact_id": "salem_witch_trials:K17",
+      "n_surfaces": 30,
+      "n_correct": 6,
+      "K_f": 0.2,
+      "mean_margin": -0.33356026666666666,
+      "min_margin": -0.934484,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 5,
+          "accuracy": 0.35714285714285715,
+          "mean_margin": -0.15882685714285713,
+          "min_margin": -0.721884,
+          "max_margin": 0.490512,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 1,
+          "accuracy": 0.0625,
+          "mean_margin": -0.486452,
+          "min_margin": -0.934484,
+          "max_margin": 0.138321,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K18"
+      },
+      "fact_id": "salem_witch_trials:K18",
+      "n_surfaces": 31,
+      "n_correct": 13,
+      "K_f": 0.41935483870967744,
+      "mean_margin": -0.6191982903225806,
+      "min_margin": -2.312008,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -1.6894274,
+          "min_margin": -2.312008,
+          "max_margin": -1.293244,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 13,
+          "accuracy": 0.8125,
+          "mean_margin": 0.38414149999999997,
+          "min_margin": -0.666756,
+          "max_margin": 1.082019,
+          "passes_threshold": true
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K19"
+      },
+      "fact_id": "salem_witch_trials:K19",
+      "n_surfaces": 31,
+      "n_correct": 0,
+      "K_f": 0.0,
+      "mean_margin": -4.004303709677419,
+      "min_margin": -6.450296,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -2.425583533333333,
+          "min_margin": -3.805192,
+          "max_margin": -1.296405,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -5.484353875,
+          "min_margin": -6.450296,
+          "max_margin": -4.609972,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K2"
+      },
+      "fact_id": "salem_witch_trials:K2",
+      "n_surfaces": 30,
+      "n_correct": 29,
+      "K_f": 0.9666666666666667,
+      "mean_margin": 0.4462156666666666,
+      "min_margin": -0.058404,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 0.7486277857142857,
+          "min_margin": 0.060426,
+          "max_margin": 1.071882,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 15,
+          "accuracy": 0.9375,
+          "mean_margin": 0.1816050625,
+          "min_margin": -0.058404,
+          "max_margin": 0.391962,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K20"
+      },
+      "fact_id": "salem_witch_trials:K20",
+      "n_surfaces": 30,
+      "n_correct": 30,
+      "K_f": 1.0,
+      "mean_margin": 3.4432601999999997,
+      "min_margin": 2.768218,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 3.3570327857142854,
+          "min_margin": 2.768218,
+          "max_margin": 3.874734,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 3.5187091875,
+          "min_margin": 2.810841,
+          "max_margin": 3.895926,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K3"
+      },
+      "fact_id": "salem_witch_trials:K3",
+      "n_surfaces": 28,
+      "n_correct": 28,
+      "K_f": 1.0,
+      "mean_margin": 0.7609795357142858,
+      "min_margin": 0.409301,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 12,
+          "n_correct": 12,
+          "accuracy": 1.0,
+          "mean_margin": 0.5733240833333334,
+          "min_margin": 0.409301,
+          "max_margin": 0.814869,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 0.901721125,
+          "min_margin": 0.520562,
+          "max_margin": 1.566979,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K4"
+      },
+      "fact_id": "salem_witch_trials:K4",
+      "n_surfaces": 31,
+      "n_correct": 31,
+      "K_f": 1.0,
+      "mean_margin": 2.0166611612903225,
+      "min_margin": 0.638559,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 15,
+          "accuracy": 1.0,
+          "mean_margin": 2.6199203333333334,
+          "min_margin": 1.809439,
+          "max_margin": 3.33798,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 1.4511056875,
+          "min_margin": 0.638559,
+          "max_margin": 1.875136,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K5"
+      },
+      "fact_id": "salem_witch_trials:K5",
+      "n_surfaces": 31,
+      "n_correct": 4,
+      "K_f": 0.12903225806451613,
+      "mean_margin": -0.4546330322580645,
+      "min_margin": -1.866482,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 15,
+          "n_correct": 2,
+          "accuracy": 0.13333333333333333,
+          "mean_margin": -0.34937446666666666,
+          "min_margin": -0.875375,
+          "max_margin": 0.289424,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 2,
+          "accuracy": 0.125,
+          "mean_margin": -0.5533129375,
+          "min_margin": -1.866482,
+          "max_margin": 0.504809,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K6"
+      },
+      "fact_id": "salem_witch_trials:K6",
+      "n_surfaces": 27,
+      "n_correct": 17,
+      "K_f": 0.6296296296296297,
+      "mean_margin": 0.712828111111111,
+      "min_margin": -0.503561,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 11,
+          "n_correct": 11,
+          "accuracy": 1.0,
+          "mean_margin": 1.8778311818181819,
+          "min_margin": 1.648142,
+          "max_margin": 2.114349,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 6,
+          "accuracy": 0.375,
+          "mean_margin": -0.0881115,
+          "min_margin": -0.503561,
+          "max_margin": 0.236729,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K7"
+      },
+      "fact_id": "salem_witch_trials:K7",
+      "n_surfaces": 29,
+      "n_correct": 29,
+      "K_f": 1.0,
+      "mean_margin": 1.6266910689655174,
+      "min_margin": 0.608728,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 13,
+          "n_correct": 13,
+          "accuracy": 1.0,
+          "mean_margin": 2.249215923076923,
+          "min_margin": 1.867257,
+          "max_margin": 2.62233,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 1.120889625,
+          "min_margin": 0.608728,
+          "max_margin": 1.68032,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K8"
+      },
+      "fact_id": "salem_witch_trials:K8",
+      "n_surfaces": 29,
+      "n_correct": 29,
+      "K_f": 1.0,
+      "mean_margin": 0.9213000689655172,
+      "min_margin": 0.463882,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 13,
+          "n_correct": 13,
+          "accuracy": 1.0,
+          "mean_margin": 0.7902919230769231,
+          "min_margin": 0.463882,
+          "max_margin": 0.928035,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 1.0277441875,
+          "min_margin": 0.571546,
+          "max_margin": 1.506111,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "K9"
+      },
+      "fact_id": "salem_witch_trials:K9",
+      "n_surfaces": 27,
+      "n_correct": 26,
+      "K_f": 0.9629629629629629,
+      "mean_margin": 0.9389667037037037,
+      "min_margin": -0.121044,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 11,
+          "n_correct": 11,
+          "accuracy": 1.0,
+          "mean_margin": 1.5788582727272726,
+          "min_margin": 1.270837,
+          "max_margin": 1.860401,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 15,
+          "accuracy": 0.9375,
+          "mean_margin": 0.49904125,
+          "min_margin": -0.121044,
+          "max_margin": 0.772326,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "M1"
+      },
+      "fact_id": "salem_witch_trials:M1",
+      "n_surfaces": 30,
+      "n_correct": 28,
+      "K_f": 0.9333333333333333,
+      "mean_margin": 1.7978156666666665,
+      "min_margin": -0.750717,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 2.610677928571429,
+          "min_margin": 2.20852,
+          "max_margin": 2.946359,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 14,
+          "accuracy": 0.875,
+          "mean_margin": 1.0865611875,
+          "min_margin": -0.750717,
+          "max_margin": 2.295065,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "M2"
+      },
+      "fact_id": "salem_witch_trials:M2",
+      "n_surfaces": 30,
+      "n_correct": 14,
+      "K_f": 0.4666666666666667,
+      "mean_margin": -0.0329871,
+      "min_margin": -3.135871,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 1.3399112142857141,
+          "min_margin": 0.839019,
+          "max_margin": 1.749095,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 0,
+          "accuracy": 0.0,
+          "mean_margin": -1.234273125,
+          "min_margin": -3.135871,
+          "max_margin": -0.704155,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "M3"
+      },
+      "fact_id": "salem_witch_trials:M3",
+      "n_surfaces": 30,
+      "n_correct": 30,
+      "K_f": 1.0,
+      "mean_margin": 1.3079669,
+      "min_margin": 0.21362,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 14,
+          "accuracy": 1.0,
+          "mean_margin": 1.8824205714285716,
+          "min_margin": 1.366011,
+          "max_margin": 2.1874,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 0.8053199375,
+          "min_margin": 0.21362,
+          "max_margin": 1.675586,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "M4"
+      },
+      "fact_id": "salem_witch_trials:M4",
+      "n_surfaces": 30,
+      "n_correct": 14,
+      "K_f": 0.4666666666666667,
+      "mean_margin": -0.11718916666666664,
+      "min_margin": -5.578797,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 14,
+          "n_correct": 3,
+          "accuracy": 0.21428571428571427,
+          "mean_margin": -1.2721600714285715,
+          "min_margin": -3.156135,
+          "max_margin": 2.19993,
+          "passes_threshold": false
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 11,
+          "accuracy": 0.6875,
+          "mean_margin": 0.8934103750000001,
+          "min_margin": -5.578797,
+          "max_margin": 4.933455,
+          "passes_threshold": false
+        }
+      },
+      "eligible": false,
+      "exclusion_reasons": [
+        "below_minimum_base_accuracy",
+        "insufficient_modality_coverage"
+      ],
+      "passes_accuracy_only": false
+    },
+    {
+      "fact_key": {
+        "topic": "salem_witch_trials",
+        "fact_id": "M5"
+      },
+      "fact_id": "salem_witch_trials:M5",
+      "n_surfaces": 29,
+      "n_correct": 29,
+      "K_f": 1.0,
+      "mean_margin": 3.8817674827586206,
+      "min_margin": 2.482954,
+      "modalities_scored": [
+        "direct",
+        "indirect"
+      ],
+      "modalities_passing": [
+        "direct",
+        "indirect"
+      ],
+      "K_f_by_modality": {
+        "direct": {
+          "n_surfaces": 13,
+          "n_correct": 13,
+          "accuracy": 1.0,
+          "mean_margin": 3.6126999230769234,
+          "min_margin": 3.011104,
+          "max_margin": 4.521477,
+          "passes_threshold": true
+        },
+        "indirect": {
+          "n_surfaces": 16,
+          "n_correct": 16,
+          "accuracy": 1.0,
+          "mean_margin": 4.1003848750000005,
+          "min_margin": 2.482954,
+          "max_margin": 4.690919,
+          "passes_threshold": true
+        }
+      },
+      "eligible": true,
+      "exclusion_reasons": [],
+      "passes_accuracy_only": true
+    }
+  ]
+}

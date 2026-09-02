@@ -328,16 +328,26 @@ def cmd_build_pairs(args: argparse.Namespace) -> int:
     topic = config.dataset.topic
     core, distractor_sets = _load_a0(config, args.run, topic)
 
+    # All topics: the cross_topic_matched family needs candidates outside the pilot topic.
+    # Only the pilot topic's eligible facts are used as clean surfaces.
     corpus = build_corpus(
-        topics=[topic],
+        topics=None,
         suite_dataset_id=config.dataset.dataset_id,
         suite_revision=config.dataset.dataset_revision,
         rephrasings_dataset_id=config.dataset.rephrasings_dataset_id,
         rephrasings_revision=config.dataset.rephrasings_revision,
     )
-    backend = backend_from_config(config)
+    backend = backend_from_config_cached(config)
 
-    print(f"[pairs] {len(core['eligible_fact_ids'])} eligible facts from a0 run {args.run}")
+    # A clean run must actually exhibit the fact, so clean surfaces are restricted to the
+    # ones A0 scored correct.
+    scores = read_jsonl(
+        Path(config.experiment.artifact_dir) / args.run / "a0" / f"known_fact_scores_{topic}.jsonl"
+    )
+    correct_ids = {r["surface_form_id"] for r in scores if r["is_correct"]}
+
+    print(f"[pairs] {len(core['eligible_fact_ids'])} eligible facts from a0 run {args.run}; "
+          f"{len(correct_ids)} correctly-answered surfaces available as clean anchors")
     result = run_pairs(
         backend,
         corpus,
@@ -351,6 +361,7 @@ def cmd_build_pairs(args: argparse.Namespace) -> int:
         min_abs_delta=config.scoring.min_abs_delta,
         seed=config.experiment.seed,
         answer_score=config.scoring.answer_score,
+        correct_surface_ids=correct_ids,
     )
 
     out = run_dir(config.experiment.artifact_dir, args.run) / "a0"
