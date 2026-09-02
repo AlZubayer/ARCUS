@@ -59,6 +59,18 @@ SHAPE_TEMPLATES: dict[Component, dict[str, Any]] = {
         "site": "layers[L].mlp forward_hook output",
         "semantics": "MLP block output, before the residual addition",
     },
+    Component.HEAD_OUT: {
+        "shape_template": ["batch", "seq", "d_head"],
+        "sequence_axis": 1,
+        "feature_axis": 2,
+        "head_axis": "sliced out of the o_proj input, not a separate axis",
+        "site": "layers[L].self_attn.o_proj forward_pre_hook args[0][..., H*d_head:(H+1)*d_head]",
+        "semantics": (
+            "one head's value-weighted output BEFORE the output projection. Its "
+            "contribution to the residual stream is W_O[:, H*d_head:(H+1)*d_head] @ head_out. "
+            "Distinct from attn_out, which is the post-projection sum over all heads."
+        ),
+    },
 }
 
 
@@ -91,6 +103,10 @@ class LlamaHookMap:
         self.model = model
         self.layers = model.model.layers
         self.n_layers = len(self.layers)
+        config = model.config
+        self.n_heads = int(config.num_attention_heads)
+        self.d_model = int(config.hidden_size)
+        self.d_head = self.d_model // self.n_heads
 
     # -- validation -------------------------------------------------------------------
 
@@ -107,7 +123,16 @@ class LlamaHookMap:
             raise InvalidHookPointError(
                 f"layer {hook_point.layer} outside [0, {self.n_layers}) for this model"
             )
-        if hook_point.head is not None and SHAPE_TEMPLATES[hook_point.component]["head_axis"] is None:
+        if hook_point.component is Component.HEAD_OUT:
+            if hook_point.head is None:
+                raise InvalidHookPointError("head_out requires a head index")
+            if not isinstance(hook_point.head, int) or isinstance(hook_point.head, bool):
+                raise InvalidHookPointError(f"head must be an int, got {hook_point.head!r}")
+            if not 0 <= hook_point.head < self.n_heads:
+                raise InvalidHookPointError(
+                    f"head {hook_point.head} outside [0, {self.n_heads}) for this model"
+                )
+        elif hook_point.head is not None:
             raise InvalidHookPointError(
                 f"Component {hook_point.component.value} has no head axis; "
                 f"head={hook_point.head} is not meaningful here."
@@ -122,12 +147,29 @@ class LlamaHookMap:
         }
 
     def all_hook_points(self, components: list[Component] | None = None) -> list[HookPoint]:
-        wanted = components or list(SHAPE_TEMPLATES)
-        return [
-            HookPoint(layer=layer, component=component)
-            for layer in range(self.n_layers)
-            for component in wanted
-        ]
+        wanted = components or [c for c in SHAPE_TEMPLATES if c is not Component.HEAD_OUT]
+        points: list[HookPoint] = []
+        for layer in range(self.n_layers):
+            for component in wanted:
+                if component is Component.HEAD_OUT:
+                    points += [
+                        HookPoint(layer=layer, component=component, head=h)
+                        for h in range(self.n_heads)
+                    ]
+                else:
+                    points.append(HookPoint(layer=layer, component=component))
+        return points
+
+    def head_output_weight(self, hook_point: HookPoint) -> torch.Tensor:
+        """The o_proj columns this head's output is multiplied by.
+
+        Llama has ``attention_bias=False``, so the residual contribution of a head is
+        exactly ``head_out @ W_O_slice.T`` and the per-head decomposition of ``attn_out``
+        is exact rather than approximate.
+        """
+        self.validate(hook_point)
+        o_proj = self.layers[hook_point.layer].self_attn.o_proj
+        return o_proj.weight[:, self.head_slice(hook_point)]
 
     # -- module resolution ------------------------------------------------------------
 
@@ -140,10 +182,17 @@ class LlamaHookMap:
             return layer.self_attn
         if hook_point.component is Component.MLP_OUT:
             return layer.mlp
+        if hook_point.component is Component.HEAD_OUT:
+            return layer.self_attn.o_proj
         raise InvalidHookPointError(f"No module for {hook_point.component!r}")
 
     def is_pre_hook(self, hook_point: HookPoint) -> bool:
-        return hook_point.component is Component.RESID_PRE
+        return hook_point.component in (Component.RESID_PRE, Component.HEAD_OUT)
+
+    def head_slice(self, hook_point: HookPoint) -> slice:
+        """Columns of the o_proj input belonging to this head."""
+        start = hook_point.head * self.d_head
+        return slice(start, start + self.d_head)
 
     # -- hook factories ---------------------------------------------------------------
 
@@ -153,6 +202,16 @@ class LlamaHookMap:
         A capture hook returns ``None`` everywhere, so instrumentation cannot perturb the
         forward pass; the parity gate asserts exactly that.
         """
+        if hook_point.component is Component.HEAD_OUT:
+            columns = self.head_slice(hook_point)
+
+            def head_capture(module, args, kwargs):  # noqa: ANN001
+                # o_proj is called positionally with the concatenated per-head outputs.
+                sink[hook_point] = args[0][..., columns].detach().clone()
+                return None
+
+            return head_capture
+
         if self.is_pre_hook(hook_point):
 
             def pre_hook(module, args, kwargs):  # noqa: ANN001
@@ -207,6 +266,19 @@ class LlamaHookMap:
             patched[:, target_idx.to(tensor.device)] = values
             return patched
 
+        if hook_point.component is Component.HEAD_OUT:
+            columns = self.head_slice(hook_point)
+
+            def head_patch(module, args, kwargs):  # noqa: ANN001
+                # Write only this head's columns of the o_proj input. Every other head's
+                # slice is left untouched, so ablating one head cannot disturb the others.
+                full = args[0]
+                patched = full.clone()
+                patched[..., columns] = apply(full[..., columns])
+                return (patched,) + tuple(args[1:]), kwargs
+
+            return head_patch
+
         if self.is_pre_hook(hook_point):
 
             def pre_hook(module, args, kwargs):  # noqa: ANN001
@@ -233,5 +305,8 @@ class LlamaHookMap:
         return {
             "hook_map_version": self.version,
             "n_layers": self.n_layers,
+            "n_heads": self.n_heads,
+            "d_model": self.d_model,
+            "d_head": self.d_head,
             "components": {c.value: SHAPE_TEMPLATES[c] for c in SHAPE_TEMPLATES},
         }

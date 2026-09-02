@@ -48,9 +48,16 @@ class Component(StrEnum):
     ATTN_PATTERN = "attn_pattern"
 
 
-#: Components the exact-patching backend implements today.
+#: Components the exact-patching backend implements today. Q/K/V and attention patterns
+#: stay declared but unimplemented: A1 works at G0 (component) granularity first.
 IMPLEMENTED_COMPONENTS: frozenset[Component] = frozenset(
-    {Component.RESID_PRE, Component.RESID_POST, Component.ATTN_OUT, Component.MLP_OUT}
+    {
+        Component.RESID_PRE,
+        Component.RESID_POST,
+        Component.ATTN_OUT,
+        Component.MLP_OUT,
+        Component.HEAD_OUT,
+    }
 )
 
 
